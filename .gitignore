@@ -168,3 +168,10 @@ replay_pid*
 *.dll
 *.dylib
 *.exe
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.dylib
