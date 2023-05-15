@@ -1,0 +1,4 @@
+.idea/
+.vscode/
+generated/
+scripts/__pycache__/

@@ -1,0 +1,17 @@
+
+class:
+  name: FlowProperty
+  superClass: CategorizedEntity
+  example: flow_property.json
+  doc: A flow property is a quantity that can be used to express amounts of a flow.
+
+  properties:
+    - name: flowPropertyType
+      type: FlowPropertyType
+      doc: The type of the flow property
+
+    - name: unitGroup
+      type: Ref[UnitGroup]
+      doc: >
+           The units of measure that can be used to express quantities of the
+           flow property.

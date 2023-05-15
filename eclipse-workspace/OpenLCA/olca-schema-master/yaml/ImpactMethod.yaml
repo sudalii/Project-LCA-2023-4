@@ -1,0 +1,14 @@
+
+class:
+  name: ImpactMethod
+  superClass: CategorizedEntity
+  doc: An impact assessment method.
+
+  properties:
+    - name: impactCategories
+      type: List[Ref[ImpactCategory]]
+      doc: The impact categories of the method.
+
+    - name: nwSets
+      type: List[NwSet]
+      doc: The normalization and weighting sets of the method.

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension id="application"
+              point="org.eclipse.core.runtime.applications">
+      <application>
+         <run class="app.rcp.Application">
+         </run>
+      </application>
+   </extension>
+   <extension point="org.eclipse.ui.perspectives">
+      <perspective name="RCP Perspective"
+                   class="app.rcp.Perspective"
+                   id="app.perspective">
+      </perspective>
+   </extension>
+   <extension id="product"
+              point="org.eclipse.core.runtime.products">
+      <product application="epd-editor.application"
+               name="EPD Editor">
+         <property name="windowImages"
+                   value="icons/eclipse16.png,icons/eclipse32.png,icons/eclipse48.png,icons/eclipse64.png, icons/eclipse128.png,icons/eclipse256.png">
+         </property>
+         <property name="appName"
+                   value="EPD Editor">
+         </property>
+         <property
+               name="aboutText"
+               value="EPD Editor 5&#x0A;Copyright (c) 2021 GreenDelta. All rights reserved.&#x0A;&#x0A;This product includes software developed in the EPD Editor&#x0A;project and other open source software.&#x0A;Visit https://github.com/GreenDelta/epd-editor">
+         </property>
+      </product>
+   </extension>
+
+   <extension point="org.eclipse.ui.navigator.viewer">
+         <viewer viewerId="app.navi.Navigator">
+               <options>
+		        <property name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
+		                  value="true">
+		         </property>
+		         <property name="org.eclipse.ui.navigator.hideCollapseAllAction"
+		                   value="true">
+		         </property>
+		         <property name="org.eclipse.ui.navigator.hideAvailableCustomizationsDialog"
+		                   value="true">
+		         </property>
+			</options>
+         </viewer>
+         
+         <viewerContentBinding viewerId="app.navi.Navigator">
+			<includes>
+				<contentExtension isRoot="true"
+				                  pattern="app.navi.NavigationContent"/>
+			</includes>
+		 </viewerContentBinding>
+		<viewerActionBinding viewerId="app.navi.Navigator">
+			<includes>
+				<actionExtension pattern="app.navi.NavigationMenu"/>
+			</includes>
+		</viewerActionBinding>    
+   </extension>
+   
+   <extension point="org.eclipse.ui.navigator.navigatorContent">
+		
+		<navigatorContent 
+			activeByDefault="true" 
+			contentProvider="app.navi.NavigationContent" 
+			id="app.navi.NavigationContent" 
+			labelProvider="app.navi.NavigationLabel" 
+			name="#Navigation content" 
+			priority="normal">
+			<triggerPoints>
+				<instanceof value="app.navi.NavigationElement"/>
+			</triggerPoints>
+			<commonSorter class="app.navi.NavigationSorter"/>
+			<possibleChildren>
+				<instanceof value="app.navi.NavigationElement"/>
+			</possibleChildren>
+		</navigatorContent>
+		
+		<actionProvider 
+			class="app.navi.NavigationMenu" 
+			id="app.navi.NavigationMenu" 
+			priority="normal">
+			<enablement></enablement>
+		</actionProvider>
+		
+	</extension>
+	
+
+	<!-- Navigation view -->
+	<extension 
+		point="org.eclipse.ui.views">
+		<view 
+			allowMultiple="false" 
+			class="app.navi.Navigator" 
+			id="app.navi.Navigator" 
+			name="Navigation"
+			icon="icons/data.png"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.ui.commandImages">
+		<image
+			commandId="org.eclipse.ui.file.save"
+			icon="icons/save.png"
+			disabledIcon="icons/save_dis.png">
+		</image>
+		<image
+			commandId="org.eclipse.ui.file.saveAs"
+			icon="icons/save_as.png"
+			disabledIcon="icons/save_as_dis.png">
+		</image>
+		<image
+			commandId="org.eclipse.ui.file.saveAll"
+			icon="icons/save_all.png"
+			disabledIcon="icons/save_all_dis.png">
+		</image>
+	</extension>
+	
+	<extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="app.editors.TranslationView"
+            id="TranslationView"
+            name="#Translations"
+            restorable="true"
+            icon="icons/message.png">
+      </view>
+   </extension>
+	
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="app.perspective">            
+            <view id="TranslationView" 
+            	relative="org.eclipse.ui.editorss" 
+            	relationship="right" 
+            	ratio="0.75"
+            	visible="false">            	
+            </view>
+      </perspectiveExtension>
+   </extension>
+   
+ <extension
+       point="org.eclipse.ui.editors">
+    <editor
+          default="false"
+          icon="icons/epd.png"
+          id="epd.editor"
+          name="EPD Editor"
+          class="app.editors.epd.EpdEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/product.png"
+          id="flow.editor"
+          name="Flow Editor"
+          class="app.editors.flow.FlowEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/contact.png"
+          id="contact.editor"
+          name="Contact Editor"
+          class="app.editors.contact.ContactEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/source.png"
+          id="source.editor"
+          name="Source Editor"
+          class="app.editors.source.SourceEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/quantity.png"
+          id="flowproperty.editor"
+          name="Flow Propery Editor"
+          class="app.editors.flowproperty.FlowPropertyEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/unit.png"
+          id="unitgroup.editor"
+          name="Unit group"
+          class="app.editors.unitgroup.UnitGroupEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/method.png"
+          id="method.editor"
+          name="LCIA Method"
+          class="app.editors.methods.MethodEditor"
+          contributorClass="app.editors.DataSetToolBar">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/quantity.png"
+          id="material.properties.editor"
+          name="Material Properties"
+          class="app.editors.matprops.MaterialPropertyEditor">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/settings.png"
+          id="epd.profile.editor"
+          name="EPD Profile"
+          class="app.editors.profiles.ProfileEditor">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/connection.png"
+          id="connection.editor"
+          name="Connection"
+          class="app.editors.connection.ConnectionEditor">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/folder.png"
+          id="classification.editor"
+          name="Classifications"
+          class="app.editors.classifications.ClassificationEditor">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/location.png"
+          id="location.editor"
+          name="Locations"
+          class="app.editors.locations.LocationEditor">
+    </editor>
+    <editor
+          default="false"
+          icon="icons/info.png"
+          id="status.view"
+          name="Status"
+          class="app.StatusView">
+    </editor>
+    <editor
+    	  default="false"
+    	  icon="icons/settings.png"
+          id="app.Settings"
+          name="#Settings"
+          class="app.editors.settings.SettingsPage">
+    </editor>
+    <editor
+    	  default="false"
+    	  icon="icons/search.png"
+          id="app.SearchPage"
+          name="Search"
+          class="app.SearchPage">
+    </editor>
+ </extension>
+
+</plugin>

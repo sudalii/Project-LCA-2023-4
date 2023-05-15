@@ -1,0 +1,34 @@
+html, body {
+  height: 100%;
+  width:100%;
+  background-color:#5166ba;
+  overflow:hidden;
+  font-family: 'Gowun Batang', serif;
+}
+.wave {
+  position: absolute;
+  left:0;
+  right:0;
+  /* top:120px; */
+  bottom:0%;
+  z-index: 1;
+}
+
+.wave + .wave {
+  z-index: 2;
+}
+
+#ertrinken{
+  position: absolute;
+  top: 15px;
+  z-index: 1;
+  
+}
+#mundzu{visibility:hidden;}
+#text{
+  position: relative;
+  top: 90%;
+  float: right;
+  margin-right: 60px;
+  z-index: 10;
+}

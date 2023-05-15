@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>test3</title>
+
+    <link rel="dns-prefetch" href="https://fast.appcues.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+
+</head>
+<body>
+
+<h1>
+    <span>
+      Daylight Cycles
+      <i>of</i>
+      <b>Earth</b>
+    </span>
+  </h1>
+    
+  <div class="earth-container">
+    <div
+      class="globe"
+      onmouseover="isHover = true"
+      onmousemove="hoverOrbit(event)"
+      onmouseout="isHover = false"
+    >
+      <div
+        id="northLabel"
+        class="day-label north-label"
+      ></div>
+      <div
+        id="southLabel"
+        class="day-label south-label"
+      ></div>
+    </div>
+    <div class="shadow">
+      <span
+        id="label"
+        class="label"
+      ></span>
+    </div>
+  </div>
+  
+  <div
+    class="orbit-container"
+    onmouseover="isHover = true"
+    onmousemove="hoverOrbit(event)"
+    onmouseout="isHover = false"
+  >
+    <div class="sun"></div>
+    <div class="earth"></div>
+    <div class="labels">
+      <div>
+        <span> Solstice </span>
+        <span> Equinox </span>
+        <span> Solstice </span>
+      </div>
+      <div>
+        <span> Dec 21<small>st</small> </span>
+        <span>
+          Mar 20<small>th</small>
+          <br/>
+          Sep 23<small>rd</small>
+        </span>
+        <span> Jun 21<small>st</small> </span>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- Custom scripts for all pages-->
+  // CDN import
+  <script type="importmap">
+    {
+        "imports": {
+        "three": "https://unpkg.com/three@0.138.3/build/three.module.js",
+        "GLTFLoader":
+        "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+      }
+    }
+  </script>
+  
+  <script type="module">
+    import * as THREE from 'three';
+  </script>
+
+    <script src="../js/daylig-cycles-of-earth.js"></script>
+
+  <!-- Custom styles for this template-->
+  <link href="../scss/daylig-cycles-of-earth.scss" rel="stylesheet" type="text/css">
+
+  
+  <!-- <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
+
+</body>
+</html>

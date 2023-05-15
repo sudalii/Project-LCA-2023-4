@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Bootstrap Carousel Fade Transition</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./coming-soon-gh.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="carousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carousel" data-slide-to="0" class="active">
+        </li>
+        <li data-target="#carousel" data-slide-to="1">
+        </li>
+        <li data-target="#carousel" data-slide-to="2">
+        </li>
+        <li data-target="#carousel" data-slide-to="3">
+        </li>
+        <li data-target="#carousel" data-slide-to="4">
+        </li>
+    </ol>
+    <!-- Carousel items -->
+    <div class="carousel-inner bg-img">
+
+      <!-- Page 1 -->
+      <div class="active item">
+        <!-- background design start -->
+        <svg class="wave1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#6DC3E6" fill-opacity="0.5" 
+          d="M0,96L120,80C240,64,480,32,720,37.3C960,43,1200,85,1320,106.7L1440,128L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z" 
+          style="--darkreader-inline-fill:#166483;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+
+        <svg class="wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#41788e" fill-opacity="0.3" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <img class="front-ice" src="../img/front-ice.png">
+        <img class="baby-bear" src="../img/baby-bear.png">
+        <img class="mom-bear" src="../img/mom-bear.png">
+
+        <svg class="wave3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#2D5261" fill-opacity="0.7" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <!-- background design end -->
+
+        <div class="container-fluid py-3">
+          <h1 class="fst-italic lh-1 mb-4">친환경 사전평가 테스트</h1>
+          <p class="mb-5">당신의 제품에 대한 환경영향을 평가해 보세요!</p>
+          <!-- * * * * * * * * * * * * * * *-->
+          <!-- * * SB Forms Contact Form * *-->
+          <!-- * * * * * * * * * * * * * * *-->
+          <!-- This form is pre-integrated with SB Forms.-->
+          <!-- To make this form functional, sign up at-->
+          <!-- https://startbootstrap.com/solution/contact-forms-->
+          <!-- to get an API token!-->
+          <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+              <!-- productName input-->
+              <p class="mb-2">제품 이름</p>
+              <div class="form-floating mb-3">
+                  <input class="form-control" id="productName" type="text" placeholder="Enter your product name..." data-sb-validations="required" />
+                  <label for="productName" class="text-dark">제품 이름</label>
+                  <div class="invalid-feedback" data-sb-feedback="productName:required">A product name is required.</div>
+              </div>
+              <!-- productAmount input-->
+              <p class="mb-2">제품 기준흐름(=Product Amount)</p>
+              <div class="form-floating mb-3">
+                  <input class="form-control" id="productAmount" type="text" placeholder="Enter your product amount..." data-sb-validations="required" />
+                  <label for="productAmount" class="text-dark">제품 기준흐름(=Product Amount)</label>
+                  <div class="invalid-feedback" data-sb-feedback="productAmount:required">An product amount is required.</div>
+              </div>
+
+              <!-- 제품 분류 radio button -->
+              <p class="mb-2">제품 분류</p>
+              <div class="mb-3 btn-group btn-group-toggle" data-toggle="buttons">
+                  <input type="radio" class="btn-check" name="options-outlined" id="btn-material" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="btn-material">material</label>
+
+                  <input type="radio" class="btn-check" name="options-outlined" id="btn-product" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="btn-product">product</label>                        
+              </div>
+
+              <div class="row input-group-newsletter">
+                  <div class="col-auto"><button class="btn btn-primary disabled" id="submitButton" type="submit">Notify Me!</button></div>
+              </div>
+
+              <!-- Submit success message-->
+              <!---->
+              <!-- This is what your users will see when the form-->
+              <!-- has successfully submitted-->
+              <div class="d-none" id="submitSuccessMessage">
+                  <div class="text-center mb-3 mt-2">
+                      <div class="fw-bolder">Form submission successful!</div>
+                      To activate this form, sign up at
+                      <br />
+                      <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                  </div>
+              </div>
+              <!-- Submit error message-->
+              <!---->
+              <!-- This is what your users will see when there is-->
+              <!-- an error submitting the form-->
+              <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
+          </form>
+        </div>
+
+
+      </div>
+      
+      <!-- Page 2 -->
+      <div class="item">
+        <!-- background design start -->
+        <svg class="wave1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#6DC3E6" fill-opacity="0.5" 
+          d="M0,96L120,80C240,64,480,32,720,37.3C960,43,1200,85,1320,106.7L1440,128L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z" 
+          style="--darkreader-inline-fill:#166483;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <svg class="wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#41788e" fill-opacity="0.3" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <img class="front-ice" src="../img/front-ice.png">
+        <img class="baby-bear" src="../img/baby-bear.png">
+        <img class="mom-bear" src="../img/mom-bear.png">
+        <svg class="wave3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#2D5261" fill-opacity="0.7" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <!-- background design end -->
+
+        <img class="earth" src="../img/process-select/planet-earth.png">
+        
+        <div class="center-div-2">
+          <nav class="nav row justify-content-center center-div nav-position-1">
+            <a class="nav-link active col-12" aria-current="page" href="#">
+              <img class= "nav-size" src="../img/process-select/eco-factory.png">
+              <p>물질&부품제조</p>
+            </a>
+          </nav>
+          <!-- <nav class="nav center-div nav-position-2"> -->
+          <nav class="nav row justify-content-between center-div">  
+            <a class="nav-link active col-6" aria-current="page" href="#">
+              <img class= "nav-size" src="../img/process-select/end-of-life-product.png">
+              <p>폐기&재활용</p>
+            </a>
+            <a class="nav-link col-6" href="#">
+              <img class= "nav-size" src="../img/process-select/sensor.png">
+              <p>가공</p>
+            </a>
+          </nav>
+
+          <nav class="nav row justify-content-between center-div nav-position-2">  
+            <a class="nav-link active col-2" aria-current="page" href="#">
+              <img class= "nav-size" src="../img/process-select/house.png">
+              <p>사용</p>
+            </a>
+            <a class="nav-link col-2" href="#">
+              <img class= "nav-size" src="../img/process-select/shipped.png">
+              <p>수송</p>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <!-- Page 3 -->      
+      <div class="item">
+        <!-- background design start -->
+        <svg class="wave1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#6DC3E6" fill-opacity="0.5" 
+          d="M0,96L120,80C240,64,480,32,720,37.3C960,43,1200,85,1320,106.7L1440,128L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z" 
+          style="--darkreader-inline-fill:#166483;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+
+        <svg class="wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#41788e" fill-opacity="0.3" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <img class="front-ice" src="../img/front-ice.png">
+        <img class="baby-bear" src="../img/baby-bear.png">
+        <img class="mom-bear" src="../img/mom-bear.png">
+
+        <svg class="wave3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#2D5261" fill-opacity="0.7" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <!-- background design end -->    
+        
+        <div class="container-fluid py-3">
+          <h1 class="fst-italic lh-1 mb-5">물질&부품제조</h1>
+          <!-- <p class="mb-5">당신의 제품에 대한 환경영향을 평가해 보세요!</p> -->
+
+          <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+              <!-- ProcessName input-->
+              <p class="mb-2">공정 이름</p>
+              <div class="form-floating mb-3">
+                  <input class="form-control" id="ProcessName" type="text" placeholder="Enter your product name..." data-sb-validations="required" />
+                  <div class="invalid-feedback" data-sb-feedback="ProcessName:required">A process name is required.</div>
+              </div>
+              <!-- flow DB input or select-->
+              <p class="mb-2">사용되는 물질 및 부품 (선택 또는 검색)</p>
+              <!-- <div class="form-floating mb-3">               -->
+              <select class="selectpicker" data-live-search="true">
+                <optgroup label="1. 건축자재">
+                  <option data-tokens="건축01">건축01</option>
+                  <option data-tokens="건축02">건축02</option>
+                  <option data-tokens="건축03">건축03</option>
+                </optgroup>
+                <optgroup label="2. 고무">
+                  <option data-tokens="고무01">고무01</option>
+                  <option data-tokens="고무02">고무02</option>
+                  <option data-tokens="고무03">고무03</option>
+                </optgroup>
+                
+              </select>                
+                <div class="invalid-feedback" data-sb-feedback="search-p1:required">선택 필수항목입니다.</div>
+
+              <!-- 에너지 - 전기 사용량 -->
+              <p class="mb-2 pt-5">에너지 - 전기 사용량
+                <img src="../img/lightning.png" style="width:30px">
+              </p>
+              <div class="form-floating mb-3">
+                <input class="form-control" id="electric" type="text" style="width: 89%; display:inline-block;" 
+                placeholder="Enter your elec..." data-sb-validations="required" />
+                <select class="selectpicker" data-width="10%" data-height="">
+                  <option value="kWh">kWh</option>
+                  <option value="MJ">MJ</option>
+                </select>
+                <div class="invalid-feedback" data-sb-feedback="electric:required">선택 필수항목입니다.</div>
+              </div>
+
+              <!-- 에너지 - 물 사용량 -->
+              <p class="mb-2">에너지 - 물 사용량
+                <img src="../img/drop-water.png" style="width:30px">
+              </p>
+              <div class="form-floating mb-3">
+                <input class="form-control" id="water" type="text" style="width: 89%; display:inline-block;" 
+                placeholder="Enter your water..." data-sb-validations="required" />
+                <select class="selectpicker" data-width="10%" data-height="">
+                  <option value="m3">m3</option>
+                  <option value="kg">kg</option>
+                </select>                
+                <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+              </div>
+
+              <!-- Submit button -->
+              <div class="row input-group-newsletter">
+                  <div class="col-auto"><button class="btn btn-primary disabled" id="submitButton" type="submit">Notify Me!</button></div>
+              </div>
+
+              <!-- Submit success message-->
+              <!---->
+              <!-- This is what your users will see when the form-->
+              <!-- has successfully submitted-->
+              <div class="d-none" id="submitSuccessMessage">
+                  <div class="text-center mb-3 mt-2">
+                      <div class="fw-bolder">Form submission successful!</div>
+                      To activate this form, sign up at
+                      <br />
+                      <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                  </div>
+              </div>
+              <!-- Submit error message-->
+              <!---->
+              <!-- This is what your users will see when there is-->
+              <!-- an error submitting the form-->
+              <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Page 4 -->      
+      <div class="item">
+        <!-- background design start -->
+        <svg class="wave1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#6DC3E6" fill-opacity="0.5" 
+          d="M0,96L120,80C240,64,480,32,720,37.3C960,43,1200,85,1320,106.7L1440,128L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z" 
+          style="--darkreader-inline-fill:#166483;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+
+        <svg class="wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#41788e" fill-opacity="0.3" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <img class="front-ice" src="../img/front-ice.png">
+        <img class="baby-bear" src="../img/baby-bear.png">
+        <img class="mom-bear" src="../img/mom-bear.png">
+
+        <svg class="wave3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#2D5261" fill-opacity="0.7" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <!-- background design end -->    
+        
+
+
+      </div>
+      
+      <!-- Page 5 -->      
+      <div class="item">
+        <!-- background design start -->
+        <svg class="wave1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#6DC3E6" fill-opacity="0.5" 
+          d="M0,96L120,80C240,64,480,32,720,37.3C960,43,1200,85,1320,106.7L1440,128L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z" 
+          style="--darkreader-inline-fill:#166483;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+
+        <svg class="wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#41788e" fill-opacity="0.3" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <img class="front-ice" src="../img/front-ice.png">
+        <img class="baby-bear" src="../img/baby-bear.png">
+        <img class="mom-bear" src="../img/mom-bear.png">
+
+        <svg class="wave3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#2D5261" fill-opacity="0.7" 
+          d="M0,128L1440,128L1440,320L0,320Z" style="--darkreader-inline-fill:#346072;" 
+          data-darkreader-inline-fill="">
+          </path>
+        </svg>
+        <!-- background design end -->    
+        
+
+
+      </div>
+   
+      
+      
+    </div>
+    <!-- Carousel nav -->
+    <a class="carousel-control left" href="#carousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#carousel" data-slide="next">&rsaquo;</a>
+  </div>
+  
+  <!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+  <script  src="./script.js"></script>
+  <!-- <script src="./search-dropdown.js"></script> -->
+
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+  <!-- * *                               SB Forms JS                               * *-->
+  <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+  <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+  <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+
+</body> 
+</html>

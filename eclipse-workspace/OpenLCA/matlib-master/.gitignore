@@ -1,0 +1,6 @@
+# compiled libraries
+*.dll
+*.so
+*.a
+*.dylib
+.DS_Store

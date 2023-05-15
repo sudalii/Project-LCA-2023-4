@@ -1,0 +1,28 @@
+
+class:
+  name: RootEntity
+  superClass: Entity
+  doc: >
+       A standalone item in a database like a location, unit group, flow, or
+       process. A root entity can be unambiguously identified by its id (the
+       JSON-LD @id field), version, and lastChange fields.
+
+  properties:
+    - name: name
+      type: string
+      doc: The name of the entity.
+
+    - name: description
+      type: string
+      doc: The description of the entity.
+
+    - name: version
+      type: string
+      doc: >
+           A version number in MAJOR.MINOR.PATCH format where the MINOR and
+           PATCH fields are optional and the fields may have leading zeros
+           (so 01.00.00 is the same as 1.0.0 or 1).
+
+    - name: lastChange
+      type: dateTime
+      doc: The timestamp when the entity was changed the last time.

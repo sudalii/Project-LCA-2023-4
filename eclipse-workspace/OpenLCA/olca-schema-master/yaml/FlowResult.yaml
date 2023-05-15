@@ -1,0 +1,25 @@
+
+class:
+  name: FlowResult
+  superClass: Entity
+  doc: >
+       A result value for a flow; given in the reference unit of the flow.
+
+  properties:
+    - name: flow
+      type: Ref[Flow]
+      doc: The flow reference.
+    
+    - name: input
+      type: boolean
+      doc: Indicates whether the flow is an input or not.
+
+    - name: value
+      type: double
+      doc: The value of the flow amount.
+    
+    - name: location
+      type: Ref[Location]
+      doc: >
+           The (reference to the) location of this flow result in case of a
+           regionalized result.

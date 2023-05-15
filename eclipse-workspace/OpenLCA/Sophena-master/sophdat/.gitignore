@@ -1,0 +1,8 @@
+sophdat
+*.exe
+*.xlsx
+*.pyc
+
+.vscode/
+/gen/
+debug

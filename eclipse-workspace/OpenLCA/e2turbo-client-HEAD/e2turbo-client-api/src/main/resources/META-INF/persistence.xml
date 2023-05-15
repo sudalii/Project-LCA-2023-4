@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="earthster">
+
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		
+		<class>org.earthster.client.model.Activity</class>
+		<class>org.earthster.client.model.Assessment</class>
+		<class>org.earthster.client.model.AssessmentResult</class>	
+		<class>org.earthster.client.model.BeaCategory</class>
+		<class>org.earthster.client.model.BeaCommodity</class>
+		<class>org.earthster.client.model.BeaItem</class>
+		<class>org.earthster.client.model.Category</class>		
+		<class>org.earthster.client.model.Exchange</class>
+		<class>org.earthster.client.model.Flow</class>
+		<class>org.earthster.client.model.ImpactCategory</class>
+		<class>org.earthster.client.model.Product</class>
+		
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+			<property name="javax.persistence.jdbc.user" value="" />
+			<property name="javax.persistence.jdbc.password" value="" />			
+		</properties>
+
+	</persistence-unit>
+</persistence>

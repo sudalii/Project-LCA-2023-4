@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>bear</title>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
+
+</head>
+<body>
+    <!-- <div class="wrapper">
+        <img src="https://svgshare.com/i/An7.svg" alt="water icon">
+        <h1>Climate 
+            <span class="mask">change</span>
+        </h1>
+    </div> -->
+
+    <div class="icesheet2">
+        <div class="shadow2"></div>
+        <div class="edge2"></div>
+    </div>
+    <div class="container">
+        <div class="water"></div>
+        <div class="icesheet">
+            <div class="shadow"></div>
+            <div class="edge"></div>
+        </div>
+
+        <div class="bear">
+            <div class="leg1 posit3">
+                <div class="paw2"></div>
+            </div>
+            <div class="leg1 posit4">
+                <div class="paw2"></div>
+            </div>
+            <div class="head">
+                <div class="ears posi1"></div>
+                <div class="ears posi2"></div>
+                <div class="jaw">
+                    <div class="eyes pos1"></div>
+                    <div class="eyes pos2"></div>
+                    <div class="nose"></div>
+                </div>
+            </div>
+            <div class="bearbody">
+                <div class="leg posit1">
+                    <div class="paw1"></div>
+                </div>
+                <div class="leg posit2">
+                    <div class="paw1"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave -->
+        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#0099ff" fill-opacity="0.8"
+             d="M0,96L60,128C120,160,240,224,360,229.3C480,235,600,181,720,170.7C840,160,960,192,1080,197.3C1200,203,1320,181,1380,170.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+             data-darkreader-inline-fill="" 
+             style="--darkreader-inline-fill:#007acc;">
+            </path>
+        </svg>
+
+        <!-- Smart Home Temperature Slider -->
+        <!--
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 600">
+            <defs>
+              <linearGradient id="liquidGrad" x1="557" y1="150" x2="557" y2="546" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#FF0909"/>
+                <stop offset="0.2" stop-color="#F3481A"/>
+                <stop offset="0.5" stop-color="#FABA2C"/>
+                <stop offset="1" stop-color="#00BCF2"/>
+              </linearGradient>
+          <rect id="tube" x="357" y="150" width="86" height="400" rx="43" ry="43"/>   
+              <clipPath id="liquidMask">
+                  <use xlink:href="#tube" class="liquidMask" />
+              </clipPath>
+             <clipPath id="tubeMask">
+                  <use xlink:href="#tube" class="liquidMask" />
+              </clipPath>
+             <path id="liquid" d="M757,552v490H357V552c50,0,50,20,100,20s50-20,100-20,50,20,100,20S707,552,757,552Z" />
+          <mask id="gradMask">   
+          
+                <use xlink:href="#liquid" class="liquid" x="0" fill="#FCEFD6" />
+                <use xlink:href="#liquid" class="liquid" x="0" fill="#EEE" opacity="0.7"/>
+           
+              </mask>
+            </defs>
+            
+            
+              <g class="whole" transform="translate(0, -40)">
+          
+                     <use xlink:href="#tube" class="tubeBg" fill="#C8D9D3" opacity="0.61"/>
+             
+                <g class="dragger" transform="translate(-6, 0)">
+                  <circle cx="294" cy="540" r="36" fill="#3A3335"/>
+                  <path class="dragTip" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z" fill="#3A3335"/>
+                  <text class="label" x="294" y="551">100</text>
+                </g>       
+               
+              
+           <g mask="url(#gradMask)">
+                  <use xlink:href="#tube" fill="url(#liquidGrad)" />
+            </g>
+            <line class="tubeShine" x1="371" y1="200" x2="371" y2="443" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="8" opacity="0.21" stroke-dasharray="153 30" stroke-dashoffset="-20"/>
+
+                <g class="measurements" fill="none" stroke="#FCEFD6" stroke-width="3" stroke-linecap="round" opacity="1">
+                  <line x1="358" y1="196" x2="370" y2="196" />
+                  <line x1="358" y1="234" x2="370" y2="234" />
+                  <line x1="358" y1="273" x2="370" y2="273" />
+                  <line x1="358" y1="311" x2="370" y2="311" />
+                  <line x1="358" y1="350" x2="370" y2="350" />
+                  <line x1="358" y1="388" x2="370" y2="388" />
+                  <line x1="358" y1="426" x2="370" y2="426" />
+                  <line x1="358" y1="465" x2="370" y2="465" />
+                  <line x1="358" y1="503" x2="370" y2="503" />
+                </g>
+               
+            <circle class="follower" cx="400" cy="540" r="0" fill="#62B6CB" fill-opacity="1" stroke="#FCEFD6" stroke-width="0"/>
+          
+               
+           
+               
+           </g>   
+        </svg>
+        -->
+        <!-- Manual Thermometer(Temperature) -->
+        <div id="wrapper">	
+            <div id="termometer">
+                <div id="temperature" style="height:0" data-value="0°C"></div>
+                <div id="graduations"></div>
+            </div>
+            
+            <div id="playground">		
+                <div id="range">
+                    <input id="minTemp" type="text" value="-20">
+                    <input type="range" min="-20" max="50" value="42">
+                    <input id="maxTemp" type="text" value="50">
+                </div>
+                <p id="unit">Celcius C°</p>
+            </div>
+            
+            <p id="info">Click on the values to change them!</p>
+        </div>
+          
+    </div>
+
+    <script src="../vendor/chart.js/Chart.bundle.min.js"></script> 
+    <script src="../vendor/chart.js/Chart.min.js"></script>   
+
+    <!-- Custom scripts for all pages-->
+    <script src="../js/climate-change-bear.js"></script>
+
+
+    <!-- Custom styles for this template-->
+    <link href="../css/climate-change-bear.css" rel="stylesheet" type="text/css">
+    <link href="../scss/climate-change-bear.scss" rel="stylesheet">
+    
+    <!-- <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
+
+</body>
+</html>
