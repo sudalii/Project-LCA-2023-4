@@ -39,3 +39,6 @@ replay_pid*
 *.o
 *.so
 *.dylib
+
+# IntelliJ IDEA Module, xml format
+*.iml
