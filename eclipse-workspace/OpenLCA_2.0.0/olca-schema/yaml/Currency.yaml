@@ -1,0 +1,19 @@
+
+class:
+  name: Currency
+  superClass: RootEntity
+
+  properties:
+    - name: code
+      index: 10
+      type: string
+
+    - name: conversionFactor
+      index: 11
+      type: double
+
+    - name: refCurrency
+      index: 12
+      type: Ref[Currency]
+      doc: >
+           The reference currency to which the conversion factor is related.

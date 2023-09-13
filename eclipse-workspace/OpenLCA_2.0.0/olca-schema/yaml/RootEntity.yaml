@@ -1,0 +1,34 @@
+
+class:
+  name: RootEntity
+  superClass: RefEntity
+  doc: A `RootEntity` is a stand-alone data set (like a `Flow` or `Process`).
+
+  properties:
+    - name: category
+      index: 5
+      type: string
+      doc: >
+           A full path of the category. Forward slashes are used to separate the
+           segments of this path, e.g.
+           `Elementary flows/emissions/air/unspecified`.
+
+    - name: lastChange
+      index: 6
+      type: dateTime
+      doc: The timestamp when the entity was changed the last time.
+
+    - name: tags
+      type: List[string]
+      index: 7
+      doc: >
+           A list of optional tags. A tag is just a string which should not
+           contain commas (and other special characters).
+
+    - name: version
+      index: 8
+      type: string
+      doc: >
+           A version number in MAJOR.MINOR.PATCH format where the MINOR and
+           PATCH fields are optional and the fields may have leading zeros
+           (so 01.00.00 is the same as 1.0.0 or 1).

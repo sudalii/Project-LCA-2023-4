@@ -1,0 +1,61 @@
+
+class:
+  name: Flow
+  superClass: RootEntity
+  example: flow.json
+  doc: >
+       Everything that can be an input or output of a process (e.g. a substance,
+       a product, a waste, a service etc.)
+
+  properties:
+
+    - name: cas
+      index: 10
+      type: string
+      doc: A CAS number of the flow.
+
+    - name: flowProperties
+      index: 11
+      type: List[FlowPropertyFactor]
+      doc: >
+           The flow properties (quantities) in which amounts of the flow can
+           be expressed together with conversion factors between these flow
+           flow properties.
+
+    - name: flowType
+      index: 12
+      type: FlowType
+      doc: >
+           The type of the flow. Note that this type is more a descriptor of
+           how the flow is handled in calculations.
+
+    - name: formula
+      index: 13
+      type: string
+      doc: A chemical formula of the flow.
+
+    - name: isInfrastructureFlow
+      index: 14
+      type: boolean
+      doc: >
+           Indicates whether this flow describes an infrastructure product. This
+           field is part of the openLCA schema because of backward compatibility
+           with EcoSpold 1. It does not really have a meaning in openLCA and
+           should not be used anymore.
+
+    - name: location
+      index: 15
+      type: Ref[Location]
+      doc: >
+           The location of the flow. Normally the location of a flow is defined
+           by the process location where the flow is an input or output. However,
+           some data formats define a location as a property of a flow.
+
+    - name: synonyms
+      index: 16
+      type: string
+      doc: >
+           A list of synonyms but packed into a single field. Best is to use
+           semicolons as separator as commas are sometimes used in names of
+           chemicals.
+

@@ -1,0 +1,40 @@
+
+class:
+  name: AllocationFactor
+  superClass: Entity
+  doc: A single allocation factor in a process.
+
+  properties:
+
+    - name: allocationType
+      index: 2
+      type: AllocationType
+      doc: The type of allocation.
+
+    - name: exchange
+      index: 3
+      type: ExchangeRef
+      doc: >
+           A product input, waste output, or elementary flow exchange which is
+           allocated by this factor. This is only valid for causal allocation
+           where allocation factors can be assigned to single exchanges.
+
+    - name: formula
+      index: 4
+      type: string
+      doc: >
+           An optional formula from which the value of the allocation factor
+           is calculated.
+
+    - name: product
+      index: 5
+      type: Ref[Flow]
+      doc: >
+           The output product (or waste input) to which this allocation factor
+           is related. The must be an exchange with this product output (or
+           waste input) in this process.
+
+    - name: value
+      index: 6
+      type: double
+      doc: The value of the allocation factor.

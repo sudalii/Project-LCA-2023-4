@@ -1,0 +1,13 @@
+
+class:
+  name: EnviFlowValue
+  doc: A result related to an intervention flow.
+
+  properties:
+    - name: enviFlow
+      index: 1
+      type: EnviFlow
+
+    - name: amount
+      index: 2
+      type: double

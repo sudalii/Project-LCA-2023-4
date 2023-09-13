@@ -1,0 +1,41 @@
+{
+  "@context": {
+    "@vocab": "http://greendelta.github.io/olca-schema#",
+    "allocation": {
+      "@type": "@vocab"
+    },
+    "allocationMethod": {
+      "@type": "@vocab"
+    },
+    "allocationType": {
+      "@type": "@vocab"
+    },
+    "defaultAllocationMethod": {
+      "@type": "@vocab"
+    },
+    "direction": {
+      "@type": "@vocab"
+    },
+    "distributionType": {
+      "@type": "@vocab"
+    },
+    "flowPropertyType": {
+      "@type": "@vocab"
+    },
+    "flowType": {
+      "@type": "@vocab"
+    },
+    "parameterScope": {
+      "@type": "@vocab"
+    },
+    "processType": {
+      "@type": "@vocab"
+    },
+    "providerLinking": {
+      "@type": "@vocab"
+    },
+    "riskLevel": {
+      "@type": "@vocab"
+    }
+  }
+}

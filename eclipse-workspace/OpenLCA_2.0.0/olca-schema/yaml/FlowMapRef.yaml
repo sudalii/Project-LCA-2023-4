@@ -1,0 +1,40 @@
+
+class:
+  name: FlowMapRef
+  superClass: Entity
+  doc: >
+       Describes a source or target flow in a `FlowMappingEntry` of a `FlowMap`.
+       Such a flow reference can also optionally specify the unit and flow
+       property (quantity) for which the mapping is valid. If the unit or
+       quantity is not given, the mapping is based on the respective reference
+       unit and reference flow property of the flow.
+
+  properties:
+    - name: flow
+      index: 2
+      type: Ref[Flow]
+      doc: The reference to the flow data set.
+
+    - name: flowProperty
+      index: 3
+      type: Ref[FlowProperty]
+      doc: >
+           An optional reference to a flow property of the flow for which the
+           mapping is valid.
+
+    - name: unit
+      index: 4
+      type: Ref[Unit]
+      doc: >
+           An optional reference to a unit of the flow for which the mapping is
+           valid
+
+    - name: provider
+      index: 5
+      type: Ref[Process]
+      doc: >
+           In case of a product or waste flow a flow mapping can contain a
+           provider which is the process that produces the product or a waste
+           treatment process that consumes the waste flow. This is useful when
+           we want to apply mappings of product and waste flows on databases and
+           link them in the corresponding processes and product systems.

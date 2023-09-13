@@ -1,0 +1,25 @@
+class:
+  name: EpdModule
+  superClass: Entity
+  doc: The results of an EPD are typically structured in modules.
+
+  properties:
+
+    - name: multiplier
+      index: 2
+      type: double
+      doc: Scales the linked result to the required amount for this module.
+
+    - name: name
+      index: 3
+      type: string
+      doc: The name or identifier of the module, like `A1`.
+
+    - name: result
+      index: 4
+      type: Ref[Result]
+      doc: >
+           A reference to the module's result. Note that results are stand-alone
+           entities and that the same result could be referenced from different
+           modules. Also, results can be directly linked in product systems.
+

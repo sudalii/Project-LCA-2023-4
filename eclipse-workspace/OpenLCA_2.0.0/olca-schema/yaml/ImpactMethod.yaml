@@ -1,0 +1,25 @@
+
+class:
+  name: ImpactMethod
+  superClass: RootEntity
+  doc: An impact assessment method.
+
+  properties:
+
+    - name: code
+      index: 10
+      type: string
+
+    - name: impactCategories
+      index: 11
+      type: List[Ref[ImpactCategory]]
+      doc: The impact categories of the method.
+
+    - name: nwSets
+      index: 12
+      type: List[NwSet]
+      doc: The normalization and weighting sets of the method.
+
+    - name: source
+      index: 13
+      type: Ref[Source]

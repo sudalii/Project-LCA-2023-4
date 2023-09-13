@@ -1,0 +1,28 @@
+{
+  "@type": "UnitGroup",
+  "@id": "93a60a57-a3c8-11da-a746-0800200c9a66",
+  "name": "Units of energy",
+  "category": "Technical unit groups",
+  "defaultFlowProperty": {
+    "@type": "FlowProperty",
+    "@id": "f6811440-ee37-11de-8a39-0800200c9a66",
+    "name": "Energy"
+  },
+  "units": [
+    {
+      "@type": "Unit",
+      "@id": "52765a6c-3896-43c2-b2f4-c679acf13efe",
+      "name": "MJ",
+      "description": "Megajoule",
+      "isRefUnit": true,
+      "conversionFactor": 1.0
+    },
+    {
+      "@type": "Unit",
+      "@id": "86ad2244-1f0e-4912-af53-7865283103e4",
+      "name": "kWh",
+      "description": "Kilowatt times hour",
+      "conversionFactor": 3.6
+    }
+  ]
+}

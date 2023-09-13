@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "node",
+    "target": "ES6",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "jsx": "react",
+    "outDir": "./docs",
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test"
+  ]
+}

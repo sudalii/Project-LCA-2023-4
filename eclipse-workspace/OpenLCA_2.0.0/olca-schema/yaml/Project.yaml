@@ -1,0 +1,25 @@
+
+class:
+  name: Project
+  superClass: RootEntity
+
+  properties:
+    - name: impactMethod
+      index: 10
+      type: Ref[ImpactMethod]
+
+    - name: isWithCosts
+      index: 11
+      type: boolean
+
+    - name: isWithRegionalization
+      index: 12
+      type: boolean
+
+    - name: nwSet
+      index: 13
+      type: NwSet
+
+    - name: variants
+      index: 14
+      type: List[ProjectVariant]

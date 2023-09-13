@@ -1,0 +1,19 @@
+
+class:
+  name: DQIndicator
+  superClass: Entity
+  example: dq_indicator.json
+  doc: An indicator of a data quality system (`DQSystem`).
+
+  properties:
+    - name: name
+      index: 2
+      type: string
+
+    - name: position
+      index: 3
+      type: int
+
+    - name: scores
+      index: 4
+      type: List[DQScore]

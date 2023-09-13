@@ -1,0 +1,32 @@
+
+class:
+  name: ParameterRedefSet
+  superClass: Entity
+  doc: >
+       An instance of this class is just a set of parameter redefinitions
+       attached to a product system. It can have a name and a description.
+       One of the parameter sets can be defined as the baseline of the product
+       system. In the calculation the baseline set is then taken by default.
+
+  properties:
+    - name: description
+      index: 2
+      type: string
+      doc: A description of the parameter set.
+
+    - name: isBaseline
+      index: 3
+      type: boolean
+      doc: >
+           Indicates if this set of parameter redefinitions is the baseline for
+           a product system.
+
+    - name: name
+      index: 4
+      type: string
+      doc: The name of the parameter set.
+
+    - name: parameters
+      index: 5
+      type: List[ParameterRedef]
+      doc: The parameter redefinitions of this redefinition set.

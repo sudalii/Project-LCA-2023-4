@@ -1,0 +1,56 @@
+
+class:
+  name: Uncertainty
+  superClass: Entity
+  example: uncertainty.json
+  doc: >
+       Defines the parameter values of an uncertainty distribution. Depending on
+       the uncertainty distribution type different parameters could be used.
+
+  properties:
+    - name: distributionType
+      index: 2
+      type: UncertaintyType
+      doc: The uncertainty distribution type
+
+    - name: geomMean
+      index: 3
+      type: double
+      optional: true
+      doc: The geometric mean value (used for log-normal distributions).
+
+    - name: geomSd
+      index: 4
+      type: double
+      optional: true
+      doc: The geometric standard deviation (used for log-normal distributions).
+
+    - name: maximum
+      index: 5
+      type: double
+      optional: true
+      doc: The maximum value (used for uniform and triangle distributions).
+
+    - name: mean
+      index: 6
+      type: double
+      optional: true
+      doc: The arithmetic mean (used for normal distributions).
+
+    - name: minimum
+      index: 7
+      type: double
+      optional: true
+      doc: The minimum value (used for uniform and triangle distributions).
+
+    - name: mode
+      index: 8
+      type: double
+      optional: true
+      doc: The most likely value (used for triangle distributions).
+
+    - name: sd
+      index: 9
+      type: double
+      optional: true
+      doc: The arithmetic standard deviation  (used for normal distributions).

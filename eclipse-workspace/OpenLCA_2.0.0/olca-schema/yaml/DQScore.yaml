@@ -1,0 +1,27 @@
+
+class:
+  name: DQScore
+  superClass: Entity
+  example: dq_score.json
+  doc: >
+       An score value of an indicator (`DQIndicator`) in a data quality system
+       (`DQSystem`).
+
+  properties:
+
+    - name: description
+      index: 2
+      type: string
+
+    - name: label
+      index: 3
+      type: string
+
+    - name: position
+      index: 4
+      type: int
+
+    - name: uncertainty
+      index: 5
+      type: double
+      optional: true

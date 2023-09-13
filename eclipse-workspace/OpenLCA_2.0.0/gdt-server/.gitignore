@@ -1,0 +1,24 @@
+# native libraries and test database
+database/
+lib/
+build/
+
+# ide files
+.classpath
+.idea/
+.project
+.settings/
+.vscode/
+
+# macOS stuff
+.DS_Store
+
+# build folders
+target/
+dist/
+
+# test outputs
+*.log
+
+depl/depl*
+depl/.dart_tool
