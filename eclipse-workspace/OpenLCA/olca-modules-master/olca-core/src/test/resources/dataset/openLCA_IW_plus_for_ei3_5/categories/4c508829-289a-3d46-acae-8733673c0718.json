@@ -1,0 +1,1 @@
+{"@context":"http://greendelta.github.io/olca-schema/context.jsonld","@type":"Category","@id":"4c508829-289a-3d46-acae-8733673c0718","name":"unspecified","version":"00.00.000","category":{"@type":"Category","@id":"4bdd4c4f-dfa3-3373-b1f3-0257de8a30b5","name":"Emission to soil","categoryPath":["Elementary flows"],"categoryType":"Flow"},"modelType":"FLOW"}

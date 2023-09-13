@@ -1,0 +1,1 @@
+{"@context":"http://greendelta.github.io/olca-schema/context.jsonld","@type":"Category","@id":"e3eb990a-bf00-358a-aa44-453c07c8a464","name":"river","version":"00.00.000","category":{"@type":"Category","@id":"96a183a4-c206-358d-97ac-6c45bf40cf7d","name":"Emission to water","categoryPath":["Elementary flows"],"categoryType":"Flow"},"modelType":"FLOW"}

@@ -298,20 +298,27 @@
                                             <h6 class="font-weight-bold text-danger" style="display:inline">➜</h6>
                                             <h6 class="font-weight-bold text-danger" style="display:inline"> 총 환경영향: </h6>
                                             <h6 class="font-weight-bold text-danger" style="display:inline"> ${vo.result} ${vo.resultUnit}</h6>
-                                            
+
                                             
                                             <h6 class="mt-4 font-weight-bold text-primary">Impact analysis: Graphs</h6>
-                                            <h6 class="mt-2 font-weight-bold">그래프 삽입 예정</h6>
-                                            <div class="col-5" style="display:inline">
-                                                <div class="chart-pie pt-4 pb-2">
-                                                    <canvas id="myPieChart2"></canvas>
+                                            
+                                            <div class="row">
+                                                <div class="col-6"> 
+                                                    <!-- <h6 class="mt-2 font-weight-bold">그래프 삽입 예정</h6> -->
+                                                    <!-- style="display:inline"> -->
+                                                    <div class="chart-area">
+                                                    <!-- <div class="chart-pie pt-4 pb-2"> -->
+                                                        <canvas id="myPieChart2"></canvas>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-5" style="display:inline">
-                                                <div class="chart-pie pt-4 pb-2">
-                                                    <canvas id="myBarChart2"></canvas>
-                                                </div>
-                                            </div>                                                
+                                                <div class="col-6">
+                                                    <div class="chart-area">
+                                                <!-- style="display:inline"> -->
+                                                    <!-- <div class="chart-pie pt-4 pb-2"> -->
+                                                        <canvas id="myBarChart2"></canvas>
+                                                    </div>
+                                                </div>   
+                                            </div>                                             
                                         </div>
                                     </div> 
                                     <!-- LCIA Select End -->

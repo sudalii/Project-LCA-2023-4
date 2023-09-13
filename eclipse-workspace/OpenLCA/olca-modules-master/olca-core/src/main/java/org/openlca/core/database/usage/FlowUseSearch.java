@@ -5,10 +5,8 @@ import java.util.Set;
 
 import gnu.trove.set.TLongSet;
 import org.openlca.core.database.IDatabase;
-import org.openlca.core.model.Epd;
-import org.openlca.core.model.ImpactCategory;
+import org.openlca.core.model.*;
 import org.openlca.core.model.Process;
-import org.openlca.core.model.Result;
 import org.openlca.core.model.descriptors.RootDescriptor;
 
 public record FlowUseSearch(IDatabase db) implements UsageSearch {
@@ -18,6 +16,7 @@ public record FlowUseSearch(IDatabase db) implements UsageSearch {
 		if (ids.isEmpty())
 			return Collections.emptySet();
 		var suffix = " where f_flow " + Search.eqIn(ids);
+
 		return QueryPlan.of(db)
 			.submit(ImpactCategory.class,
 				"select f_impact_category from tbl_impact_factors" + suffix)

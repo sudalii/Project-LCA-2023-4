@@ -37,6 +37,10 @@ record FlowKey(String path, String refId, FlowType type) {
 		return new FlowKey(path, KeyGen.get(path), FlowType.WASTE_FLOW);
 	}
 
+	/**
+	 * Supplier<T>
+	 * @return T - Lazy Evaluation (불필요한 연산 제거)
+	 */
 	SyncFlow getOrCreate(FlowSync sync, Supplier<Flow> fn) {
 		var syncFlow = sync.get(path);
 		if (!syncFlow.isEmpty())

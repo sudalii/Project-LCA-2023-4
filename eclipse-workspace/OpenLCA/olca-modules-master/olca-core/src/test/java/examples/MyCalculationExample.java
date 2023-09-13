@@ -1,6 +1,8 @@
 package examples;
 
 import org.openlca.core.DataDir;
+import org.openlca.core.database.Derby;
+import org.openlca.core.database.IDatabase;
 import org.openlca.core.database.ImpactMethodDao;
 import org.openlca.core.math.SystemCalculator;
 import org.openlca.core.model.CalculationSetup;
@@ -8,6 +10,7 @@ import org.openlca.core.model.ImpactMethod;
 import org.openlca.core.model.ProductSystem;
 import org.openlca.nativelib.NativeLib;
 
+import java.io.File;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,84 +35,107 @@ import org.openlca.core.model.Uncertainty;
 
 public class MyCalculationExample {
 
+	private static final boolean USE_FILE_BASED_DB = false;
+//	private static IDatabase db;
+
+//	public static IDatabase getDb() {
+//		if (db == null) {
+//			db = USE_FILE_BASED_DB
+//				? initFileBasedDb()
+//				: Derby.createInMemory();
+//		}
+//		return db;
+//	}
+
+	private static IDatabase initFileBasedDb() {
+		String dbName = "";  // "olca_test_db_1.4";
+		File tmpDir = DataDir.get().getDatabasesDir();
+		File folder = new File(tmpDir, dbName);
+		return new Derby(folder);
+	}
+
 	public static void main(String[] args) {
 
 		double TARGET_AMOUNT = 1.28;
 
 		/*************************** 1. DB load ***************************/
-		NativeLib.loadFrom(DataDir.get().root());
-		try (var db = DataDir.get().openDatabase("test1012_copy")) {
-			
-			/***************** Process load *****************/
-			var system = db.get(ProductSystem.class,
-				"80abdce2-7d8b-455c-a48d-3d82cea05aed");
-			
-			//var method = new ImpactMethodDao(db)
-			//	.getForRefId("effb055a-ad78-39bd-8dc0-341411db4ae7");
-			var method = new ImpactMethodDao(db).getForName("CML-IA baseline").get(0);
-			
-			system.targetAmount = TARGET_AMOUNT;
-			System.out.println("method:" + method + method.getClass().getName());
-			
-			var setup = CalculationSetup.fullAnalysis(system)
-				.withImpactMethod(method);
-			//var setup = CalculationSetup.simple(system)
-			//		.withImpactMethod(method);
-			System.out.printf("%s %s%s / %s\n\n", 
-					system.name, system.targetAmount, system.targetUnit.name, method.name);
-			var calc = new SystemCalculator(db);
-			var r = calc.calculateFull(setup);
-			//var r = calc.calculateSimple(setup);
-			
-			//fs.getTotalFlowResults();
-			
-			int i=0;
-			HashMap<String, Double> fs = new HashMap<>();
-			
-			for (i=0; i<r.enviIndex().size(); i++) {				
-				var f = r.enviIndex().at(i);
-				double flowResult = r.getTotalFlowResult(f);
-				fs.put(f.flow().name, flowResult);
-				//if (r.getTotalFlowResult(f) > 0.000001) {
-				// System.out.println(f.flow().name + "  -> " + r.getTotalFlowResult(f));					
-				//}						
-			}
-			// 내림차순 정렬
-			List<String> listKeySet = new ArrayList<>(fs.keySet());
-			Collections.sort(listKeySet, (value1, value2) -> 
-			(fs.get(value2).compareTo(fs.get(value1))));	
 
-			System.out.println("The total inventory result of the given flow - Top 10:");
-			int idx = 0;
-			for(String key : listKeySet) {
-				if (idx < 10) {
-					System.out.printf("%s  -> %.8f\n", key, fs.get(key));
+		NativeLib.loadFrom(DataDir.get().root());
+
+//		try (var db = DataDir.get().openDatabase("test1012_copy")) {
+		// openDatabase() -> Derby(): DB 있으면 그대로 호출, 없으면 새로 생성까지 가능
+		try (var db = DataDir.get().openDatabase("test_0711")) {
+
+				/***************** Process load *****************/
+				var system = db.get(ProductSystem.class,
+					"80abdce2-7d8b-455c-a48d-3d82cea05aed");
+
+				//var method = new ImpactMethodDao(db)
+				//	.getForRefId("effb055a-ad78-39bd-8dc0-341411db4ae7");
+				var method = new ImpactMethodDao(db).getForName("CML-IA baseline").get(0);
+
+				system.targetAmount = TARGET_AMOUNT;
+				System.out.println("method:" + method + method.getClass().getName());
+
+				var setup = CalculationSetup.fullAnalysis(system)
+					.withImpactMethod(method);
+				//var setup = CalculationSetup.simple(system)
+				//		.withImpactMethod(method);
+				System.out.printf("%s %s%s / %s\n\n",
+					system.name, system.targetAmount, system.targetUnit.name, method.name);
+				var calc = new SystemCalculator(db);
+				var r = calc.calculateFull(setup);
+				//var r = calc.calculateSimple(setup);
+
+				//fs.getTotalFlowResults();
+
+				int i=0;
+				HashMap<String, Double> fs = new HashMap<>();
+
+				for (i=0; i<r.enviIndex().size(); i++) {
+					var f = r.enviIndex().at(i);
+					double flowResult = r.getTotalFlowResult(f);
+					fs.put(f.flow().name, flowResult);
+					//if (r.getTotalFlowResult(f) > 0.000001) {
+					// System.out.println(f.flow().name + "  -> " + r.getTotalFlowResult(f));
+					//}
 				}
-				idx++;
-			}
+				// 내림차순 정렬
+				List<String> listKeySet = new ArrayList<>(fs.keySet());
+				Collections.sort(listKeySet, (value1, value2) ->
+					(fs.get(value2).compareTo(fs.get(value1))));
+
+				System.out.println("The total inventory result of the given flow - Top 10:");
+				int idx = 0;
+				for(String key : listKeySet) {
+					if (idx < 10) {
+						System.out.printf("%s  -> %.8f\n", key, fs.get(key));
+					}
+					idx++;
+				}
 			/*
-			for (i=0; i<r.impactIndex().size(); i++) {				
+			for (i=0; i<r.impactIndex().size(); i++) {
 				var impact = r.impactIndex().at(i);
 				System.out.println("\nthe impact category results for the given result:");
 				System.out.printf("%s : %.6f\n", impact.name, r.getTotalImpactResult(impact));
 			}
 			*/
-			//System.out.println(f.flow().name + "  -> " + r.getTotalFlowResult(f));					
-			// System.out.println("r leng:"+r.impactIndex().size());
-			
-			i=0;
-			while (i < r.impactIndex().size()) {
-				if (r.impactIndex().at(i).toString().contains("GWP")) {
-					var impact =  r.impactIndex().at(i);
-					//System.out.println(impact.name + "  -> " + );		
-					System.out.printf("%n%s  -> %.6f %s%n%n",
+				//System.out.println(f.flow().name + "  -> " + r.getTotalFlowResult(f));
+				// System.out.println("r leng:"+r.impactIndex().size());
+
+				i=0;
+				while (i < r.impactIndex().size()) {
+					if (r.impactIndex().at(i).toString().contains("GWP")) {
+						var impact =  r.impactIndex().at(i);
+						//System.out.println(impact.name + "  -> " + );
+						System.out.printf("%n%s  -> %.6f %s%n%n",
 							impact.name, r.getTotalImpactResult(impact), impact.referenceUnit);
-					break;
+						break;
+					}
+					i++;
 				}
-				i++;
+
+
 			}
-			
-			
 		}
 	}
-}

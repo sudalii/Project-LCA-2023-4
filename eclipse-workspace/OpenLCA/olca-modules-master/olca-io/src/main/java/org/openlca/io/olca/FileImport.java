@@ -24,6 +24,8 @@ class FileImport {
 		this.dest = dest;
 	}
 
+	// source: import할 data file location(directory)
+	// dest: openLCA-data-1.4/databases/
 	public void run() {
 		log.trace("import external files");
 		try {

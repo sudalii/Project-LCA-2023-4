@@ -56,6 +56,9 @@ class FlowSheets {
 		}
 	}
 
+	/**
+	 * list add
+	 */
 	private void readFactors() {
 		int row = 1;
 		while (true) {

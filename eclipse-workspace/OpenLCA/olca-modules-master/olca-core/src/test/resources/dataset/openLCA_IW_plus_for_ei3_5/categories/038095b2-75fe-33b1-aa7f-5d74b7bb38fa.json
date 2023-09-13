@@ -1,0 +1,1 @@
+{"@context":"http://greendelta.github.io/olca-schema/context.jsonld","@type":"Category","@id":"038095b2-75fe-33b1-aa7f-5d74b7bb38fa","name":"lower stratosphere + upper troposphere","version":"00.00.000","category":{"@type":"Category","@id":"1e66f9dc-6ace-3a22-b773-5a3895acb5f3","name":"Emission to air","categoryPath":["Elementary flows"],"categoryType":"Flow"},"modelType":"FLOW"}

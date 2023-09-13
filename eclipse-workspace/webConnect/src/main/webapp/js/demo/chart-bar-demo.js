@@ -196,9 +196,87 @@ var myBarChart = new Chart(ctx2, {
     datasets: [{
       //label: "Revenue",
       backgroundColor: "#4e73df",
-      hoverBackgroundColor: "#2e59d9",
-      borderColor: "#4e73df",
+      hoverBackgroundColor: "#cc3d3d",
+      borderColor: "#cc3d3d",
       data: [0.005, 0.000000000000013],
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'kg CO2 eq'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 6
+        },
+        maxBarThickness: 25,
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 0.006,
+          //maxTicksLimit: 5,
+          padding: 10
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+      //callbacks: {
+        //label: function(tooltipItem, chart) {
+        //  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+        //  return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+        //}
+      //}
+    },
+  }
+});
+
+var ctx2 = document.getElementById("myBarChart3");
+var myBarChart = new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ["물질 및 부품제조", "가공", "수송", "재활용 및 폐기"],
+    datasets: [{
+      //label: "Revenue",
+      backgroundColor: "#4e73df",
+      hoverBackgroundColor: "#cc3d3d",
+      borderColor: "#cc3d3d",
+      data: [0.003, 0.002, 0.004, 0.005],
     }],
   },
   options: {
