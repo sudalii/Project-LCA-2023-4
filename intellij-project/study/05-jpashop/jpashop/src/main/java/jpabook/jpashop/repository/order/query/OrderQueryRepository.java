@@ -44,7 +44,7 @@ public class OrderQueryRepository {
                 .getResultList();
     }
 
-    public List<OrderQueryDto> findAllByDto_optimization() {
+/*    public List<OrderQueryDto> findAllByDto_optimization() {
         List<OrderQueryDto> result = findOrders();
 
         List<Long> orderIds = result.stream()
@@ -58,5 +58,5 @@ public class OrderQueryRepository {
                         " where oi.order.id in :orderIds", OrderItemQueryDto.class)
                 .setParameter("orderIds", orderIds)
                 .getResultList();
-    }
+    }*/
 }

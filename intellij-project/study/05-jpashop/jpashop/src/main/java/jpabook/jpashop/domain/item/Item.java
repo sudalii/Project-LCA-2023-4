@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "dtype")
+@DiscriminatorColumn(name = "dtype")    // 상속 관계 구현, name = "dtype"은 부모 클레스에 선언
 @Getter
 @Setter
 public abstract class Item {
