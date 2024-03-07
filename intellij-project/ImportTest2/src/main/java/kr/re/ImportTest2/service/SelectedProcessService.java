@@ -2,6 +2,9 @@ package kr.re.ImportTest2.service;
 
 import kr.re.ImportTest2.component.derdyDb.RunDatabase;
 import kr.re.ImportTest2.component.result.SystemBuilder;
+import kr.re.ImportTest2.domain.SelectedProcess;
+import kr.re.ImportTest2.domain.User;
+import kr.re.ImportTest2.repository.SelectedProcessRepository;
 import lombok.RequiredArgsConstructor;
 import org.openlca.core.database.IDatabase;
 import org.openlca.core.model.ProductSystem;
@@ -14,12 +17,25 @@ import java.io.IOException;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SelectedProcessService {
-    
+
+    private final SelectedProcessRepository spRepository;
     private final RunDatabase runDatabase;
     private final SystemBuilder systemBuilder;
 
     public IDatabase db = null;
     public ProductSystem system = null;
+
+    public void saveSelectedProcess(SelectedProcess sp) {
+        spRepository.save(sp);
+    }
+
+    public void deleteSelectedProcess(Long id) {
+        spRepository.delete(id);
+    }
+
+    public SelectedProcess findOne(Long id) {
+        return spRepository.findOne(id);
+    }
 
     /**
      * 사용자가 화면에서 각 공정에서 국가 DB를 선택 클릭하면,

@@ -19,4 +19,23 @@ public class ResultController {
         return "/result";
     }
 
+    @GetMapping("/result")
+    public void calculate() {
+        dbService.runDb();
+
+        int len = koreaDbNames.size();
+        for (int i=0; i<len; i++) {
+            // db로 저장
+
+            String pId = dbService.dbMapper(koreaDbNames.get(i));
+            double pAmount = processAmount.get(i);
+            dbService.addProcess(pId, pAmount);
+
+            dbService.saveSelectedProcess();
+        }
+        dbService.systemBuilder();
+        dbService.closeDb();
+
+    }
+
 }

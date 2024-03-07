@@ -1,68 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>KETI Eco-system</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="/assets/img/favicon.png" rel="icon">
-  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" rel="stylesheet" >
-
-  <!-- Template Main CSS File -->
-  <link href="/assets/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: Moderna
-  * Updated: May 30 2023 with Bootstrap v5.3.0
-  * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
+<head th:replace="fragments/header :: header" />
 <body>
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top d-flex align-items-center ">
-    <div class="container d-flex justify-content-between align-items-center">
-
-      <div class="logo">
-        <h1 class="text-light"><a href="../../static/index.html"><span>KETI</span></a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-      </div>
-
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="" href="/index">Home</a></li>
-          <li><a class="active" href="/services">Services</a></li>
-          <li><a href="/result">Result</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-
-    </div>
-  </header><!-- End Header -->
-
   <main id="main">
-
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <!-- ======= Our Services Section ======= -->
     <section class="breadcrumbs">
       <div class="container">
@@ -77,19 +18,10 @@
 
       </div>
     </section><!-- End Our Services Section -->
-
     <!-- ======= Services Section ======= -->
     <section class="services">
       <div class="container">
-
         <div class="row">
-          <!-- <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">
-            <div class="icon-box icon-box-pink">
-              <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
-            </div>
-          </div> -->
 
           <!-- ======= Hero Section ======= -->
           <section id="hero" class="d-flex justify-cntent-center align-items-center">
@@ -98,10 +30,11 @@
               <!-- Slide 1 -->
               <div class="carousel-item active">
                 <div class="carousel-container">
-                  <h2 class="animate__animated animate__fadeInDown">친환경 사전평가 테스트</span></h2>
+                  <h2 class="animate__animated animate__fadeInDown">친환경 사전평가 테스트</h2>
                   <p class="animate__animated animate__fadeInUp">당신의 제품에 대한 환경영향을 평가해 보세요!</p>
 
-                  <form id="contactForm" class="animate__animated animate__fadeInUp" data-sb-form-api-token="API_TOKEN">
+                  <form action="/userInfo" method="post"
+                        id="contactForm" class="animate__animated animate__fadeInUp" data-sb-form-api-token="API_TOKEN">
                     <!-- productName input-->
                     <p class="mb-2">제품 이름</p>
                     <div class="form-floating mb-3">
@@ -129,7 +62,6 @@
                     <div class="col-auto"><button class="btn-get-started animate__animated animate__fadeInUp" type="submit">Notify Me!</button></div>
       
                     <!-- Submit success message-->
-                    <!-- This is what your users will see when the form-->
                     <!-- has successfully submitted-->
                     <div class="d-none" id="submitSuccessMessage">
                         <div class="text-center mb-3 mt-2">
@@ -137,7 +69,6 @@
                         </div>
                     </div>
                     <!-- Submit error message-->
-                    <!-- This is what your users will see when there is-->
                     <!-- an error submitting the form-->
                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
                   </form>
@@ -150,21 +81,7 @@
                 <div class="carousel-container">
                   <h2 class="animate__animated animate__fadeInDown">공정 선택</h2>
 
-                  <!-- <div class="center-div-2">
-                    <nav class="navber row justify-content-center center-div nav-position-1">
-                      <a class="nav active col-12" aria-current="page" href="#">물질&부품제조</a>
-                    </nav>
-                    <nav class="nav row justify-content-between center-div">  
-                      <a class="nav active col-6" aria-current="page" href="#">폐기&재활용</a>
-                      <a class="nav col-6" href="#">가공</a>
-                    </nav>
-          
-                    <nav class="nav row justify-content-between center-div nav-position-2">  
-                      <a class="nav active col-2" aria-current="page" href="#">사용</a>
-                      <a class="nav col-2" href="#">수송</a>
-                    </nav>
-                  </div> -->
-                  <li><a class="text-white" aria-current="page" href="#">물질&부품제조</a></li>
+                  <li><a class="text-white" aria-current="page" href="/services/ProcessType.RAW_MATERIALS">물질&부품제조</a></li>
                   <li><a class="text-white" href="#">가공</a></li>
                   <li><a class="text-white" href="#">수송</a></li>
                   <li><a class="text-white" aria-current="page" href="#">사용</a></li>
@@ -173,7 +90,7 @@
                 </div>
               </div>
 
-              <!-- Slide 3 -->
+              <!-- 물질&부품제조 start -->
               <div class="carousel-item">
                 <div class="carousel-container">
                   <h2 class="animate__animated animate__fadeInDown">물질&부품제조</h2>
@@ -189,28 +106,35 @@
                       <p class="mb-2">사용되는 물질 및 부품 (선택 또는 검색)</p>
                       <!-- <div class="form-floating mb-3">               -->
                       <select class="selectpicker" data-live-search="true">
-                        <optgroup label="1. 건축자재">
-                          <option data-tokens="건축01">건축01</option>
-                          <option data-tokens="건축02">건축02</option>
-                          <option data-tokens="건축03">건축03</option>
+                        <optgroup label="플라스틱">
+                          <option data-tokens="플라스틱">호모폴리프로필렌-HPP</option>
+                          <option data-tokens="플라스틱">고밀도폴리에틸렌-HDPE</option>
+                          <option data-tokens="플라스틱">랜덤폴리프로필렌-RPP</option>
+                          <option data-tokens="플라스틱">블록폴리프로필렌-BPPP</option>
                         </optgroup>
-                        <optgroup label="2. 고무">
-                          <option data-tokens="고무01">고무01</option>
-                          <option data-tokens="고무02">고무02</option>
-                          <option data-tokens="고무03">고무03</option>
-                        </optgroup>
-                        
+                        <optgroup label="기타">
+                          <option data-tokens="기타">활성탄</option>
+                          <option data-tokens="기타">윤활유</option>
+                        </optgroup>                      
                       </select>                
-                        <div class="invalid-feedback" data-sb-feedback="search-p1:required">선택 필수항목입니다.</div>
+                      <!-- Process Amount -->
+                      <input class="form-control" id="processAmount" type="text" style="width: 30%; display:inline-block;" 
+                      placeholder="물질 및 부품 무게" data-sb-validations="required" />
+                      <select class="selectpicker" data-width="25%" data-height="">
+                        <option value="kg">kg</option>
+                        <option value="ton">ton</option>
+                      </select>
+                      <div class="invalid-feedback" data-sb-feedback="search-p1:required">선택 필수항목입니다.</div>
+
         
                       <!-- 에너지 - 전기 사용량 -->
-                      <p class="mb-2 pt-5">에너지 - 전기 사용량
-                        <img src="/assets/img/icons/lightning.png" style="width:30px">
+                      <p class="mb-2 pt-5">에너지 - 전기 사용량 (투입물/Input)
+                        <img src="./assets/img/icons/lightning.png" style="width:25px">
                       </p>
                       <div class="form-floating mb-3">
-                        <input class="form-control" id="electric" type="text" style="width: 89%; display:inline-block;" 
+                        <input class="form-control" id="electric" type="text" style="width: 70%; display:inline-block;" 
                         placeholder="Enter your elec..." data-sb-validations="required" />
-                        <select class="selectpicker" data-width="10%" data-height="">
+                        <select class="selectpicker" data-width="25%" data-height="">
                           <option value="kWh">kWh</option>
                           <option value="MJ">MJ</option>
                         </select>
@@ -218,13 +142,132 @@
                       </div>
         
                       <!-- 에너지 - 물 사용량 -->
-                      <p class="mb-2">에너지 - 물 사용량
-                        <img src="/assets/img/icons/drop-water.png" style="width:30px">
+                      <p class="mb-2">에너지 - 물 사용량 (투입물/Input)
+                        <img src="./assets/img/icons/drop-water.png" style="width:30px">
                       </p>
                       <div class="form-floating mb-3">
-                        <input class="form-control" id="water" type="text" style="width: 89%; display:inline-block;" 
+                        <select data-height="">
+                          <option value="">Fresh water</option>
+                          <option value="">Water, unspecified natural origin/kg</option>
+                        </select>       
+                        <input class="form-control" id="water" type="text" style="display:inline-block;" 
                         placeholder="Enter your water..." data-sb-validations="required" />
-                        <select class="selectpicker" data-width="10%" data-height="">
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="m3">m3</option>
+                          <option value="kg">kg</option>
+                        </select>                
+                        <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- 에너지 - 물 사용량 -->
+                      <p class="mb-2">에너지 - 물 사용량 (산출물/Output)
+                        <img src="./assets/img/icons/drop-water.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <select data-height="">
+                          <option value="">Waste water</option>
+                          <option value="">Water/kg</option>
+                        </select>    
+                        <input class="form-control" id="water" type="text" style="display:inline-block;" 
+                        placeholder="Enter your water..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="m3">m3</option>
+                          <option value="kg">kg</option>
+                        </select>                
+                        <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+                      </div>
+
+                      <!-- Submit button -->
+                      <div class="col-auto"><button class="btn-get-started animate__animated animate__fadeInUp" type="submit">Notify Me!</button></div>
+        
+                      <!-- Submit success message-->
+                      <!---->
+                      <!-- This is what your users will see when the form-->
+                      <!-- has successfully submitted-->
+                      <div class="d-none" id="submitSuccessMessage">
+                          <div class="text-center mb-3 mt-2">
+                              <div class="fw-bolder">Form submission successful!</div>
+                          </div>
+                      </div>
+                      <!-- Submit error message-->
+                      <!-- an error submitting the form-->
+                      <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
+                  </form>
+
+                </div>
+              </div>
+              <!-- 물질&부품제조 end -->
+
+              <!-- 가공 start -->
+              <div class="carousel-item">
+                <div class="carousel-container">
+                  <h2 class="animate__animated animate__fadeInDown">가공</h2>
+        
+                  <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                      <!-- ProcessName input-->
+                      <p class="mb-2">공정 이름</p>
+                      <div class="form-floating mb-3">
+                          <input class="form-control" id="ProcessName" type="text" placeholder="Enter your product name..." data-sb-validations="required" />
+                          <div class="invalid-feedback" data-sb-feedback="ProcessName:required">A process name is required.</div>
+                      </div>
+                      <!-- flow DB input or select-->
+                      <p class="mb-2">사용되는 물질 및 부품 (선택 또는 검색)</p>
+                      <!-- <div class="form-floating mb-3">               -->
+                      <select class="selectpicker" data-live-search="true">
+                        <optgroup label="플라스틱가공">
+                          <option data-tokens="플라스틱가공">PE사출성형</option>
+                          <option data-tokens="플라스틱가공">PVC사출성형</option>
+                          <option data-tokens="플라스틱가공">컴파운딩PP압출</option>                        
+                          <option data-tokens="플라스틱">컴파운딩PE압출</option>
+                        </optgroup>
+                        
+                      </select>                
+                        <div class="invalid-feedback" data-sb-feedback="search-p1:required">선택 필수항목입니다.</div>
+        
+                      <!-- 에너지 - 전기 사용량 -->
+                      <p class="mb-2 pt-5">에너지 - 전기 사용량 (투입물/Input)
+                        <img src="./assets/img/icons/lightning.png" style="width:25px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <input class="form-control" id="electric" type="text" style="width: 70%; display:inline-block;" 
+                        placeholder="Enter your elec..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="kWh">kWh</option>
+                          <option value="MJ">MJ</option>
+                        </select>
+                        <div class="invalid-feedback" data-sb-feedback="electric:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- 에너지 - 물 사용량 -->
+                      <p class="mb-2">에너지 - 물 사용량 (투입물/Input)
+                        <img src="./assets/img/icons/drop-water.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <select data-height="">
+                          <option value="">Fresh water</option>
+                          <option value="">Water, unspecified natural origin/kg</option>
+                        </select>       
+                        <input class="form-control" id="water" type="text" style="display:inline-block;" 
+                        placeholder="Enter your water..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="m3">m3</option>
+                          <option value="kg">kg</option>
+                        </select>                
+                        <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- 에너지 - 물 사용량 -->
+                      <p class="mb-2">에너지 - 물 사용량 (산출물/Output)
+                        <img src="./assets/img/icons/drop-water.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <select data-height="">
+                          <option value="">Waste water</option>
+                          <option value="">Water/kg</option>
+                        </select>    
+                        <input class="form-control" id="water" type="text" style="display:inline-block;" 
+                        placeholder="Enter your water..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
                           <option value="m3">m3</option>
                           <option value="kg">kg</option>
                         </select>                
@@ -236,26 +279,257 @@
         
                       <!-- Submit success message-->
                       <!---->
-                      <!-- This is what your users will see when the form-->
                       <!-- has successfully submitted-->
                       <div class="d-none" id="submitSuccessMessage">
                           <div class="text-center mb-3 mt-2">
                               <div class="fw-bolder">Form submission successful!</div>
-                              To activate this form, sign up at
-                              <br />
-                              <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                           </div>
                       </div>
                       <!-- Submit error message-->
-                      <!---->
-                      <!-- This is what your users will see when there is-->
                       <!-- an error submitting the form-->
                       <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
                   </form>
-                  <!-- <a href="" class="btn-get-started animate__animated animate__fadeInUp">Read More</a> -->
 
                 </div>
               </div>
+              <!-- 가공 end -->
+
+              <!-- 수송 -->
+              <div class="carousel-item">
+                <div class="carousel-container">
+                  <h2 class="animate__animated animate__fadeInDown">수송</h2>
+        
+                  <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                      <!-- ProcessName input-->
+                      <p class="mb-2">공정 이름</p>
+                      <div class="form-floating mb-3">
+                          <input class="form-control" id="ProcessName" type="text" placeholder="Enter your product name..." data-sb-validations="required" />
+                          <div class="invalid-feedback" data-sb-feedback="ProcessName:required">A process name is required.</div>
+                      </div>
+                      <!-- flow DB input or select-->
+                      <p class="mb-2">사용되는 물질 및 부품 (선택 또는 검색)</p>
+                      <!-- <div class="form-floating mb-3">               -->
+                      <select class="selectpicker" data-live-search="true">
+                        <optgroup label="육상수송">
+                          <option data-tokens="육상수송">공로수송</option>
+                          <option data-tokens="육상수송">기차수송</option>
+                          <option data-tokens="육상수송">냉장차량수송</option>
+                          <option data-tokens="육상수송">디젤기차수송</option>
+                        </optgroup>
+                        <optgroup label="해상수송">
+                          <option data-tokens="기타">내항-로로선</option>
+                        </optgroup>
+                        
+                      </select>                
+                        <div class="invalid-feedback" data-sb-feedback="search-p1:required">선택 필수항목입니다.</div>
+        
+                      <!-- 이동 거리 -->
+                      <p class="mb-2 pt-5">이동 거리
+                        <img src="./assets/img/icons/truck.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <input class="form-control" id="electric" type="text" style="width: 70%; display:inline-block;" 
+                        placeholder="Enter your elec..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="kWh">km</option>
+                          <option value="MJ">m</option>
+                        </select>
+                        <div class="invalid-feedback" data-sb-feedback="electric:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- 차량 무게 -->
+                      <p class="mb-2">차량 무게
+                        <img src="./assets/img/icons/weighing-machine.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <input class="form-control" id="water" type="text" style="width: 70%; display:inline-block;" 
+                        placeholder="Enter your water..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="m3">ton</option>
+                          <option value="kg">kg</option>
+                        </select>                
+                        <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- Submit button -->
+                      <div class="col-auto"><button class="btn-get-started animate__animated animate__fadeInUp" type="submit">Notify Me!</button></div>
+        
+                      <!-- Submit success message-->
+                      <!---->
+                      <!-- has successfully submitted-->
+                      <div class="d-none" id="submitSuccessMessage">
+                          <div class="text-center mb-3 mt-2">
+                              <div class="fw-bolder">Form submission successful!</div>
+                          </div>
+                      </div>
+                      <!-- Submit error message-->
+                      <!-- an error submitting the form-->
+                      <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
+                  </form>
+                </div>
+              </div>
+              <!-- 수송 end -->
+              <!-- 폐기&재활용 start -->
+              <div class="carousel-item">
+                <div class="carousel-container">
+                  <h2 class="animate__animated animate__fadeInDown">폐기&재활용</h2>
+        
+                  <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                    <!-- Input Parameter Table -->
+                    <div class="table-responsive col-12">
+                      <table class="table table-bordered" id="normal" width="100%" cellspacing="0">
+                          <thead>
+                              <tr>
+                                  <th class="text-primary" width="">종류</th>        
+                                  <th>양(Amount)</th>                                          
+                                  <th colspan="">사용되는 물질/부품</th>
+                                  <th colspan="">전기(투입물)</th>
+                                  <th colspan="">물(투입물)</th>
+                                  <th colspan="">물(산출물)</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                <td value="">매립</td>
+                                <td>
+                                  <input type="text" name="inputs" class="form-control form-control-user" required placeholder="1.0">
+                                  <div class="dropdown">
+                                    <select name="iUnits" id="dropdown" class="form-control">
+                                        <option value="t">t</option>
+                                        <option value="kg">kg</option>
+                                    </select>
+                                  </div>
+                                </td>                                
+                                  <td>
+                                    <div class="dropdown">
+                                      <select name="" id="dropdown" class="form-control">
+                                          <option value="">혼합플라스틱매립</option>
+                                          <option value="">소각</option>
+                                          <option value="">재활용</option>
+                                      </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="text" name="inputs" class="form-control form-control-user" required placeholder="1.0">
+                                    <div class="dropdown">
+                                        <select name="iUnits" id="dropdown" class="form-control">
+                                            <option value="kWh">kWh</option>
+                                        </select>
+                                    </div>
+                                  </td>
+                                  <td>
+                                      <div class="dropdown">
+                                          <select name="iUnits" id="dropdown" class="form-control">
+                                              <option value="kWh">t</option>
+                                              <option value="kg">kg</option>
+                                              <option value="ea">ea</option>
+                                              <option value="kBq">kBq</option>
+                                              <option value="unit">unit</option>
+                                          </select>
+                                      </div>
+                                  </td>
+                              </tr>
+
+                              
+                          </tbody>
+                      </table>
+                    </div>
+                    <!-- end table area -->
+                      <!-- ProcessName input-->
+                      <p class="mb-2">공정 이름</p>
+                      <div class="form-floating mb-3">
+                          <input class="form-control" id="ProcessName" type="text" placeholder="Enter your product name..." data-sb-validations="required" />
+                          <div class="invalid-feedback" data-sb-feedback="ProcessName:required">A process name is required.</div>
+                      </div>
+                      <!-- flow DB input or select-->
+                      <p class="mb-2">사용되는 물질 및 부품 (선택 또는 검색)</p>
+                      <!-- <div class="form-floating mb-3">               -->
+                      <select class="selectpicker" data-live-search="true">
+                        <optgroup label="매립">
+                          <option data-tokens="매립">혼합플라스틱매립</option>
+                        </optgroup>
+                        <optgroup label="소각">
+                          <option data-tokens="소각">폐플라스틱소각</option>
+                          <option data-tokens="소각">HDPE소각</option>
+                          <option data-tokens="소각">LDPE소각</option>                        
+                          <option data-tokens="소각">PP소각</option>
+                        </optgroup>
+                        <optgroup label="재활용">
+                          <option data-tokens="재활용">펠렛용폐플라스틱재활용</option>
+                          <option data-tokens="재활용">폐HDPE재활용</option>
+                          <option data-tokens="재활용">폐LDPE재활용</option>                        
+                          <option data-tokens="재활용">폐PET재활용</option>
+                        </optgroup>
+                      </select>                
+                        <div class="invalid-feedback" data-sb-feedback="search-p1:required">선택 필수항목입니다.</div>
+        
+                      <!-- 에너지 - 전기 사용량 -->
+                      <p class="mb-2 pt-5">에너지 - 전기 사용량 (투입물/Input)
+                        <img src="./assets/img/icons/lightning.png" style="width:25px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <input class="form-control" id="electric" type="text" style="width: 70%; display:inline-block;" 
+                        placeholder="Enter your elec..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="kWh">kWh</option>
+                          <option value="MJ">MJ</option>
+                        </select>
+                        <div class="invalid-feedback" data-sb-feedback="electric:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- 에너지 - 물 사용량 -->
+                      <p class="mb-2">에너지 - 물 사용량 (투입물/Input)
+                        <img src="./assets/img/icons/drop-water.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <select data-height="">
+                          <option value="">Fresh water</option>
+                          <option value="">Water, unspecified natural origin/kg</option>
+                        </select>       
+                        <input class="form-control" id="water" type="text" style="display:inline-block;" 
+                        placeholder="Enter your water..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="m3">m3</option>
+                          <option value="kg">kg</option>
+                        </select>                
+                        <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+                      </div>
+        
+                      <!-- 에너지 - 물 사용량 -->
+                      <p class="mb-2">에너지 - 물 사용량 (산출물/Output)
+                        <img src="./assets/img/icons/drop-water.png" style="width:30px">
+                      </p>
+                      <div class="form-floating mb-3">
+                        <select data-height="">
+                          <option value="">Waste water</option>
+                          <option value="">Water/kg</option>
+                        </select>    
+                        <input class="form-control" id="water" type="text" style="display:inline-block;" 
+                        placeholder="Enter your water..." data-sb-validations="required" />
+                        <select class="selectpicker" data-width="25%" data-height="">
+                          <option value="m3">m3</option>
+                          <option value="kg">kg</option>
+                        </select>                
+                        <div class="invalid-feedback" data-sb-feedback="water:required">선택 필수항목입니다.</div>
+                      </div>
+                      <!-- Submit button -->
+                      <div class="col-auto"><button class="btn-get-started animate__animated animate__fadeInUp" type="submit">Notify Me!</button></div>
+        
+                      <!-- Submit success message-->
+                      <!---->
+                      <!-- has successfully submitted-->
+                      <div class="d-none" id="submitSuccessMessage">
+                          <div class="text-center mb-3 mt-2">
+                              <div class="fw-bolder">Form submission successful!</div>
+                          </div>
+                      </div>
+                      <!-- Submit error message-->
+                      <!-- an error submitting the form-->
+                      <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
+                  </form>
+                </div>
+              </div>
+              <!-- 폐기&재활용 end -->              
 
               <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
@@ -267,105 +541,15 @@
 
             </div>
           </section><!-- End Hero -->
-
         </div>
 
       </div>
     </section><!-- End Services Section -->
-
   </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
-
-    <div class="footer-newsletter">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6">
-            <h4>Our Newsletter</h4>
-            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-          </div>
-          <div class="col-lg-6">
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-top">
-      <div class="container">
-        <div class="row">
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-contact">
-            <h4>Contact Us</h4>
-            <p>
-              A108 Adam Street <br>
-              New York, NY 535022<br>
-              United States <br><br>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> info@example.com<br>
-            </p>
-
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-info">
-            <h3>About Moderna</h3>
-            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-            <div class="social-links mt-3">
-              <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-              <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>Moderna</span></strong>. All Rights Reserved
-      </div>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-  </footer><!-- End Footer -->
-
+  <div th:replace="fragments/footer :: footer" />
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-
-
   <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="/assets/vendor/aos/aos.js"></script>
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -384,5 +568,4 @@
   <script src="/assets/js/main.js"></script>
 
 </body>
-
 </html>

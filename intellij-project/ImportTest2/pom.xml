@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.1.3</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>kr.re</groupId>
+	<artifactId>ImportTest2</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>ImportTest2</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>17</java.version>
+		<protobuf.version>3.21.7</protobuf.version>
+		<grpc.version>1.53.0</grpc.version>
+		<olca.proto.version>2.0.1</olca.proto.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.lib.path>C:/Project-LCA/Project/2023/eclipse-workspace/OpenLCA_2.0.0/olca-modules</project.lib.path>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!--local jar import-->
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>olca-core</artifactId>
+			<version>2.0.3-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/olca-core/target/olca-core-2.0.3-SNAPSHOT.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>olca-io</artifactId>
+			<version>2.0.3-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/olca-io/target/olca-io-2.0.3-SNAPSHOT.jar</systemPath>
+		</dependency>
+
+		<!--olca-core-->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>olca-formula</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>npy</artifactId>
+			<version>0.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>olca-native</artifactId>
+			<version>0.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.16.1.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbytools -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbytools</artifactId>
+			<version>10.16.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.0.0-jre</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>5.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.trove4j</groupId>
+			<artifactId>trove4j</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.locationtech.jts</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>1.19.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>${protobuf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java-util</artifactId>
+			<version>${protobuf.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openlca</groupId>
+            <artifactId>olca-process-xls</artifactId>
+            <version>2.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--		&lt;!&ndash;olca-git&ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.eclipse.jgit</groupId>-->
+<!--			<artifactId>org.eclipse.jgit</artifactId>-->
+<!--			<version>6.4.0.202211300538-r</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-core</artifactId>-->
+<!--			<version>2.0.2</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>com.github.sarveswaran-m</groupId>-->
+<!--			<artifactId>util.concurrent.blockingMap</artifactId>-->
+<!--			<version>0.91</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
+<!--			<artifactId>jackson-core</artifactId>-->
+<!--			<version>2.12.5</version>-->
+<!--		</dependency>-->
+
+<!--		&lt;!&ndash;olca-io&ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-ilcd</artifactId>-->
+<!--			<version>2.0.0</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-ecospold-1</artifactId>-->
+<!--			<version>2.0.0</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-simapro-csv</artifactId>-->
+<!--			<version>3.0.5</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-ecospold-2</artifactId>-->
+<!--			<version>2.0.0</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.apache.commons</groupId>-->
+<!--			<artifactId>commons-lang3</artifactId>-->
+<!--			<version>3.12.0</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>commons-io</groupId>-->
+<!--			<artifactId>commons-io</artifactId>-->
+<!--			<version>2.11.0</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi</artifactId>-->
+<!--			<version>4.1.2</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi-ooxml</artifactId>-->
+<!--			<version>4.1.2</version>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<artifactId>stax-api</artifactId>-->
+<!--					<groupId>stax</groupId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
+
+<!--		&lt;!&ndash;olca-proto-io&ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-proto</artifactId>-->
+<!--			<version>${olca.proto.version}</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.openlca</groupId>-->
+<!--			<artifactId>olca-grpc</artifactId>-->
+<!--			<version>${olca.proto.version}</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>io.grpc</groupId>-->
+<!--			<artifactId>grpc-netty-shaded</artifactId>-->
+<!--			<version>${grpc.version}</version>-->
+<!--		</dependency>-->
+
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

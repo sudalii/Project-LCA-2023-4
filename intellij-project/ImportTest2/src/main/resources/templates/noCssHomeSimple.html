@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+  <title>Simple Service Home</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader" />
+  <div class="jumbotron">
+    <h1>친환경 사전평가 테스트 - Projects</h1>
+    <p class="lead">Slide 1. 친환경 사전평가 테스트</p>
+    <p>
+      <a class="btn btn-lg btn-secondary" href="/services/userInfo">첫 번째 질의 페이지</a>
+      <a class="btn btn-lg btn-secondary" href="/members"></a>
+    </p>
+    <p class="lead">Slide 2. 공정 선택</p>
+    <p>
+      <a class="btn btn-lg btn-secondary" href="/services/select">공정 선택</a>
+    <p class="lead">Slide 3. 공정별 입력</p>
+    <p>
+      <a class="btn btn-lg btn-secondary" href="/services/{type}/add">새로운 공정 입력 창</a>
+      <a class="btn btn-lg btn-secondary" href="/services/{type}">공정 목록</a>
+    </p>
+    <p class="lead">Another Page. 결과 출력창</p>
+    <p>
+      <a class="btn btn-lg btn-info" href="/result">계산 결과</a>
+    </p>
+  </div>
+  <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

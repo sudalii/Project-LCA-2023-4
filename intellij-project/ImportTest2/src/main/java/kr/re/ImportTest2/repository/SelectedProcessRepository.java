@@ -35,4 +35,9 @@ public class SelectedProcessRepository {
                 .setParameter("processName", processName)
                 .getResultList();
     }
+
+    public void delete(Long id) {
+        SelectedProcess selectedProcess = findOne(id);
+        em.remove(selectedProcess);
+    }
 }

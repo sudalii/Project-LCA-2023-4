@@ -198,11 +198,15 @@ public class Derby implements IDatabase {
 	}
 
 	private void connect() {
+//		String driverName = "org.apache.derby.jdbc.EmbeddedDriver";
+//		String driverName = "org.apache.derby.jdbc.ClientDriver";
+		String driverName = "org.apache.derby.iapi.jdbc.AutoloadedDriver";
+
 		log.trace("connect to database: {}", url);
 		Map<Object, Object> map = new HashMap<>();
 		map.put("jakarta.persistence.jdbc.url", url);
 		map.put("jakarta.persistence.jdbc.driver",
-			"org.apache.derby.iapi.jdbc.AutoloadedDriver");
+				driverName);
 		map.put("eclipselink.classloader", getClass().getClassLoader());
 		map.put("eclipselink.target-database", "Derby");
 		log.trace("Create entity factory");
@@ -211,7 +215,7 @@ public class Derby implements IDatabase {
 		log.trace("Init connection pool");
 		connectionPool = new HikariDataSource();
 		connectionPool.setDriverClassName(
-			"org.apache.derby.iapi.jdbc.AutoloadedDriver");
+			driverName);
 		connectionPool.setJdbcUrl(url);
 		connectionPool.setAutoCommit(false);
 	}

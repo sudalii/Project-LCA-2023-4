@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Services</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+</head>
+
+<!-- <body class="bg-gradient-primary services-bg fade-transition"> -->
+<body class="bg-gradient-primary">
+    <div class="container">
+
+        <img class="logo" src="img/keti-logo-266x51.png">
+        
+        <!-- add(=create), delete, save button -->
+        <div class="manage-btn">
+
+            <a class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm">
+                <i class="fas fa-solid fa-plus fa-sm text-white-50"></i> 추가</a>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" data-toggle="modal" href="#deleteProjectModal">
+                <i class="fas fa-trash fa-sm text-white-50"></i> 삭제</a>            
+            <a class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                <i class="fas fa-check fa-sm text-white-50"></i> 저장</a>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm toggle-sidebar">
+                <i class="fas fa-table fa-sm text-white-50"></i> 목록 보기</a>                
+        </div>
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav custom-navbar-nav bg-gradient-primary sidebar custom-sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Project Management -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Nav Item - 제품 정보 리스트 -> 이건 Dashboard에서 보여주는게 나을듯 -->
+
+            <!-- Nav Item - 물질&부품제조 -->
+            <li class="nav-item active">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>내 공정 리스트</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <h6 class="collapse-header custom-color">물질&부품제조</h6>
+
+                        <!-- get 방식으로 리스트 가져오기. 여기가 각 process-list 공간 -->
+                        <!-- p1new/1 이런 형식으로 쿼리가 붙으면 좋을 듯함 -->
+                        <a class="collapse-item" href="">내가 작성한 공정1 이름</a>
+                        <a class="collapse-item" href="">내가 작성한 공정2 이름</a>
+                        <a class="collapse-item" href="">...</a>
+
+                        <h6 class="collapse-header custom-color">가공</h6>
+
+                        <h6 class="collapse-header custom-color">수송</h6>
+
+                        <h6 class="collapse-header custom-color">재활용 및 폐기</h6>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - 계산 결과 -->
+            <li class="nav-item">
+                <a class="nav-link" href="result.html">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>저장한 결과들</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-12 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg mt-5 mb-4 vh-80">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div class="card-body p-0 fade-transition">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row vh-90">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h3 text-gray-900 mb-2">물질&부품제조</h1>
+                                        <div class="col-alignment">
+                                            <img class="img-size" src="./img/process-icon/water-energy-merge2.png">
+                                            <div class="right-arrow shape"></div>
+                                            <img class="img-size" src="./img/gif/experiment.gif" loop="infinite"></img>
+                                            <div class="right-arrow shape"></div>
+                                            <img class="img-size" src="./img/process-icon/waste-water.png"></img>
+                                        </div>
+                                    </div>
+                                    <form class="user col-alignment">
+                                        <!-- 투입물 -->
+                                        <div class="form-group m-2 card custom-card-input hidden" style="width: 28%;">
+                                            <h5 class="card-header">투입물</h5>
+                                            <div class="card-body">
+                                                <p class="mb-2">전기 사용량</p>  
+                                                <input class="form-control inline-input form-control-user mb-2" id="water" type="text" data-sb-validations="required" />
+                                                <select class="form-control inline-select no-box">
+                                                    <option value="kWh">kWh</option>
+                                                    <option value="MJ">MJ</option>
+                                                </select>   
+                                                <div class="card-divider my-1"></div>
+                                                <p class="mb-2">물 사용량</p>
+                                                <!-- <select class="form-control mb-2">
+                                                    <option selected>투입되는 물 종류 선택</option>
+                                                    <option value="">Fresh water</option>
+                                                    <option value="">Water, unspecified natural origin/kg</option>
+                                                </select>        -->
+                                                <input class="form-control inline-input form-control-user" id="water" type="text" data-sb-validations="required" 
+                                                placeholder="Water (fresh water)"/>
+                                                <select class="form-control inline-select no-box">
+                                                    <option value="kg">kg</option>
+                                                    <option value="m3">m3</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="right-arrow shape"></div>
+                                        <!-- 공정 정보 -->
+                                        <div class="m-2 card custom-card-info" style="width: 30%;">
+                                            <h5 class="card-header">공정 정보</h5>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <!-- ProcessName input-->
+                                                    <p class="mb-2">공정 이름</p>
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="" aria-describedby="" data-sb-validations="required">
+                                                </div>
+                                                <div class="card-divider my-1"></div>
+                                                <div class="form-group">
+                                                    <!-- flow DB input or select-->
+                                                    <p class="mb-2">사용되는 물질 및 부품</p>
+                                                    <select class="form-control" data-live-search="true">
+                                                        <option data-tokens="플라스틱">호모폴리프로필렌-HPP</option>
+                                                        <option data-tokens="플라스틱">고밀도폴리에틸렌-HDPE</option>
+                                                        <option data-tokens="플라스틱">랜덤폴리프로필렌-RPP</option>
+                                                        <option data-tokens="플라스틱">블록폴리프로필렌-BPPP</option>
+                                                    </select>
+                                                </div>     
+                                                <div class="card-divider my-1"></div>
+                                                <div class="form-group" style="margin-bottom:0rem;">
+                                                    <p class="mb-2">물질 및 부품 무게</p>
+                                                    <input type="text" class="form-control inline-input form-control-user"
+                                                        id="" aria-describedby="">
+                                                    <select class="form-control inline-select no-box">
+                                                        <option value="t">t</option>
+                                                        <option value="kg">kg</option>
+                                                    </select>                                            
+                                                </div>
+                                            </div>
+                                        </div>      
+                                        <div class="right-arrow shape"></div>
+                                        <!-- 산출물 -->
+                                        <div class="form-group m-2 card custom-card-output hidden" style="width: 28%;">
+                                            <h5 class="card-header">산출물</h5>
+                                            <div class="card-body">
+                                                <p class="mb-2">물 배출량</p>
+                                                <input class="form-control inline-input form-control-user" id="water" type="text" data-sb-validations="required" 
+                                                placeholder="Water/kg"/>
+                                                <select class="form-control inline-select no-box">
+                                                    <option value="kg">kg</option>
+                                                    <option value="m3">m3</option>
+                                                </select>
+                                                <!-- <input class="form-control inline-input form-control-user" id="water" type="text" data-sb-validations="required" 
+                                                placeholder="Waste water"/>
+                                                <select class="form-control inline-select no-box">
+                                                    <option value="kg">kg</option>
+                                                    <option value="m3">m3</option>
+                                                </select>  -->
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Card End -->
+            </div>
+        </div>
+        <!-- Outer Row End -->
+        <!-- process bar -->
+        <div class="process-wrap active-step2" tabindex="0" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1">
+            <div class="row my-row">
+                <div class="col-2 my-col">
+                    <div class="process-step-cont">
+                        <div class="process-step step-1"></div>
+                        <span class="process-label">제품<br>정보입력</span>
+                    </div>
+                </div>
+                <div class="col-2 my-col">
+                    <div class="process-step-cont">
+                        <div class="process-step step-2"></div>
+                        <span class="process-label">물질 및<br>부품제조</span>
+                    </div>
+                </div>
+                <div class="col-2 my-col">
+                    <div class="process-step-cont">
+                        <div class="process-step step-3"></div>
+                        <span class="process-label">가공공정</span>
+                    </div>
+                </div>
+                <div class="col-2 my-col">
+                    <div class="process-step-cont">
+                        <div class="process-step step-4"></div>
+                        <span class="process-label">수송</span>
+                    </div>
+                </div>
+                <div class="col-2 my-col">
+                    <div class="process-step-cont">
+                        <div class="process-step step-5"></div>
+                        <span class="process-label">재활용 및<br>폐기</span>
+                    </div>
+                </div>
+                <div class="col-2 my-col">
+                    <div class="process-step-cont">
+                        <div class="process-step step-6"></div>
+                        <span class="process-label">결과확인</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- next/prev button -->
+        <a class="carousel-control-prev custom-carousel-control" href="p1.html" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next custom-carousel-control" id="nextButton" href="p3.html" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+        </a>
+    </div>
+    <!-- container End -->
+
+
+    <!-- Delete Project Modal-->
+    <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">삭제하시겠습니까?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="">Yes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

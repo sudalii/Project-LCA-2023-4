@@ -31,7 +31,8 @@ public class MySQL implements IDatabase {
 		jpaConfig.put("jakarta.persistence.jdbc.url", url);
 		jpaConfig.put("jakarta.persistence.jdbc.user", config.user);
 		jpaConfig.put("jakarta.persistence.jdbc.password", config.password);
-		jpaConfig.put("jakarta.persistence.jdbc.driver", "org.mariadb.jdbc.Driver");
+//		jpaConfig.put("jakarta.persistence.jdbc.driver", "org.mariadb.jdbc.Driver");
+		jpaConfig.put("jakarta.persistence.jdbc.driver", "com.mysql.cj.jdbc.Driver");
 		jpaConfig.put("eclipselink.classloader", getClass().getClassLoader());
 		jpaConfig.put("eclipselink.target-database", "MySQL");
 		entityFactory = new PersistenceProvider()
@@ -103,7 +104,7 @@ public class MySQL implements IDatabase {
 		private final String database;
 		private String host = "localhost";
 		private String user = "root";
-		private String password = "";
+		private String password = "6457";
 		private int port = 3306;
 		private String url;
 		private String persistenceUnit = "openLCA";

@@ -15,7 +15,7 @@ public final class MySqlConfig implements DatabaseConfig {
 	private String host = "localhost";
 	private int port = 3306;
 	private String user = "root";
-	private String password;
+	private String password = "6457";
 
 	@Override
 	public IDatabase connect(File databasesDir) {

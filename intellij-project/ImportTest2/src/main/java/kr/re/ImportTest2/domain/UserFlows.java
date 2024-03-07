@@ -16,7 +16,7 @@ public class UserFlows {
     protected UserFlows() {
     }
 
-    public UserFlows(double flow1, String flow1Unit, double flow2, String flow2Unit) {
+    public void updateUserFlows(double flow1, String flow1Unit, double flow2, String flow2Unit) {
         this.flow1 = flow1;
         this.flow1Unit = flow1Unit;
         this.flow2 = flow2;

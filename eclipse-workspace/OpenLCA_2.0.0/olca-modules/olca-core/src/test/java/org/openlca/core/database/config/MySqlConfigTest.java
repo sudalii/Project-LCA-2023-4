@@ -14,7 +14,7 @@ public class MySqlConfigTest {
 	 * running MySQL server.
 	 */
 	@Test
-	@Ignore
+//	@Ignore
 	public void testConnect() {
 		var db = new MySqlConfig()
 			.name("openlca")

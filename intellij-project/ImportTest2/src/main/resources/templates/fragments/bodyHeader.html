@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="header" th:fragment="bodyHeader">
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center ">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <div class="logo">
+                <h1 class="text-light"><a href="../../static/index.html"><span>KETI</span></a></h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="" href="/index">Home</a></li>
+                    <li><a class="active" href="/services">Services</a></li>
+                    <li><a href="/result">Result</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+    </header><!-- End Header -->
+</div>

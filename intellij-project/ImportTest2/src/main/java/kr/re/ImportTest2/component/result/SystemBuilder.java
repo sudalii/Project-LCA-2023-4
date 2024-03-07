@@ -43,14 +43,15 @@ public class SystemBuilder {
         }
         // 사용자가 입력한 process name에 매칭된 process id으로
         // db(==국가DB)를 검색해서 가져오기
-        Process process = new ProcessDao(db).getForId(Long.parseLong(processId));
-        CustomizeAProcess(process);
+        Process koreaDb = new ProcessDao(db).getForId(Long.parseLong(processId));
+        Process process = CustomizeAProcess(koreaDb);
 
         // baseFlow: Process provider를 담을 flow
         Flow baseFlow = new FlowDao(db).getForName(PRODUCT_NAME).get(0);
         if (baseFlow == null) {
             baseFlow = createFlow();
         }
+        baseFlow.flowType
 
         // 여러 process들을 flow로 받아서 product system으로 만들 process 가져오기
         Process processes = new ProcessDao(db).getForName(PRODUCT_NAME).get(0);
@@ -64,8 +65,15 @@ public class SystemBuilder {
         db = null;
     }
 
-    private void CustomizeAProcess(Process p) {
+    /**
+     * user input values 어떻게 가져올건지 고민.
+     * 1. db에서 직접 꺼내오기
+     * 2. param으로 받아오기
+     */
+    private Process CustomizeAProcess(Process p) {
 
+
+        return p;
     }
 
     private Flow createFlow() {

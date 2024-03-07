@@ -33,7 +33,8 @@ public class SelectedProcess {
     private UserFlows flows;
 
     // default: false / 수송 Process일 경우 true
-    private boolean isTransport;
+//    private boolean isTransport;
+    private ProcessType type;
 
     // 연관관계 Method
     public void setUser(User user) {
@@ -41,10 +42,13 @@ public class SelectedProcess {
         user.getSelectedProcesses().add(this);
     }
 
-    public void updateSelectedProcess(String processName, Long mappedProcessId, double processAmount) {
+    public void updateSelectedProcess(String processName, Long mappedProcessId, double processAmount,
+                                      UserFlows flows, ProcessType type) {
         this.processName = processName;
         this.mappedProcessId = mappedProcessId;
         this.processAmount = processAmount;
+        this.flows = flows;
+        this.type = type;
 
     }
 }
