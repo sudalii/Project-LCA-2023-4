@@ -83,7 +83,15 @@
 
   $(document).ready(function() {
     $('.toggle-sidebar').click(function() {
-        $('#collapseTwo').addClass('show');
+        $('#collapseTwo').toggleClass('show');
+       
+        // 버튼 텍스트 변경
+        if ($('#collapseTwo').hasClass('show')) {
+          $('.toggle-text').text(' 목록 접기');
+      } else {
+          $('.toggle-text').text(' 목록 보기');
+      }
+
     });
   });  
 

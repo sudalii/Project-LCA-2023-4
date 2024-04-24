@@ -16,19 +16,19 @@ public class ResultService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final SelectedProcessService dbService;
+    private final SelectedProcessService spService;
     private final Calculation calculation;
     private LcaResult cml;
     private LcaResult aware;
 
     @Transactional
     public void calculate() {
-        IDatabase db = dbService.db;
+        IDatabase db = spService.db;
         if (db == null) {
             log.error("db is null, it does not come over to Calculation class");
             return;
         }
-        calculation.system = dbService.system;
+        calculation.system = spService.system;
         cml = calculation.calculate("CML-IA baseline");
         aware = calculation.calculate("AWARE");
 

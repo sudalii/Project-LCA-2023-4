@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@Component
 public class LibraryResolver {
 
     private final LibraryDir libDir = DataDir.get().getLibraryDir();

@@ -2,62 +2,121 @@ package kr.re.ImportTest2.service;
 
 import kr.re.ImportTest2.component.derdyDb.RunDatabase;
 import kr.re.ImportTest2.component.result.SystemBuilder;
-import kr.re.ImportTest2.domain.SelectedProcess;
+import kr.re.ImportTest2.controller.dto.ProcessDto;
+import kr.re.ImportTest2.controller.dto.UserDto;
 import kr.re.ImportTest2.domain.User;
+import kr.re.ImportTest2.domain.enumType.ProcessType;
+import kr.re.ImportTest2.domain.SelectedProcess;
+import kr.re.ImportTest2.domain.UserFlows;
 import kr.re.ImportTest2.repository.SelectedProcessRepository;
+import kr.re.ImportTest2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openlca.core.database.IDatabase;
 import org.openlca.core.model.ProductSystem;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class SelectedProcessService {
 
     private final SelectedProcessRepository spRepository;
+    private final UserRepository userRepository;
     private final RunDatabase runDatabase;
     private final SystemBuilder systemBuilder;
 
     public IDatabase db = null;
     public ProductSystem system = null;
 
-    public void saveSelectedProcess(SelectedProcess sp) {
-        spRepository.save(sp);
+    /**
+     * build 패턴 사용 - lombok의 build 사용
+     */
+    @Transactional
+    public Long saveProcess(ProcessDto processDto, Long userId, String type) {
+        log.info("type = {} -> {}", type, ProcessType.of(type));
+        ProcessDto.builder().userId(userId).build();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("Not found userId for saveProcess: " + processDto.getUserId()));
+
+        Long id = spRepository.save(processDto.toProcessEntity(user, ProcessType.of(type))).getId();
+        log.info("save 후 userId 저장(processDto.getUserId()) 현황={}", processDto.getUserId());
+        log.info("save 후 user 저장 현황={}", user);
+        return id;
     }
 
-    public void deleteSelectedProcess(Long id) {
-        spRepository.delete(id);
+    @Transactional
+    public ProcessDto updateForm(Long pId) {
+        SelectedProcess p = spRepository.findById(pId).orElseThrow(
+                () -> new RuntimeException("Not found pId for updateForm: " + pId));
+        UserFlows f = p.getFlows();
+        // 참고: ? 문법 사용법 --> value != null ? next(value.doubleValue()) : next();
+
+        log.info("p.getId in updateForm = {}, pId = {}", p.getId(), pId);
+
+        ProcessDto processDto = ProcessDto.builder()
+                // process
+                .id(p.getId())
+                .userId(p.getUser().getId())
+                .processName(p.getProcessName())
+                .mappedProcessId(p.getMappedProcessId())
+                .processAmount(p.getProcessAmount())
+                .processAmountUnit(p.getProcessAmountUnit())
+                .type(p.getType())
+                // flows
+                .iFlow1(f.getIFlow1())
+                .iFlow1Unit(f.getIFlow1Unit())
+                .iFlow2(f.getIFlow2())
+                .iFlow2Unit(f.getIFlow2Unit())
+                .oFlow1(f.getOFlow1())
+                .oFlow1Unit(f.getOFlow1Unit())
+                .build();
+
+        return processDto;
     }
 
-    public SelectedProcess findOne(Long id) {
-        return spRepository.findOne(id);
+    // save update data
+    @Transactional
+    public void updateProcess(ProcessDto processDto) {
+        User user = userRepository.findById(processDto.getUserId()).orElseThrow(
+                () -> new RuntimeException("Not found pId for updateProcess: " + processDto.getUserId()));
+        spRepository.save(processDto.toProcessEntity(user));
+    }
+
+    @Transactional
+    public void deleteProcess(Long id) {
+        spRepository.deleteById(id);
+    }
+
+    public List<ProcessDto> findAllByType(ProcessType type) {
+        List<SelectedProcess> typeList = spRepository.findAllByType(type);
+        List<ProcessDto> pDtoList = new ArrayList<>();
+
+        for(SelectedProcess p : typeList) {
+            ProcessDto processDto = ProcessDto.builder()
+                    .id(p.getId())
+                    .processName(p.getProcessName())
+                    .build();
+            pDtoList.add(processDto);
+        }
+        return pDtoList;
     }
 
     /**
-     * 사용자가 화면에서 각 공정에서 국가 DB를 선택 클릭하면,
-     * 그 클릭된 db name 과 db id를 매칭해서 return 한다.
+     * p4, 수송에만 해당되는 메서드. JS로 처리할 수도 있음
+     * Dto 저장 직전 해당 메서드 호출하면 될 듯
+     *  - processAmount = 이동거리(iFlow1) * 차량무게(iFlow2)
+     *  - processAmountUnit = iFlow1Unit*iFlow2Unit
      */
+    public void calcP4ProcessAmount() {
 
-    public String dbMapper(String koreaDbName) {
-        if (koreaDbName == null) {
-            return "null";
-        }
-
-
-        return switch (koreaDbName) {
-//            case "" -> "";
-            case "공로수송" -> "be291b6aca084e80b683064f198925bd";
-
-            case "혼합플라스틱매립" -> "cc26ff7ce8c0447a9c810f9ce36c7ec4"; // KR_mixed_plastic_landfill
-            case "폐플라스틱소각" -> "eedf68a25a794397a1a36396641cd6bb"; // Mixed plastics incineration - KR
-            case "펠렛용폐플라스틱재활용" -> "6660103878de4f7f9c16097572ee7cf0"; // Recycling_Pellet_Waste_Plastic - KR
-            default -> throw new IllegalStateException(
-                    "Unexpected value in dbMapper...: " + koreaDbName);
-        };
     }
 
     public void runDb() {

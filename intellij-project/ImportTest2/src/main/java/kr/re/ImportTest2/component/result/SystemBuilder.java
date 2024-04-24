@@ -51,7 +51,7 @@ public class SystemBuilder {
         if (baseFlow == null) {
             baseFlow = createFlow();
         }
-        baseFlow.flowType
+//        baseFlow.flowType // 수정하기 !!!
 
         // 여러 process들을 flow로 받아서 product system으로 만들 process 가져오기
         Process processes = new ProcessDao(db).getForName(PRODUCT_NAME).get(0);

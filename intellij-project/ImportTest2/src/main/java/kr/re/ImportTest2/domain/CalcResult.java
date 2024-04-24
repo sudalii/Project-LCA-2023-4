@@ -1,14 +1,11 @@
 package kr.re.ImportTest2.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "calc_result")
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CalcResult {
 
@@ -27,10 +24,19 @@ public class CalcResult {
     private double resultAmount;
 
     // 연관관계 Method
-    public void setUser(User user) {
+/*    public void setUser(User user) {
+        this.user = user;
+        user.getCalcResults().add(this);
+    }*/
+
+    @Builder
+    public CalcResult(Long id, User user, Long category, double resultAmount) {
+        this.id = id;
+        this.category = category;
+        this.resultAmount = resultAmount;
+
+        // 연관관계 설정
         this.user = user;
         user.getCalcResults().add(this);
     }
-
-
 }

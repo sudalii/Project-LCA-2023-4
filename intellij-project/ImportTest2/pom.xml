@@ -21,12 +21,26 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.lib.path>C:/Project-LCA/Project/2023/eclipse-workspace/OpenLCA_2.0.0/olca-modules</project.lib.path>
+		<project.lib.path>C:/Project-LCA/Project/2023-4/eclipse-workspace/OpenLCA_2.0.0/olca-modules</project.lib.path>
 	</properties>
 	<dependencies>
+		<!-- jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- QueryDSL APT Config -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- QueryDSL JPA Config -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -183,106 +197,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--		&lt;!&ndash;olca-git&ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.eclipse.jgit</groupId>-->
-<!--			<artifactId>org.eclipse.jgit</artifactId>-->
-<!--			<version>6.4.0.202211300538-r</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-core</artifactId>-->
-<!--			<version>2.0.2</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>com.github.sarveswaran-m</groupId>-->
-<!--			<artifactId>util.concurrent.blockingMap</artifactId>-->
-<!--			<version>0.91</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--			<artifactId>jackson-core</artifactId>-->
-<!--			<version>2.12.5</version>-->
-<!--		</dependency>-->
-
-<!--		&lt;!&ndash;olca-io&ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-ilcd</artifactId>-->
-<!--			<version>2.0.0</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-ecospold-1</artifactId>-->
-<!--			<version>2.0.0</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-simapro-csv</artifactId>-->
-<!--			<version>3.0.5</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-ecospold-2</artifactId>-->
-<!--			<version>2.0.0</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.apache.commons</groupId>-->
-<!--			<artifactId>commons-lang3</artifactId>-->
-<!--			<version>3.12.0</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>commons-io</groupId>-->
-<!--			<artifactId>commons-io</artifactId>-->
-<!--			<version>2.11.0</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.apache.poi</groupId>-->
-<!--			<artifactId>poi</artifactId>-->
-<!--			<version>4.1.2</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.apache.poi</groupId>-->
-<!--			<artifactId>poi-ooxml</artifactId>-->
-<!--			<version>4.1.2</version>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<artifactId>stax-api</artifactId>-->
-<!--					<groupId>stax</groupId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
-
-<!--		&lt;!&ndash;olca-proto-io&ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-proto</artifactId>-->
-<!--			<version>${olca.proto.version}</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.openlca</groupId>-->
-<!--			<artifactId>olca-grpc</artifactId>-->
-<!--			<version>${olca.proto.version}</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>io.grpc</groupId>-->
-<!--			<artifactId>grpc-netty-shaded</artifactId>-->
-<!--			<version>${grpc.version}</version>-->
-<!--		</dependency>-->
-
-
 	</dependencies>
 
 	<build>
@@ -298,6 +212,26 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+							<options>
+								<querydsl.entityAccessors>true</querydsl.entityAccessors>
+							</options>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

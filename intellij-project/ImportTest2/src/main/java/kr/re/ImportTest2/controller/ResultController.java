@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class ResultController {
 
-    private final SelectedProcessService dbService;
+    private final SelectedProcessService spService;
 
     @GetMapping("/result")
     public String result() {
@@ -19,23 +19,23 @@ public class ResultController {
         return "/result";
     }
 
-    @GetMapping("/result")
+/*    @GetMapping("/result")
     public void calculate() {
-        dbService.runDb();
+        spService.runDb();
 
-        int len = koreaDbNames.size();
+        int len = lciDbNames.size();
         for (int i=0; i<len; i++) {
             // db로 저장
 
-            String pId = dbService.dbMapper(koreaDbNames.get(i));
+            String pId = spService.dbMapper(lciDbNames.get(i));
             double pAmount = processAmount.get(i);
-            dbService.addProcess(pId, pAmount);
+            spService.addProcess(pId, pAmount);
 
-            dbService.saveSelectedProcess();
+            spService.saveProcess();
         }
-        dbService.systemBuilder();
-        dbService.closeDb();
+        spService.systemBuilder();
+        spService.closeDb();
 
-    }
+    }*/
 
 }

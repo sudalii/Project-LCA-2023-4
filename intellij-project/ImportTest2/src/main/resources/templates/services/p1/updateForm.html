@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: header" />
+<body class="bg-gradient-primary">
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg mt-5 mb-4 vh-80">
+                    <div class="card-body p-0 fade-transition">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row vh-90">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-2">제품 정보 입력</h1>
+                                        <img class="img-size" src="/img/gif/bottle-carrier.gif" loop="infinite"></img>
+                                    </div>
+                                    <form id="p1Form" class="user row-alignment" th:action="@{/services/{userId}/p1 (userId=${user.id})}" th:object="${user}" method="post">
+                                        <input type="hidden" name="_method" value="put" />
+                                        <input type="hidden" name="id" th:value="${user.id}">
+                                        <input type="hidden" id="typeStr" value="p1">
+                                        <div class="vw-30">
+                                            <div class="form-group">
+                                                <p class="mb-2">제품 이름</p>
+                                                <input type="text" class="form-control form-control-user" name="productName"
+                                                    th:field="*{productName}" aria-describedby="" >
+                                            </div> 
+                                            <!-- justify-content-center 안돼서 가운데정렬 하기  -->
+                                            <div class="form-group justify-content-center hidden">
+                                                <p class="mb-2">제품 생산량</p>
+                                                <input type="text" class="form-control inline-input form-control-user" name="targetAmount"
+                                                    th:field="*{targetAmount}" aria-describedby="">
+                                                <select class="form-control inline-select no-box" th:field="*{targetUnit}">
+                                                    <option value="t">t</option>
+                                                    <option value="kg">kg</option>
+                                                </select>
+                                            </div>
+                                            <!-- bootstrap 5와 4가 라디오 버튼 스타일이 다름 -->
+                                            <!-- 4는 label이 input을 감싸는 형태 -->                                            
+                                            <div class="form-group hidden">
+                                                <p class="mb-2">제품 분류</p>
+                                                <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+                                                    <label class="btn btn-outline-success">
+                                                        <input type="radio" name="options-outlined" id="btn-material" autocomplete="off">material
+                                                    </label>
+                                                    <label class="btn btn-outline-success">
+                                                        <input type="radio" name="options-outlined" id="btn-product" autocomplete="off">product
+                                                    </label>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Card End -->
+            </div>
+        </div>
+        <!-- Outer Row End -->
+        <!-- process bar -->
+        <div class="process-wrap active-step1" tabindex="0" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1">
+            <div th:replace="fragments/processBar :: processBar"></div>
+        </div>
+        <a class="carousel-control-next form-action" id="nextButton" role="button" data-bs-slide="next">
+            <!-- onclick="document.getElementById('p1Form').submit(); return false;"> -->
+            <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+        </a>
+    </div>
+    <!-- container End -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

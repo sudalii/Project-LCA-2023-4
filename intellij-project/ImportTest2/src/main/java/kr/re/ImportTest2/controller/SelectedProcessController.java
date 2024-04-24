@@ -1,99 +1,134 @@
 package kr.re.ImportTest2.controller;
 
-import kr.re.ImportTest2.domain.ProcessType;
-import kr.re.ImportTest2.domain.SelectedProcess;
-import kr.re.ImportTest2.domain.UserFlows;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import kr.re.ImportTest2.controller.dto.ProcessDto;
+import kr.re.ImportTest2.domain.enumType.LciDb;
+import kr.re.ImportTest2.domain.enumType.ProcessType;
 import kr.re.ImportTest2.service.SelectedProcessService;
+import kr.re.ImportTest2.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/services/{userId}/{typeStr}")
 public class SelectedProcessController {
 
-    private final SelectedProcessService dbService;
+    private final SelectedProcessService spService;
 
 /*    @PostMapping("/services")
     public String createProcess(@RequestParam("koreaDbName") List<String> koreaDbNames,
                                 @RequestParam("processAmount") List<Double> processAmount) throws IOException {
 
-        dbService.runDb();
+        /.runDb();
 
         int len = koreaDbNames.size();
         for (int i=0; i<len; i++) {
             // db로 저장
 
-            String pId = dbService.dbMapper(koreaDbNames.get(i));
+            String pId = /.dbMapper(koreaDbNames.get(i));
             double pAmount = processAmount.get(i);
-            dbService.addProcess(pId, pAmount);
-//            dbService.saveSelectedProcess();
+            spService.addProcess(pId, pAmount);
+//            spService.saveSelectedProcess();
         }
-        dbService.systemBuilder();
-        dbService.closeDb();
+        spService.systemBuilder();
+        spService.closeDb();
 
         return "redirect:/result";
     }*/
 
     /**
-     * thymeleaf 에서 데이터 받아오고, db에 저장한다.
-     * @PathVariable() vs @RequestParam() 찾기 - 무엇을 적용해야 할지.
-     * save vs update 차이 분석
+     *   html 화면은 return에 적힌 url로 이동
+     * - save는 두 가지임
+     *    - new process 의 save
+     *    - 기존 process 의 save
      */
-    @PostMapping("/services/{type}/")
-    public String createProcess(@RequestParam("dbName") String dbName,
-                                @RequestParam("type") String type,
-                                SelectedProcess sp, UserFlows flows) {
+    @GetMapping("")
+    public String index(@PathVariable("userId") Long userId,
+                        @PathVariable String typeStr, Model model) {
+        model.addAttribute("userId", userId);
 
-        String pId = dbService.dbMapper(dbName);
-
-        flows.updateUserFlows(flows.getFlow1(), flows.getFlow1Unit(),
-                flows.getFlow2(), flows.getFlow2Unit());
-        sp.updateSelectedProcess(sp.getProcessName(), Long.valueOf(pId),
-                sp.getProcessAmount(), flows, ProcessType.valueOf(type));
-
-        dbService.saveSelectedProcess(sp);
-
-        return "result/{}";
+        return "/services/" + typeStr + "/index";
     }
 
-    @PostMapping("/services/{type}/add")
-    public String addProcess(@RequestParam("dbName") String dbName,
-                             @RequestParam("type") String type,
-                             SelectedProcess sp, UserFlows flows) {
+    @GetMapping("/add")
+    public String createProcess(@PathVariable("userId") Long userId,
+                                @PathVariable("typeStr") String typeStr,
+                                Model model, ProcessDto processDto) {
+        log.info("get-createProcess-dto: {}", processDto);
 
-        String pId = dbService.dbMapper(dbName);
+        List<LciDb> lciDbs = LciDb.getValuesByType(typeStr);
+        model.addAttribute("lciDbs", lciDbs);
+        model.addAttribute("sp", processDto);
 
-        flows.updateUserFlows(flows.getFlow1(), flows.getFlow1Unit(),
-                flows.getFlow2(), flows.getFlow2Unit());
-        sp.updateSelectedProcess(sp.getProcessName(), Long.valueOf(pId),
-                sp.getProcessAmount(), flows, ProcessType.valueOf(type));
-
-        dbService.saveSelectedProcess(sp);
-
-        return "result/{type}";
+        return "services/" + typeStr + "/createForm";
     }
 
-    @GetMapping("/services/{type}/update")
-    public String updateProcess(@PathVariable("id") Long id,
-                                @RequestParam("dbName") String dbName,
-                                @RequestParam("type") String type,
-                                SelectedProcess sp, UserFlows flows) {
+    @PostMapping("/add")
+    public String saveProcess(@PathVariable("userId") Long userId,
+                              @PathVariable("typeStr") String typeStr,
+                              @Valid @ModelAttribute("sp") ProcessDto processDto) {
+        log.info("post-saveProcess-dto: {}", processDto);
 
-        SelectedProcess p = dbService.findOne(id);
+        String pId = spService.saveProcess(processDto, userId, typeStr).toString();
 
+        return "redirect:/services/" + userId + "/" +  typeStr + "/" + pId;
     }
 
-    @PostMapping("/services/{type}/delete")
-    public String deleteProcess(@PathVariable("type") ProcessType type,
-                                @PathVariable("processId") Long id) {   // id 부분 수정
+    @GetMapping("/{pId}")
+    public String selectProcess(@PathVariable("typeStr") String typeStr,
+                                @PathVariable("pId") Long pId, Model model) {
+        ProcessDto processDto = spService.updateForm(pId);
+        log.info("get-selectProcess-userId 확인 = {}", processDto.getUserId());
+        List<LciDb> lciDbs = LciDb.getValuesByType(typeStr);
+        model.addAttribute("lciDbs", lciDbs);
+        model.addAttribute("sp", processDto);
 
-        dbService.deleteSelectedProcess(id);
-        return "redirect:/services/{type}";
+        log.info("get-selectProcess-pId 확인 = {}", processDto.getId());
+
+        return "services/" + typeStr + "/updateForm";
+    }
+
+    @PutMapping("/{pId}")
+    public String updateProcess(@PathVariable("typeStr") String typeStr,
+                                @Valid ProcessDto processDto) {
+        log.info("put-selectProcess-pId 확인 = {}", processDto.getId());
+        spService.updateProcess(processDto);
+
+        return "redirect:/services/" + processDto.getUserId() + "/" +  typeStr + "/" + processDto.getId();
+//        return "redirect:/services/" + processDto.getUserId() + "/" + typeStr;
+    }
+
+    @DeleteMapping("/{pId}")
+    public String deleteProcess(@PathVariable("userId") String userId,
+                                @PathVariable("typeStr") String typeStr,
+                                @PathVariable("pId") Long pId) {   // id 부분 수정
+        log.info("delete-deleteProcess-pId: {}", pId);
+        spService.deleteProcess(pId);
+        return "redirect:/services/" + userId + "/" + typeStr; // /index.html
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<Map<String, List<ProcessDto>>> listByType() {
+        log.info("Returning list by type as JSON");
+        Map<String, List<ProcessDto>> processes = new HashMap<>();
+        processes.put("p2", spService.findAllByType(ProcessType.RAW_MATERIALS));
+        processes.put("p3", spService.findAllByType(ProcessType.PROCESSING));
+        processes.put("p4", spService.findAllByType(ProcessType.TRANSPORTATION));
+        processes.put("p5", spService.findAllByType(ProcessType.END_OF_LIFE));
+
+        return ResponseEntity.ok(processes);
     }
 
 }
