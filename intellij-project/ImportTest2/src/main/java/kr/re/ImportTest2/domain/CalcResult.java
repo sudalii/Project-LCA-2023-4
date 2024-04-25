@@ -10,7 +10,7 @@ import lombok.*;
 public class CalcResult {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "calc_result_id")
     private Long id;
 

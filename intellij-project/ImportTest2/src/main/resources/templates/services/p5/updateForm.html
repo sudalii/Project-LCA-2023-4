@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: header" />
+
+<body class="bg-gradient-primary">
+    <div class="container">
+
+        <img class="logo" src="/img/keti-logo-266x51.png">
+        
+        <!-- add(=create), delete, save button -->
+        <div class="manage-btn">
+
+            <a class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" th:href="@{/services/{userId}/p5/add (userId=${sp.userId})}">
+                <i class="fas fa-solid fa-plus fa-sm text-white-50"></i> 추가</a>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" data-toggle="modal" href="#deleteProjectModal">
+                <i class="fas fa-trash fa-sm text-white-50"></i> 삭제</a>            
+            <button id="updateSaveButton" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm form-action">
+                <i class="fas fa-check fa-sm text-white-50"></i> 저장</button>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm toggle-sidebar">
+                <i class="fas fa-table fa-sm text-white-50"></i><span class="toggle-text"> 목록 보기</span></a>                
+        </div>
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav custom-navbar-nav bg-gradient-primary sidebar custom-sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Project Management -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Nav Item - 제품 정보 리스트 -> 이건 Dashboard에서 보여주는게 나을듯 -->
+
+            <!-- Nav Item - 물질&부품제조 -->
+            <input id="userId" type="hidden" name="userId" th:value="${sp.userId}">   
+
+            <li class="nav-item active">
+                <a id="showProcessList" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>내 공정 리스트</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <div id="processListContent"></div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - 계산 결과 -->
+            <li class="nav-item">
+                <a class="nav-link" href="result.html">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>저장한 결과들</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-12 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg mt-5 mb-4 vh-80">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div class="card-body p-0 fade-transition">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row vh-90">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h3 text-gray-900 mb-2">재활용 및 폐기</h1>
+                                        <div class="col-alignment">
+                                            <img class="img-size" src="/img/process-icon/water-energy-merge2.png">
+                                            <div class="right-arrow shape"></div>
+                                            <img class="img-size" src="/img/gif/dumpster.gif" loop="infinite"></img>
+                                            <div class="right-arrow shape"></div>
+                                            <img class="img-size" src="/img/process-icon/waste-water.png"></img>
+                                        </div>
+                                    </div>
+                                    <form id="p5Form" class="user col-alignment" th:action="@{/services/{userId}/p5/{pId} (userId=${sp.userId}, pId=${sp.id})}" th:object="${sp}" method="post">
+                                        <input id="hiddenInput" type="hidden" name="_method" value="put" />
+                                        <input type="hidden" id="typeStr" name="typeStr" value="p5">
+                                        <input type="hidden" name="type" th:value="${sp.type}">
+                                        <input type="hidden" name="id" th:value="${sp.id}">
+                                        <!-- 투입물 -->
+                                        <div class="form-group m-2 card custom-card-input hidden" style="width: 28%;">
+                                            <h5 class="card-header">투입물</h5>
+                                            <div class="card-body">
+                                                <p class="mb-2">전기 사용량</p>  
+                                                <input class="form-control inline-input form-control-user mb-2" name="iFlow1"
+                                                       th:field="*{iFlow1}" type="text" data-sb-validations="required" />
+                                                <select class="form-control inline-select no-box" th:field="*{iFlow1Unit}">
+                                                    <option value="kWh">kWh</option>
+                                                    <option value="MJ">MJ</option>
+                                                </select>   
+                                                <div class="card-divider my-1"></div>
+                                                <p class="mb-2">물 사용량</p>
+                                                <input type="text" class="form-control inline-input form-control-user" name="iFlow2"
+                                                       th:field="*{iFlow2}" data-sb-validations="required"
+                                                placeholder="Water (fresh water)"/>
+                                                <select class="form-control inline-select no-box" th:field="*{iFlow2Unit}">
+                                                    <option value="kg">kg</option>
+                                                    <option value="m3">m3</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="right-arrow shape"></div>
+                                        <!-- 공정 정보 -->
+                                        <div class="m-2 card custom-card-info" style="width: 30%;">
+                                            <h5 class="card-header">공정 정보</h5>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <!-- ProcessName input-->
+                                                    <p class="mb-2">공정 이름</p>
+                                                    <input type="text" class="form-control form-control-user" name="processName"
+                                                           th:field="*{processName}" aria-describedby="" data-sb-validations="required">
+                                                </div>
+                                                <div class="card-divider my-1"></div>
+                                                <div class="form-group">
+                                                    <!-- flow DB input or select-->
+                                                    <p class="mb-2">사용되는 물질 및 부품</p>
+                                                    <select class="form-control" data-live-search="true" th:field="*{mappedProcessId}"> 
+                                                        <option th:each="lci: ${lciDbs}" th:value="${lci.Id}" th:text="${lci.name}"></option>
+                                                    </select>
+                                                </div>     
+                                                <div class="card-divider my-1"></div>
+                                                <div class="form-group" style="margin-bottom:0rem;">
+                                                    <p class="mb-2">물질 및 부품 무게</p>
+                                                    <input type="text" class="form-control inline-input form-control-user" name="processAmount"
+                                                           th:field="*{processAmount}" id="" aria-describedby="">
+                                                    <select class="form-control inline-select no-box" th:field="*{processAmountUnit}">
+                                                        <option value="t">t</option>
+                                                        <option value="kg">kg</option>
+                                                    </select>                                            
+                                                </div>
+                                            </div>
+                                        </div>      
+                                        <div class="right-arrow shape"></div>
+                                        <!-- 산출물 -->
+                                        <div class="form-group m-2 card custom-card-output hidden" style="width: 28%;">
+                                            <h5 class="card-header">산출물</h5>
+                                            <div class="card-body">
+                                                <p class="mb-2">물 배출량</p>
+                                                <input class="form-control inline-input form-control-user" name="oFlow1" 
+                                                    th:field="*{oFlow1}" id="water" type="text" data-sb-validations="required" 
+                                                placeholder="Water/kg"/>
+                                                <select class="form-control inline-select no-box" th:field="*{oFlow1Unit}">
+                                                    <option value="kg">kg</option>
+                                                    <option value="m3">m3</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Card End -->
+            </div>
+        </div>
+        <!-- Outer Row End -->
+        <!-- process bar -->
+        <div class="process-wrap active-step5" tabindex="0" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1">
+            <div th:replace="fragments/processBar :: processBar"></div>
+        </div>
+        <!-- next/prev button -->
+        <a class="carousel-control-prev custom-carousel-control" th:href="@{/services/{userId}/p4 (userId=${userId})}" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next custom-carousel-control" id="nextButton" th:href="@{/services/{userId}/result (userId=${userId})}" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+        </a>
+    </div>
+    <!-- container End -->
+    <div id="modal">
+        <!-- Delete Project Modal-->
+        <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">삭제하시겠습니까?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button id="updateDeleteButton" class="btn btn-primary form-action">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.js"></script>
+
+</body>
+</html>

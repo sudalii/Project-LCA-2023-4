@@ -1,22 +1,28 @@
 package kr.re.ImportTest2.controller;
 
+import kr.re.ImportTest2.service.ResultService;
 import kr.re.ImportTest2.service.SelectedProcessService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/services/{userId}/result")
 public class ResultController {
 
     private final SelectedProcessService spService;
+    private final ResultService resultService;
 
-    @GetMapping("/result")
+    @GetMapping("/")
     public String result() {
 
 
 
-        return "/result";
+        return "";
     }
 
 /*    @GetMapping("/result")
