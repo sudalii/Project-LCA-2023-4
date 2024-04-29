@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,11 +96,23 @@ public class SelectedProcessService {
         spRepository.deleteById(id);
     }
 
-    public List<ProcessDto> findAllByType(ProcessType type) {
-        List<SelectedProcess> typeList = spRepository.findAllByType(type);
-        List<ProcessDto> pDtoList = new ArrayList<>();
+    public List<ProcessDto> findAllByType(Long userId, ProcessType type) {
+        List<SelectedProcess> allByUserId = spRepository.findAllByUserId(userId);
+        List<SelectedProcess> typeList = new ArrayList<>();
 
+        if (!allByUserId.isEmpty()) {
+            for(SelectedProcess findById : allByUserId) {
+                if (findById.getType().equals(type)) {
+                    typeList.add(findById);
+                }
+            }
+        } else {
+            log.info("allByUserId is empty.");
+        }
+
+        List<ProcessDto> pDtoList = new ArrayList<>();
         for(SelectedProcess p : typeList) {
+
             ProcessDto processDto = ProcessDto.builder()
                     .id(p.getId())
                     .processName(p.getProcessName())

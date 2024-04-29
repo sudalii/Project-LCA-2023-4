@@ -1,7 +1,10 @@
 package kr.re.ImportTest2.service;
 
 import kr.re.ImportTest2.component.result.Calculation;
+import kr.re.ImportTest2.domain.User;
+import kr.re.ImportTest2.repository.CalcResultRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openlca.core.database.IDatabase;
 import org.openlca.core.results.LcaResult;
 import org.slf4j.Logger;
@@ -12,14 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ResultService {
+@Slf4j
+public class CalcResultService {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
-
+    private final UserService userService;
+    private final CalcResultRepository resultRepository;
     private final SelectedProcessService spService;
     private final Calculation calculation;
     private LcaResult cml;
     private LcaResult aware;
+
+/*
+    public Long findAll(Long userId) {
+        resultRepository.findAllById();
+    }
+*/
+
+    public User findUser(Long userId) {
+        return userService.findUserById(userId);
+    }
 
     @Transactional
     public void calculate() {

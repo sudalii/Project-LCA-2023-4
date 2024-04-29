@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: header" />
+
+<body class="bg-gradient-primary">
+    <div class="container">
+
+        <img class="logo" src="/img/keti-logo-266x51.png">
+        
+        <!-- add(=create), delete, save button -->
+        <div class="manage-btn">
+
+            <a class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" th:href="@{/services/p1/new}">
+                <i class="fas fa-solid fa-plus fa-sm text-white-50"></i> 새 제품 추가</a>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm toggle-sidebar">
+                <i class="fas fa-table fa-sm text-white-50"></i><span class="toggle-text"> 목록 보기</span></a>  <!-- 보류 -->               
+        </div>
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav custom-navbar-nav bg-gradient-primary sidebar custom-sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Project Management -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Nav Item - 제품 정보 리스트 -> 이건 Dashboard에서 보여주는게 나을듯 -->
+
+            <!-- Nav Item - 물질&부품제조 -->
+            <input id="userId" type="hidden" name="userId" th:value="${sp.userId}">   
+
+            <li class="nav-item active">
+                <a id="showProcessList" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>내 공정 리스트</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <div id="processListContent"></div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - 계산 결과 -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>평가 결과 보기</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-12 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg mt-5 mb-4 vh-80">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div class="card-body card-scroll p-0 fade-transition">
+                        <form class="user col-alignment" th:action="@{/services/{userId}/result (userId=${re.userId})}" th:object="${re}" method="get">
+                            <input type="hidden" name="id" th:value="${re.id}">
+                            <!-- Nested Row within Card Body -->
+                            <div class="row vh-90">
+                                <div class="col-lg-12">
+                                    <div class="p-5">
+                                        <div class="text-center">
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${productName}"> 평가 결과</h1>
+                                            <span></span>
+                                            <h1 class="h3 text-gray-900 mb-2"> 평가 기준: &lt;</h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${productName}"> </h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${targetAmount}"></h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${targetUnit}">&gt;의 환경영향 평가</h1>
+                                        </div>  
+                                        <!-- category select -->
+                                        <div class="form-group">
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${productName}"> 평가 결과</h1>
+                                            <p class="mb-2">환경영향범주 선택</p>
+                                            <select class="form-control" data-live-search="true" th:field="*{category}"> 
+                                                <option th:each="cg: ${categories}" th:value="${cg.Id}" th:text="${cg.name}"></option>
+                                            </select>
+                                        </div>    
+                                        <!-- 사용된 LCIA method name 출력 -->
+                                        <h1 class="h3 text-gray-900 mb-2" th:text="${cg.method}"> </h1>
+
+                                        <!-- 1. 공정별 환경영향값 비교 그래프 (원형 or 도넛 graph) -->
+                                        <!-- ** 가능하면 각 category에 따라 다른 디자인의 그래프 출력 ** 
+                                            ex) GWP: 나무 그래프, 물 사용: 물통 그래프, … -->
+                                        <div class="row" data-aos="fade-up">
+                                            <h3>공정별 환경영향값 비교</h3>
+                                            <canvas id="pie"></canvas>
+                                        </div>
+
+                                        <!-- 2. 물질별 환경영향값 비교 그래프 (bar graph) -->
+                                        <!-- ** 사용자 설정의 공정명 – 국가LCI DB 공정명 같이 표기 ** -->
+                                        <div class="row" data-aos="fade-up">
+                                            <h3>물질별 환경영향값 비교</h3>
+                                            <canvas id="stackedBarWithGroup"></canvas>
+                                        </div>
+                                        
+                                        <!-- 3. 세부 표 출력 (Impact analysis table) -->
+                                        <!-- ** 기준물질은 표 맨 위 bold체로 고정 ** -->
+                                        <div class="table-responsive" data-aos="fade-up">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <!-- column 제목 이름 -->
+                                                <thead>
+                                                    <tr>
+                                                        <th>물질명</th>
+                                                        <th>LCI 분석 결과 + 단위</th>
+                                                        <th>특성화 계수 + 단위</th>
+                                                        <th>영향 평가 결과 + 단위</th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- 내용 GET -->
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- table end -->
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Card End -->
+            </div>
+        </div>
+        <!-- Outer Row End -->
+        <!-- process bar -->
+        <div class="process-wrap active-step6" tabindex="0" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1">
+            <div th:replace="fragments/processBar :: processBar"></div>
+        </div>
+    </div>
+    <!-- container End -->
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Chart -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js"></script>
+    <script src="/js/chart/charts.js"></script>
+
+    <!-- Data Tables -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/js/datatables.js"></script>    
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.js"></script>
+
+</body>
+</html>

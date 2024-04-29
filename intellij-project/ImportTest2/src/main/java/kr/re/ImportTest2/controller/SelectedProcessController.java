@@ -120,13 +120,14 @@ public class SelectedProcessController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Map<String, List<ProcessDto>>> listByType() {
+    public ResponseEntity<Map<String, List<ProcessDto>>> listByType(
+                                @PathVariable("userId") Long userId) {
         log.info("Returning list by type as JSON");
         Map<String, List<ProcessDto>> processes = new HashMap<>();
-        processes.put("p2", spService.findAllByType(ProcessType.RAW_MATERIALS));
-        processes.put("p3", spService.findAllByType(ProcessType.PROCESSING));
-        processes.put("p4", spService.findAllByType(ProcessType.TRANSPORTATION));
-        processes.put("p5", spService.findAllByType(ProcessType.END_OF_LIFE));
+        processes.put("p2", spService.findAllByType(userId, ProcessType.RAW_MATERIALS));
+        processes.put("p3", spService.findAllByType(userId, ProcessType.PROCESSING));
+        processes.put("p4", spService.findAllByType(userId, ProcessType.TRANSPORTATION));
+        processes.put("p5", spService.findAllByType(userId, ProcessType.END_OF_LIFE));
 
         return ResponseEntity.ok(processes);
     }

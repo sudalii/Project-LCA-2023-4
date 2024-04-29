@@ -4556,6 +4556,10 @@ input[type="button"].btn-block {
   padding: 0rem;
 }
 
+.card-body.card-scroll {
+  overflow-y: auto;
+}
+
 .card-title {
   margin-bottom: 0.75rem;
 }

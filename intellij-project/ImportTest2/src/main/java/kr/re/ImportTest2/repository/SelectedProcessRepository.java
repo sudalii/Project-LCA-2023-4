@@ -9,4 +9,5 @@ import java.util.List;
 public interface SelectedProcessRepository extends JpaRepository<SelectedProcess, Long> {
 
     List<SelectedProcess> findAllByType(ProcessType type);
+    List<SelectedProcess> findAllByUserId(Long userId);
 }

@@ -45,39 +45,4 @@ public enum LciDb {
                 .filter(db -> db.getType().equals(type))
                 .collect(Collectors.toList());
     }
-
-    /**
-     * - Controller에서 Post로 데이터 가져올 시 사용
-     */
-/*    public static String findDbIdByName(String name) {
-        for (LciDb db: LciDb.values()) {
-            if (db.getName().equals(name)) {
-                return db.getId();
-            }
-        }
-        throw new IllegalStateException("Unexpected value: " + name);
-    }*/
-/*    public String dbMapper(String koreaDbName) {
-        if (koreaDbName == null) {
-            return "null";
-        }
-
-        return switch (koreaDbName) {
-            // p2, 물질&부품제조
-            case "폴리비닐클로라이드-PVC" -> "84d402297a1f487c81cb3c624b33f8e7"; // PVC_Poly_Vinyl_Chloride_KR
-            case "호모폴리프로필렌-HPP" -> "e512cb0087de43388f1285c30f2bd7a6"; // HPP_Homo_Poly_Propylene_KR
-            case "고밀도폴리에틸렌-HDPE" -> "08dc37f5aa3844348f5f774791fb2573"; // HDPE_High_Density_Polyethylene_KR
-            // p3, 가공
-            case "컴파운딩PP압출" -> "5ad9390eb108434b9f4ad14f0a014219"; // Compounding_pp_extrusion_KR
-            case "PVC사출성형" -> "f0369c5663784b01bede3f8daa4da568"; // plastics_injection_molding_PVC_KR
-            // p4, 수송
-            case "공로수송" -> "be291b6aca084e80b683064f198925bd"; // Transportation_KR
-            // p5, 재활용 및 폐기
-            case "혼합플라스틱매립" -> "cc26ff7ce8c0447a9c810f9ce36c7ec4"; // mixed_plastic_landfill_KR
-            case "폐플라스틱소각" -> "eedf68a25a794397a1a36396641cd6bb"; // Mixed_plastics_incineration_KR
-            case "펠렛용폐플라스틱재활용" -> "6660103878de4f7f9c16097572ee7cf0"; // Recycling_Pellet_Waste_Plastic_KR
-            default -> throw new IllegalStateException(
-                    "Unexpected value in dbMapper...: " + koreaDbName);
-        };
-    }*/
 }

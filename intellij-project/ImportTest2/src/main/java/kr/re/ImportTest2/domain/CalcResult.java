@@ -1,6 +1,8 @@
 package kr.re.ImportTest2.domain;
 
 import jakarta.persistence.*;
+import kr.re.ImportTest2.domain.enumType.Category;
+import kr.re.ImportTest2.domain.enumType.ProcessType;
 import lombok.*;
 
 @Entity
@@ -19,9 +21,11 @@ public class CalcResult {
     private User user;
 
     // category type: Long (Id) or String (name)
-    private Long category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     private double resultAmount;
+    private String resultAmountUnit;
 
     // 연관관계 Method
 /*    public void setUser(User user) {
@@ -30,10 +34,11 @@ public class CalcResult {
     }*/
 
     @Builder
-    public CalcResult(Long id, User user, Long category, double resultAmount) {
+    public CalcResult(Long id, User user, Category category, double resultAmount, String resultAmountUnit) {
         this.id = id;
         this.category = category;
         this.resultAmount = resultAmount;
+        this.resultAmountUnit = resultAmountUnit;
 
         // 연관관계 설정
         this.user = user;

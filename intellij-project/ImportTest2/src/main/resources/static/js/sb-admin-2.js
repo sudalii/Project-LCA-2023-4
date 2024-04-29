@@ -72,9 +72,9 @@
   /* GET list */ 
   function loadProcessList() {
     var userId = $('#userId').val();
-    var type = $('#typeStr').val();
+    var typeStr = $('#typeStr').val();
     $.ajax({
-        url: `/services/${userId}/${type}/list`,
+        url: `/services/${userId}/${typeStr}/list`,
         method: 'GET',
         success: function(data) {
           var contentHtml = '';
