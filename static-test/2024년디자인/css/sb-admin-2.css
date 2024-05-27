@@ -4551,6 +4551,10 @@ input[type="button"].btn-block {
   padding: 1.25rem;
 }
 
+.card-body.card-scroll {
+  overflow-y: auto;
+}
+
 .card-title {
   margin-bottom: 0.75rem;
 }
@@ -11334,6 +11338,26 @@ body.sidebar-toggled footer.sticky-footer {
 /* add */
 .row .my-row {
   width: 100%;
+}
+
+.row .my-row2 {
+  justify-content: center;
+  align-items: center;
+}
+
+.resize {
+  width: 65%;
+  height: 65%;
+
+}
+
+.graph-size {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  background-color: lightblue; /* 배경색 확인용 */
 }
 
 .my-inline {

@@ -13,6 +13,7 @@ import java.io.File;
 public class FileImport {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
+    public static String syncedName;
 
     public void run(String path) {
 
@@ -49,7 +50,10 @@ public class FileImport {
      */
     private void handleFormat(File file, Format format) {
         switch (format) {
-            case EXCEL -> ExcelImportWizard.of(file);
+            case EXCEL -> {
+                ExcelImportWizard.of(file);
+                syncedName = ExcelImportWizard.syncedName;
+            }
             case JSON_LD_ZIP -> JsonImportWizard.of(file);
 //            case ZOLCA -> importZOLCA(file);
             default -> log.error(

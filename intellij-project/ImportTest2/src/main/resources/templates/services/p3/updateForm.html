@@ -27,11 +27,10 @@
 
             <!-- Nav Item - Project Management -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" th:href="@{/}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
             <!-- Nav Item - 제품 정보 리스트 -> 이건 Dashboard에서 보여주는게 나을듯 -->
 
             <!-- Nav Item - 물질&부품제조 -->
@@ -130,7 +129,7 @@
                                                     <!-- flow DB input or select-->
                                                     <p class="mb-2">사용되는 물질 및 부품</p>
                                                     <select class="form-control" data-live-search="true" th:field="*{mappedProcessId}"> 
-                                                        <option th:each="lci: ${lciDbs}" th:value="${lci.Id}" th:text="${lci.name}"></option>
+                                                        <option th:each="lci: ${lciDbs}" th:value="${lci.refId}" th:text="${lci.name}"></option>
                                                     </select>
                                                 </div>     
                                                 <div class="card-divider my-1"></div>

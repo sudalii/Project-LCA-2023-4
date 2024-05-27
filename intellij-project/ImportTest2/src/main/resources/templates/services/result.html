@@ -23,11 +23,10 @@
 
             <!-- Nav Item - Project Management -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" th:href="@{/}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
             <!-- Nav Item - 제품 정보 리스트 -> 이건 Dashboard에서 보여주는게 나을듯 -->
 
             <!-- Nav Item - 물질&부품제조 -->
@@ -69,30 +68,30 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <div class="card-body card-scroll p-0 fade-transition">
-                        <form class="user col-alignment" th:action="@{/services/{userId}/result (userId=${re.userId})}" th:object="${re}" method="get">
+                        <form class="user col-alignment" th:action="@{/services/{userId}/result (userId=${re.userId})}" method="get">
                             <input type="hidden" name="id" th:value="${re.id}">
                             <!-- Nested Row within Card Body -->
                             <div class="row vh-90">
                                 <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${productName}"> 평가 결과</h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.productName}"> 평가 결과</h1>
                                             <span></span>
                                             <h1 class="h3 text-gray-900 mb-2"> 평가 기준: &lt;</h1>
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${productName}"> </h1>
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${targetAmount}"></h1>
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${targetUnit}">&gt;의 환경영향 평가</h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.productName}"> </h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.targetAmount}"></h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.targetUnit}">&gt;의 환경영향 평가</h1>
                                         </div>  
                                         <!-- category select -->
                                         <div class="form-group">
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${productName}"> 평가 결과</h1>
+                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.productName}"> 평가 결과</h1>
                                             <p class="mb-2">환경영향범주 선택</p>
-                                            <select class="form-control" data-live-search="true" th:field="*{category}"> 
-                                                <option th:each="cg: ${categories}" th:value="${cg.Id}" th:text="${cg.name}"></option>
+                                            <select class="form-control" data-live-search="true" th:field="*{re.category}"> 
+                                                <option th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}"></option>
                                             </select>
                                         </div>    
                                         <!-- 사용된 LCIA method name 출력 -->
-                                        <h1 class="h3 text-gray-900 mb-2" th:text="${cg.method}"> </h1>
+                                        <h1 class="h3 text-gray-900 mb-2" th:text="${re.category.method}"> </h1>
 
                                         <!-- 1. 공정별 환경영향값 비교 그래프 (원형 or 도넛 graph) -->
                                         <!-- ** 가능하면 각 category에 따라 다른 디자인의 그래프 출력 ** 
@@ -131,8 +130,29 @@
                                             </table>
                                         </div>
                                         <!-- table end -->
-
-
+                                        <!-- 4. 정량적목표 - 기존 openLCA와의 성능 비교 -->
+                                        <!-- 핵심 flow 조정 필요... -->
+                                        <!-- 일단, 표로 제시 -->
+                                        <div class="table-responsive" data-aos="fade-up">
+                                            <h3>정량적목표 - 기존 openLCA와의 성능 비교</h3>
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <!-- column 제목 이름 -->
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>LCI 분석 결과 + 단위</th>
+                                                        <th>특성화 계수 + 단위</th>
+                                                        <th>영향 평가 결과 + 단위</th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- 내용 GET -->
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

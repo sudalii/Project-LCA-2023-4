@@ -1,6 +1,7 @@
 package kr.re.ImportTest2.controller.dto;
 
 import kr.re.ImportTest2.domain.CalcResult;
+import kr.re.ImportTest2.domain.User;
 import kr.re.ImportTest2.domain.enumType.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,9 +18,17 @@ public class CalcResultDto {
     private double resultAmount;
     private String resultAmountUnit;
 
-/*    public CalcResult toEntity() {
+    public CalcResult toEntity(User user) {
+        CalcResult result = CalcResult.builder()
+                .id(id)
+                .user(user)
+                .category(category) // category 저장에 대해 더 생각...
+                .resultAmount(resultAmount)
+                .resultAmountUnit(resultAmountUnit)
+                .build();
 
-    }*/
+        return result;
+    }
 
     @Builder
     public CalcResultDto(Long id, Long userId, Category category, double resultAmount, String resultAmountUnit) {

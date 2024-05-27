@@ -3,13 +3,16 @@ package kr.re.ImportTest2.component.derdyDb;
 import org.openlca.core.DataDir;
 import org.openlca.core.database.*;
 import org.openlca.core.database.config.DerbyConfig;
+import org.openlca.core.model.*;
+import org.openlca.core.model.Process;
 import org.openlca.nativelib.NativeLib;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,15 +36,16 @@ public class RunDatabase {
      *  -
      */
 
-    // 추후 main()문 말고 runDb() 메서드로 변경 예정
     // return: db
     public IDatabase runDb() {
         NativeLib.loadFrom(DataDir.get().root());
 
-        removeAllDb();  // *** Test 시 사용 ***
+//        removeAllDb();  // *** Test 시 사용 ***
 
         // db name: 사용자 입력 받을건지, 내부에서 임의로 돌아갈건지.
-        dbName = "ei01";
+        // db name은 ... 특별한 문제가 없다면 "user"로 간주,
+        // 현재는 product 단위, 로그인 X 이므로 일단 하나로 쭉 하고, 필요시 삭제 기능 사용
+        dbName = "user01";
 
         // db config 설정
         DatabaseWizard databaseWizard = new DatabaseWizard();
@@ -56,26 +60,60 @@ public class RunDatabase {
 //        IDatabase db = Database.get();
         db = DataDir.get().openDatabase(dbName);
 
+        log.info("imported db list = {}, {}", new ProcessDao(db).getAll().size(), new ProcessDao(db).getAll());
+        // *** Test 시 사용 ***, 향후 계산 완료 시점으로 이동해서 userProcess만 지우기
+
+
         // 기존에 없는 db일 경우 db files import
-        if (!exists) {
-            try {
+//        if (!exists) {
+        try {
+//            db.clear();
+            if (exists && checkImportedKoreaDb()) {
+                log.info("db has already been imported.");
+                saveOutputPrint();
+                return db;
+            }
+            else if (!checkImportedKoreaDb()) {
                 fileImport();
-            } catch (Exception e) { // db import 도중 문제가 생기면 clear 후 다시 import
-                try {
-                    db.clear();
-                    fileImport();
-                    log.info("because {} db is not imported, clear and re-create.", dbName);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            }
+        } catch (Exception e) { // db import 도중 문제가 생기면 clear 후 다시 import
+            try {
+                db.clear();
+                fileImport();
+                log.info("because {} db is not imported, clear and re-create.", dbName);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         }
-        getOutputPrint();
+//        }
+        saveOutputPrint();
         return db;
+    }
+
+    /**
+     * 국가 DB는 모두 import가 되어야 하므로 하나라도 없으면 false, 모두 있으면 true return
+     */
+    private boolean checkImportedKoreaDb() {
+        String savePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/koreaLciDbNames.txt";
+        if (Files.exists(Paths.get(savePath))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(savePath))) {
+                String name;
+                while ((name = br.readLine()) != null) {    // 한 줄씩 읽기
+                    boolean isEmpty = new ProcessDao(db).getForName(name).isEmpty();    // 해당 name의 process가 없으면 true 적재
+                    if (isEmpty)
+                        return false;   // 국가DB는 모두 import가 되어야 하므로 하나라도 없으면 false 리턴
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;   // 파일 자체가 없으면 false
     }
 
     // 없앨수도 있을 것 같음
     public void closeDb() throws IOException {
+//        db.clear();
         db.close();
         db = null;
     }
@@ -88,26 +126,46 @@ public class RunDatabase {
 //        db.clear();
 
         String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/05-2023/2023-결과물관련";
-        String lciaPath = prePath + "/openlca2_lcia_methods_v221_20230426_only_lcia.zip";
+        String lciaPath = prePath + "/openlca2_v221_20230426.zip";
+//        String lciaPath = prePath + "/openlca2_v221_20230426_without_flows.zip";
         String koreaDbPath = prePath + "/exported";
 
         FileImport f = new FileImport();
 
         long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
-/*        log.info("importing lcia db...");
-        f.run(lciaPath);*/
+        log.info("importing lcia db...");
+        f.run(lciaPath);
 
         File excelFiles = new File(koreaDbPath);
 
+        List<String> syncedNames = new ArrayList<>();
         log.info("importing korea db...");
         for (String file : Objects.requireNonNull(excelFiles.list())) {
             String path = koreaDbPath + "/" + file;
             log.info("path={}", path);
             f.run(path);
+            syncedNames.add(FileImport.syncedName);
         }
+        saveSyncedProcessName(syncedNames); // RunDatabase에서 국가DB가 모두 import 된 상태인지 확인을 위한 txt 저장
+
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
         long diffTime = (afterTime - beforeTime)/1000; // 두 개의 실행 시간
         log.info("execute time(sec): {}", diffTime);
+    }
+
+    public void saveSyncedProcessName(List<String> syncedNames) {
+        String savePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/koreaLciDbNames.txt";
+        if (!Files.exists(Paths.get(savePath))) {
+            try (FileWriter fw = new FileWriter(savePath, true);
+                 PrintWriter pw = new PrintWriter(fw)) {
+                for (String name : syncedNames) {
+                    if (name != null)
+                        pw.println(name);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void notInDirButRegistered(String[] dbNames) {
@@ -130,49 +188,68 @@ public class RunDatabase {
                 DataDir.get().getDatabaseDir(dbName).delete();
                 Database.remove(new DerbyConfig().name(dbName));
             }
-            log.info("remove all db");
+            log.info("remove all db & processes");
         }
         log.info("After Database.getConfigurations={}", Database.getConfigurations().getDerbyConfigs());
     }
 
-    private void getOutputPrint() {
-        var categoryAll = new ImpactCategoryDao(db).getAll();
-        var methods = new ImpactMethodDao(db).getAll();
-        var flows = new FlowDao(db).getAll();
-        var processes = new ProcessDao(db).getAll();
+    private void saveOutputPrint() {
+        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
 
-        System.out.println("db.getName(): " + db.getName() + "\n");
-        System.out.println("db.getLibraries(): " + db.getLibraries() + "\n");
+        // PrintWriter(): 파일  쓰기 모드로 open, 파일 존재 시 지우고 새로 write
+        try (PrintWriter writer = new PrintWriter(prePath+"importedDbInfo.txt")) {
+            var categoryAll = new ImpactCategoryDao(db).getAll();
+            var methods = new ImpactMethodDao(db).getAll();
+            var flows = new FlowDao(db).getAll();
+            var processes = new ProcessDao(db).getAll();
 
-        System.out.println("categoryAll: " + categoryAll + "\n");
-        System.out.println("methods: " + methods + "\n");
-        System.out.println("processes: " + processes + "\n");
+            writer.println("db.getName(): " + db.getName());
+            writer.println("db.getFileStorageLocation(): " + db.getFileStorageLocation());
 
-        System.out.println("categoryDb size: " + categoryAll.size());
-        System.out.println("methods size: " + methods.size());
-        System.out.println("processes size: " + processes.size());
-        System.out.println("flows size: " + flows.size() + "\n");
+            writer.println("\n\ncategoryAll: ");
+            for (ImpactCategory c : categoryAll) {
+                writer.println(c + " " + c.referenceUnit);
+            }
 
-        for (var m : methods) {
-            if (Objects.equals(m.name, "CML-IA baseline")) {
-                System.out.println(m.name + " => " + m.category);
-
-                for (var cg : m.impactCategories) {
-                    System.out.println("cg = " + cg);
+            writer.println("\n\nmethods: ");
+            for (ImpactMethod m : methods) {
+                writer.println(m);
+                if (m.name.equals("CML-IA baseline")){
+                    for (ImpactCategory cg : m.impactCategories) {
+                        if (cg.name.contains("GWP")) {
+                            log.info("GWP find, {}", cg);
+                            for (ImpactFactor f : cg.impactFactors) {
+                                log.info("Factor test : GWP - {} {}", f.flow.name, f.value);
+                            }
+                        }
+                    }
                 }
             }
-        }
 
-/*        if (!processes.isEmpty()) {
+            writer.println("\n\nsaved processes of korea db: ");
             for (Process p : processes) {
-                System.out.println("process: " + p);
-                for (var exchange : p.exchanges) {
-//                    if (exchange.isInput) {}
-                    System.out.println("exchange = " + exchange);
-                }
-                System.out.println("\n");
+                writer.println(p);
+                writer.println(p.quantitativeReference+"\n");
             }
-        }*/
+
+            writer.println("\n\nnumber of categoryDb: " + categoryAll.size());
+            writer.println("number of methods: " + methods.size());
+            writer.println("number of processes: " + processes.size());
+            writer.println("number of flows: " + flows.size());
+
+            for (ImpactMethod m : methods) {
+                if (m.name.equals("\n\nCML-IA baseline")) {
+                    writer.println(m.name + " => " + m.category);
+
+                    for (ImpactCategory cg : m.impactCategories) {
+                        writer.println("cg = " + cg);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: Unable to save koreaDb information info to file.");
+            e.printStackTrace();
+        }
     }
 
 

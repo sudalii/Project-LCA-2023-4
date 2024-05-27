@@ -27,27 +27,6 @@ public class SelectedProcessController {
 
     private final SelectedProcessService spService;
 
-/*    @PostMapping("/services")
-    public String createProcess(@RequestParam("koreaDbName") List<String> koreaDbNames,
-                                @RequestParam("processAmount") List<Double> processAmount) throws IOException {
-
-        /.runDb();
-
-        int len = koreaDbNames.size();
-        for (int i=0; i<len; i++) {
-            // db로 저장
-
-            String pId = /.dbMapper(koreaDbNames.get(i));
-            double pAmount = processAmount.get(i);
-            spService.addProcess(pId, pAmount);
-//            spService.saveSelectedProcess();
-        }
-        spService.systemBuilder();
-        spService.closeDb();
-
-        return "redirect:/result";
-    }*/
-
     /**
      *   html 화면은 return에 적힌 url로 이동
      * - save는 두 가지임

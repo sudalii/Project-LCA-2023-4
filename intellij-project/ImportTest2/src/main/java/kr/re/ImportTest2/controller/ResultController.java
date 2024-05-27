@@ -2,6 +2,8 @@ package kr.re.ImportTest2.controller;
 
 import kr.re.ImportTest2.controller.dto.CalcResultDto;
 import kr.re.ImportTest2.controller.dto.ProcessDto;
+import kr.re.ImportTest2.controller.dto.UserDto;
+import kr.re.ImportTest2.domain.enumType.Category;
 import kr.re.ImportTest2.domain.enumType.ProcessType;
 import kr.re.ImportTest2.service.CalcResultService;
 import kr.re.ImportTest2.service.SelectedProcessService;
@@ -29,12 +31,16 @@ public class ResultController {
 
     @GetMapping("")
     public String result(@PathVariable("userId") Long userId,
-                         Model model) {
+                         Model model, CalcResultDto resultDto) {
 
-        String productName = resultService.findUser(userId).getProductName();
-        model.addAttribute("productName", productName);
+        UserDto userDto = resultService.findUser(userId);
+        model.addAttribute("user", userDto);
 
-        return "";
+        // 계산 결과값 method 가져오기
+        model.addAttribute("re", resultDto);
+        model.addAttribute("categories", Category.values());
+
+        return "/services/result";
     }
 
 /*    @GetMapping("/list")

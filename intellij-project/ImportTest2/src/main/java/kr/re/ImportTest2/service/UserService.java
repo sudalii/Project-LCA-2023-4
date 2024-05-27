@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,19 @@ public class UserService {
      * : 현재는 한 사람의 Product System을 기준으로 하고 있기 때문에,
      *   한 사람의 여러 Product System들이 출력될 것임
      */
-    public List<User> findProducts() {
-        return userRepository.findAll();
+    public List<UserDto> findProducts() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> products = new ArrayList<>();
+
+        for (User user : users) {
+            UserDto userDto = UserDto.builder()
+                    .id(user.getId())
+                    .productName(user.getProductName())
+                    .build();
+            products.add(userDto);
+        }
+
+        return products;
     }
 
     public User findUserById(Long id) {

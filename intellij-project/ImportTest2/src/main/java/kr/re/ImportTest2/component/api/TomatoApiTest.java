@@ -1,4 +1,4 @@
-package kr.re.ImportTest2;
+package kr.re.ImportTest2.component.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

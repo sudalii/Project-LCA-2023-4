@@ -53,9 +53,17 @@
     e.preventDefault();
   });
 
-  // my add
-  $(document.querySelector('.fade-transition').classList.add('fade-transition-active'));
+  /*********************************************************************/
+  /******************************* My add ******************************/
+  /*********************************************************************/
 
+  $(document).ready(function() {
+    var fadeTransitionElement = document.querySelector('.fade-transition');
+    if (fadeTransitionElement) {
+        fadeTransitionElement.classList.add('fade-transition-active');
+    }
+  });
+  
   $(document).ready(function() {
     // Next button click event
     // $('#openingButton').click(function(e) {
@@ -99,6 +107,24 @@
     });
   }
 
+  function loadProductList() {
+    $.ajax({
+        url: `/services/list`,
+        method: 'GET',
+        success: function(data) {
+          var contentHtml = '';
+
+          $.each(data, function(index, products) {
+            contentHtml += `<a class="collapse-item" href="/services/${products.id}/p1">${products.productName}</a>`;
+          });
+          $('#productListContent').html(contentHtml);
+      },
+      error: function() {
+          alert('리스트를 불러오는데 실패했습니다.');
+      }
+    });
+  }
+
   $(document).ready(function() {
     $('.toggle-sidebar').click(function() {
         $('#collapseTwo').toggleClass('show');
@@ -117,6 +143,12 @@
   $(document).ready(function() {
     $('#showProcessList').click(function() { 
       loadProcessList();
+    });
+  });
+
+  $(document).ready(function() {
+    $('#showProductList').click(function() { 
+      loadProductList();
     });
   });
 
@@ -179,14 +211,15 @@ function validateForm(formId) {
 
 // typeStr 'p4'일 때의 계산 로직
   // processAmount = 이동거리(iFlow1) * 차량무게(iFlow2)
-  // processAmountUnit = iFlow1Unit*iFlow2Unit
+  // unit이 DB에 저장될 때는 "무게*거리"로 들어가야 내부 계산이 쉬움 
+  // processAmountUnit = iFlow2Unit*iFlow1Unit
   function setProcessAmount() {
     var iFlow1 = parseFloat($('#iFlow1').val());
     var iFlow2 = parseFloat($('#iFlow2').val());
     var iFlow1Unit = $('#iFlow1Unit').val();
     var iFlow2Unit = $('#iFlow2Unit').val();
     var processAmount = iFlow1 * iFlow2;
-    var processAmountUnit = iFlow1Unit + "*" + iFlow2Unit;
+    var processAmountUnit = iFlow2Unit + "*" + iFlow1Unit;
 
     if (!isNaN(processAmount)) {
         $('#processAmount').val(processAmount);

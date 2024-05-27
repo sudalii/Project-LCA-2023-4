@@ -5,13 +5,21 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.re.ImportTest2.controller.dto.ProcessDto;
 import kr.re.ImportTest2.controller.dto.UserDto;
+import kr.re.ImportTest2.domain.User;
+import kr.re.ImportTest2.domain.enumType.ProcessType;
 import kr.re.ImportTest2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +37,7 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/services/services-cover")
+    @GetMapping("/services")
     public String cover() {
         return "services/services-cover";
     }
@@ -67,5 +75,13 @@ public class UserController {
         userService.saveUser(userDto);
 
         return "redirect:/services/" + userDto.getId() + "/p2";
+    }
+
+    @GetMapping("/services/list")
+    public ResponseEntity<List<UserDto>> list() {
+        log.info("Returning list by id as JSON");
+        List<UserDto> products = userService.findProducts();
+
+        return ResponseEntity.ok(products);
     }
 }

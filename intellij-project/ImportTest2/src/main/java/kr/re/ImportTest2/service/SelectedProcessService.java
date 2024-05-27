@@ -31,11 +31,7 @@ public class SelectedProcessService {
 
     private final SelectedProcessRepository spRepository;
     private final UserRepository userRepository;
-    private final RunDatabase runDatabase;
-    private final SystemBuilder systemBuilder;
 
-    public IDatabase db = null;
-    public ProductSystem system = null;
 
     /**
      * build 패턴 사용 - lombok의 build 사용
@@ -122,30 +118,7 @@ public class SelectedProcessService {
         return pDtoList;
     }
 
-    /**
-     * p4, 수송에만 해당되는 메서드. JS로 처리할 수도 있음
-     * Dto 저장 직전 해당 메서드 호출하면 될 듯
-     *  - processAmount = 이동거리(iFlow1) * 차량무게(iFlow2)
-     *  - processAmountUnit = iFlow1Unit*iFlow2Unit
-     */
-    public void calcP4ProcessAmount() {
-
-    }
-
-    public void runDb() {
-        db = runDatabase.runDb();
-    }
-
-    public void addProcess(String processId, double amount) {
-        systemBuilder.addProcess(db, processId, amount);
-    }
-
-    public void systemBuilder() {
-        system = systemBuilder.createProductSystem(db);
-    }
-
-    public void closeDb() throws IOException {
-        runDatabase.closeDb();
-        db = null;
+    public List<SelectedProcess> findProcess(Long userId) {
+        return spRepository.findAllByUserId(userId);
     }
 }
