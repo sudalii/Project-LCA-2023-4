@@ -20,7 +20,10 @@ public record FlowResultTable(String name, double lciResult, double cf, double i
         List<FlowResultTable> sortedList = new ArrayList<>(flowResultTables);
         // Sort the list using a comparator that compares the impactResult field in descending order
         sortedList.sort(Comparator.comparingDouble(FlowResultTable::impactResult).reversed());
-        return sortedList;
+        if (sortedList.size() > 3) {
+            return sortedList.subList(0, 3);
+        } else
+            return sortedList;
     }
 /*
     public record flowResultTable(String name, double lciResult, double cf, double impactResult) {

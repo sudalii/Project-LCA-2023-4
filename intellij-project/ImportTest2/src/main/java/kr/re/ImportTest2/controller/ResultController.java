@@ -1,21 +1,21 @@
 package kr.re.ImportTest2.controller;
 
+import kr.re.ImportTest2.component.result.resultTable.CategoryResultTable;
 import kr.re.ImportTest2.controller.dto.CalcResultDto;
 import kr.re.ImportTest2.controller.dto.ProcessDto;
 import kr.re.ImportTest2.controller.dto.UserDto;
 import kr.re.ImportTest2.domain.enumType.Category;
-import kr.re.ImportTest2.domain.enumType.ProcessType;
 import kr.re.ImportTest2.service.CalcResultService;
 import kr.re.ImportTest2.service.SelectedProcessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,19 +28,27 @@ public class ResultController {
 
     private final SelectedProcessService spService;
     private final CalcResultService resultService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("")
     public String result(@PathVariable("userId") Long userId,
-                         Model model, CalcResultDto resultDto) {
+                         Model model) { // , CalcResultDto resultDto
 
         UserDto userDto = resultService.findUser(userId);
-        model.addAttribute("user", userDto);
+        resultService.calculate(userId);
+        List<CategoryResultTable> result = resultService.result();
 
-        // 계산 결과값 method 가져오기
-        model.addAttribute("re", resultDto);
+        model.addAttribute("user", userDto);
         model.addAttribute("categories", Category.values());
 
-        return "/services/result";
+        try {   // Result 값을 JS로 넘기려면 JSON으로 변환해야 한다고 함
+            String resultsJson = objectMapper.writeValueAsString(result);
+            model.addAttribute("resultsJson", resultsJson);
+        } catch (JsonProcessingException e) {
+            log.error("Error converting results to JSON", e);
+        }
+
+        return "services/result";
     }
 
 /*    @GetMapping("/list")
@@ -50,25 +58,6 @@ public class ResultController {
         products.put("p2", resultService.findAll(userId));
 
         return ResponseEntity.ok(products);
-    }*/
-
-/*    @GetMapping("/result")
-    public void calculate() {
-        spService.runDb();
-
-        int len = lciDbNames.size();
-        for (int i=0; i<len; i++) {
-            // db로 저장
-
-            String pId = spService.dbMapper(lciDbNames.get(i));
-            double pAmount = processAmount.get(i);
-            spService.addProcess(pId, pAmount);
-
-            spService.saveProcess();
-        }
-        spService.systemBuilder();
-        spService.closeDb();
-
     }*/
 
 }

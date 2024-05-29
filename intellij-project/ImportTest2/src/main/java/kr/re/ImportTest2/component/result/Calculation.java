@@ -39,9 +39,8 @@ public class Calculation {
         LcaResult result = calc.calculate(setup);
         if (removeFlag) {
             new ProductSystemDao(db).deleteAll();
+            closeDb();
         }
-        closeDb();
-
         return result;
     }
 
@@ -154,7 +153,6 @@ public class Calculation {
                 double impactResult = efv.value() * factorOf;
                 fTable = new FlowResultTable(
                         efv.flow().name, efv.value(), factorOf, impactResult);
-                log.info("name: {}", fTable.name());
                 log.info("name: {}", fTable.name());
                 // lciResult * factor = flowImpactResult
                 log.info("--> lciResult = {}, flowImpactResult = {}", fTable.lciResult(), fTable.impactResult());

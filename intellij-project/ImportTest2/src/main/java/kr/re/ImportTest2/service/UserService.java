@@ -1,5 +1,6 @@
 package kr.re.ImportTest2.service;
 
+import kr.re.ImportTest2.controller.dto.ApiUserDto;
 import kr.re.ImportTest2.controller.dto.UserDto;
 import kr.re.ImportTest2.domain.User;
 import kr.re.ImportTest2.repository.SelectedProcessRepository;
@@ -46,6 +47,11 @@ public class UserService {
     }
 
     @Transactional
+    public Long saveUserForApi(ApiUserDto userDto) {
+        return userRepository.save(userDto.toEntity()).getId();
+    }
+
+    @Transactional
     public Long saveUser(UserDto userDto) {
         return userRepository.save(userDto.toEntity()).getId();
     }
@@ -61,5 +67,19 @@ public class UserService {
                 .targetUnit(user.getTargetUnit())
                 .build();
         return userDto;
+    }
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
+
+    public boolean isEmpty() {
+        return userRepository.findAll().isEmpty();
     }
 }

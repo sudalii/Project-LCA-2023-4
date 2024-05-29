@@ -27,12 +27,6 @@ public class CalcResult {
     private double resultAmount;
     private String resultAmountUnit;
 
-    // 연관관계 Method
-/*    public void setUser(User user) {
-        this.user = user;
-        user.getCalcResults().add(this);
-    }*/
-
     @Builder
     public CalcResult(Long id, User user, Category category, double resultAmount, String resultAmountUnit) {
         this.id = id;

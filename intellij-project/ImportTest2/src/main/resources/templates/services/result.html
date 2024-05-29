@@ -30,7 +30,7 @@
             <!-- Nav Item - 제품 정보 리스트 -> 이건 Dashboard에서 보여주는게 나을듯 -->
 
             <!-- Nav Item - 물질&부품제조 -->
-            <input id="userId" type="hidden" name="userId" th:value="${sp.userId}">   
+            <input id="userId" type="hidden" name="userId" th:value="${userId}">   
 
             <li class="nav-item active">
                 <a id="showProcessList" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
@@ -68,67 +68,58 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <div class="card-body card-scroll p-0 fade-transition">
-                        <form class="user col-alignment" th:action="@{/services/{userId}/result (userId=${re.userId})}" method="get">
-                            <input type="hidden" name="id" th:value="${re.id}">
+                        <form class="user col-alignment" th:action="@{/services/{userId}/result (userId=${userId})}" method="get">
+                            <input type="hidden" id="resultsData" th:value="${resultsJson}">
                             <!-- Nested Row within Card Body -->
                             <div class="row vh-90">
                                 <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.productName}"> 평가 결과</h1>
-                                            <span></span>
-                                            <h1 class="h3 text-gray-900 mb-2"> 평가 기준: &lt;</h1>
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.productName}"> </h1>
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.targetAmount}"></h1>
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.targetUnit}">&gt;의 환경영향 평가</h1>
+                                            <h1 class="h2 text-gray-900 mb-2" th:text="${user.productName} + ' 평가 결과'"> 평가 결과</h1>
+                                            <br/>
+                                            <h5 class="h5 text-gray-800 mb-2">
+                                                <span th:text="'평가 기준: <' + ${user.productName} + ' ' + ${user.targetAmount} + ' ' + ${user.targetUnit} + '>의 환경영향 평가'"></span>
+                                            </h5>
                                         </div>  
                                         <!-- category select -->
+                                        <br/>
+                                        <br/>
+                                        <br/>
                                         <div class="form-group">
-                                            <h1 class="h3 text-gray-900 mb-2" th:text="${user.productName}"> 평가 결과</h1>
-                                            <p class="mb-2">환경영향범주 선택</p>
-                                            <select class="form-control" data-live-search="true" th:field="*{re.category}"> 
-                                                <option th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}"></option>
+                                            <p class="mb-2 text-center">환경영향범주 선택</p>
+                                            <select class="form-control" data-live-search="true" id="categorySelect"> <!-- 지구온난화 - Global warming (GWP100a) -->
+                                                <option class="text-center" th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}"></option>                                                <option th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}">지구온난화</option>
                                             </select>
                                         </div>    
                                         <!-- 사용된 LCIA method name 출력 -->
-                                        <h1 class="h3 text-gray-900 mb-2" th:text="${re.category.method}"> </h1>
+                                        <h6 class="h6 text-gray-800" id="method"></h6>
+
+                                        <br/>
 
                                         <!-- 1. 공정별 환경영향값 비교 그래프 (원형 or 도넛 graph) -->
                                         <!-- ** 가능하면 각 category에 따라 다른 디자인의 그래프 출력 ** 
                                             ex) GWP: 나무 그래프, 물 사용: 물통 그래프, … -->
-                                        <div class="row" data-aos="fade-up">
-                                            <h3>공정별 환경영향값 비교</h3>
-                                            <canvas id="pie"></canvas>
+                                        <div class="row my-row2 mb-2" data-aos="fade-up">
+                                            <div class="resize">
+                                                <canvas class="" id="pie"></canvas>
+                                            </div>
                                         </div>
+                                        <br/>
+                                        <br/>
 
                                         <!-- 2. 물질별 환경영향값 비교 그래프 (bar graph) -->
                                         <!-- ** 사용자 설정의 공정명 – 국가LCI DB 공정명 같이 표기 ** -->
-                                        <div class="row" data-aos="fade-up">
-                                            <h3>물질별 환경영향값 비교</h3>
+                                        <div class="row mb-2" data-aos="fade-up">
                                             <canvas id="stackedBarWithGroup"></canvas>
                                         </div>
                                         
                                         <!-- 3. 세부 표 출력 (Impact analysis table) -->
                                         <!-- ** 기준물질은 표 맨 위 bold체로 고정 ** -->
-                                        <div class="table-responsive" data-aos="fade-up">
-                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <!-- column 제목 이름 -->
-                                                <thead>
-                                                    <tr>
-                                                        <th>물질명</th>
-                                                        <th>LCI 분석 결과 + 단위</th>
-                                                        <th>특성화 계수 + 단위</th>
-                                                        <th>영향 평가 결과 + 단위</th>
-                                                    </tr>
-                                                </thead>
-                                                <!-- 내용 GET -->
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <h4 class="h5 text-gray-800 text-center">물질 분석 표</h4>
+                                        <div id="resultContent"></div>
                                         <!-- table end -->
                                         <!-- 4. 정량적목표 - 기존 openLCA와의 성능 비교 -->
                                         <!-- 핵심 flow 조정 필요... -->
@@ -139,7 +130,7 @@
                                                 <!-- column 제목 이름 -->
                                                 <thead>
                                                     <tr>
-                                                        <th></th>
+                                                        <th>물질명</th>
                                                         <th>LCI 분석 결과 + 단위</th>
                                                         <th>특성화 계수 + 단위</th>
                                                         <th>영향 평가 결과 + 단위</th>
@@ -187,6 +178,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.js"></script>
+    <script src="/js/result.js"></script>
 
 </body>
 </html>

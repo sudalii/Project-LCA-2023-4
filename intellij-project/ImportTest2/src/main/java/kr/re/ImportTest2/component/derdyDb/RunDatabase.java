@@ -214,7 +214,7 @@ public class RunDatabase {
             writer.println("\n\nmethods: ");
             for (ImpactMethod m : methods) {
                 writer.println(m);
-                if (m.name.equals("CML-IA baseline")){
+/*                if (m.name.equals("CML-IA baseline")){
                     for (ImpactCategory cg : m.impactCategories) {
                         if (cg.name.contains("GWP")) {
                             log.info("GWP find, {}", cg);
@@ -223,7 +223,7 @@ public class RunDatabase {
                             }
                         }
                     }
-                }
+                }*/
             }
 
             writer.println("\n\nsaved processes of korea db: ");

@@ -35,7 +35,7 @@ public class User {
     @Column(name = "target_unit")
     private String targetUnit;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SelectedProcess> selectedProcesses = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

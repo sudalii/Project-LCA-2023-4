@@ -7,9 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Category {
 
-    /**
-     * openLCA에서 찾을 때, 기준물질로 찾을까?
-     */
     GWP("지구온난화", "Global warming (GWP100a)", "CML-IA baseline"),
     WU("물 사용", "Water use", "AWARE"),
     ARD("자원고갈", "Abiotic depletion", "CML-IA baseline"),

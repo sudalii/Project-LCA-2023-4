@@ -2,6 +2,7 @@ package kr.re.ImportTest2.service;
 
 import kr.re.ImportTest2.component.derdyDb.RunDatabase;
 import kr.re.ImportTest2.component.result.SystemBuilder;
+import kr.re.ImportTest2.controller.dto.ApiProcessDto;
 import kr.re.ImportTest2.controller.dto.ProcessDto;
 import kr.re.ImportTest2.controller.dto.UserDto;
 import kr.re.ImportTest2.domain.User;
@@ -36,6 +37,33 @@ public class SelectedProcessService {
     /**
      * build 패턴 사용 - lombok의 build 사용
      */
+    @Transactional
+    public void saveProcessForApi(ApiProcessDto processDto, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + userId));
+        log.info("ProcessDto to be saved:");
+        log.info("IFlow1: {} {}", processDto.getIFlow1(), processDto.getIFlow1Unit());
+
+/*        UserFlows f = pDto.getFlows();
+        ProcessDto processDto = ProcessDto.builder()
+                // process
+                .userId(userId)
+                .processName(pDto.getProcessName())
+                .mappedProcessId(pDto.getMappedProcessId())
+                .processAmount(pDto.getProcessAmount())
+                .processAmountUnit(pDto.getProcessAmountUnit())
+                .type(pDto.getType())
+                // flows
+                .iFlow1(f.getIFlow1())
+                .iFlow1Unit(f.getIFlow1Unit())
+                .iFlow2(f.getIFlow2())
+                .iFlow2Unit(f.getIFlow2Unit())
+                .oFlow1(f.getOFlow1())
+                .oFlow1Unit(f.getOFlow1Unit())
+                .build();*/
+        spRepository.save(processDto.toProcessEntity(user));
+    }
+
     @Transactional
     public Long saveProcess(ProcessDto processDto, Long userId, String type) {
         log.info("type = {} -> {}", type, ProcessType.of(type));

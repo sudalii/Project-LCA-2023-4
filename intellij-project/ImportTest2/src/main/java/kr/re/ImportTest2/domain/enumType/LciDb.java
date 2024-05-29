@@ -45,4 +45,13 @@ public enum LciDb {
                 .filter(db -> db.getType().equals(type))
                 .collect(Collectors.toList());
     }
+
+    public static String getRefIdByName(String name) {
+        for (LciDb lciDb : LciDb.values()) {
+            if (lciDb.getName().equals(name)) {
+                return lciDb.getRefId();
+            }
+        }
+        return null;
+    }
 }

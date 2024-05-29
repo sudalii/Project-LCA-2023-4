@@ -75,13 +75,14 @@ public class CalcResultService {
     }
 
     @Transactional
-    public void result() {
+    public List<CategoryResultTable> result() {
         List<CategoryResultTable> resultTables = calculation.categoryAllResult(cml);
         CategoryResultTable awareTable = calculation.categoryResult(aware);
         resultTables.add(awareTable);
         List<CategoryResultTable> sortedResultTables = CategoryResultTable.sortByImpactResultDescending(resultTables);
 
         calculation.saveResultTables(sortedResultTables);
+        return sortedResultTables;
     }
 
     @Transactional

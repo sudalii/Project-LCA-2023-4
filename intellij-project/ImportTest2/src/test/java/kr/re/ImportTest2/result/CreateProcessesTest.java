@@ -498,7 +498,6 @@ class CreateProcessesTest {
                         processResult.flow().flowType, processResult.flow().name, String.format("%.4f", processResult.value()));
 
                 List<FlowResultTable> flowResultTables = flowResult(r, impact, processResult);
-
                 pTable = new ProcessResultTable(processResult.provider().name, processResult.value(), flowResultTables);
                 processResultTables.add(pTable);
             }
