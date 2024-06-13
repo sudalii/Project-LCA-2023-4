@@ -11560,6 +11560,12 @@ body.sidebar-toggled footer.sticky-footer {
   width: 50%;
 }
 
+.resize {
+  width: 65%;
+  height: 65%;
+
+}
+
 .row-alignment {
   display: flex;
   justify-content: center;

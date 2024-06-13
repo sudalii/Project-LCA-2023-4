@@ -39,8 +39,9 @@ public class CreateProcesses extends SystemBuilder {
 
         processes.quantitativeReference.unit = new UnitDao(db).getForName(targetUnit).get(0);
         processes.quantitativeReference.amount = targetAmount;
-
-        return processes;
+        processes.quantitativeReference.defaultProviderId = 0;
+//        return new ProcessDao(db).update(processes);
+        return db.update(processes);
     }
 
     private Flow createProductBasedFlow() {
@@ -67,12 +68,9 @@ public class CreateProcesses extends SystemBuilder {
         }
         log.info("{} processes is null, create this processes.", productName);
         Process p = Process.of(productName, baseFlow);
-        new ProcessDao(db).insert(p);
+        log.info("processes = {}, quantitativeReference = {}", p, p.quantitativeReference);
 
-        Process ps = new ProcessDao(db).getForName(productName).get(0);
-        log.info("processes = {}, quantitativeReference = {}", ps, ps.quantitativeReference);
-
-        return ps;
+        return db.insert(p);
     }
 
 
@@ -87,7 +85,8 @@ public class CreateProcesses extends SystemBuilder {
         ref.amount = userP.getProcessAmount();
         ref.unit = new UnitDao(db).getForName(userP.getProcessAmountUnit()).get(0);
         ref.defaultProviderId = customized.id;
-        processes.exchanges.add(ref);
+        processes.add(ref);
+        db.update(processes);
     }
 
     private Process customizeAProcess(SelectedProcess userP, Process koreaP) {
@@ -102,7 +101,7 @@ public class CreateProcesses extends SystemBuilder {
         }
         Process copy = koreaP.copy();
         copy.name = userP.getProcessName();
-
+        db.insert(copy);
         // 배송은 물질 단위에서 계산할 것이 없으므로 패스
         if (!getType(userP, "TRANSPORTATION")) {
             copy = calculateEnvironmentalLoad(userP, copy);
@@ -117,7 +116,7 @@ public class CreateProcesses extends SystemBuilder {
         setInputByType(userP, ref);
 
 //        return new ProcessDao(db).insert(copy);
-        return new ProcessDao(db).update(copy);
+        return db.update(copy);
     }
 
     private void setInputByType(SelectedProcess userP, Exchange ref) {
@@ -194,9 +193,10 @@ public class CreateProcesses extends SystemBuilder {
         exElec.defaultProviderId = elec.id;
         log.info("Add Elec = {}\n", exElec);
 
-        copyKoreaP.exchanges.add(exElec);
+//        copyKoreaP.exchanges.add(exElec);
+        copyKoreaP.add(exElec);
 
-        return copyKoreaP;
+        return db.update(copyKoreaP);
     }
 
     boolean getType(SelectedProcess userP, String type) {

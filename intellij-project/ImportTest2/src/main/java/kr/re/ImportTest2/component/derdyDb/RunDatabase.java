@@ -65,21 +65,29 @@ public class RunDatabase {
 
 
         // 기존에 없는 db일 경우 db files import
-//        if (!exists) {
         try {
+//            pdTestFileImport();
 //            db.clear();
-            if (exists && checkImportedKoreaDb()) {
+            if (!exists) {
+                lciaFileImport();
+                koreaDbFileImport();
+                return db;
+            }
+
+            else if (checkImportedKoreaDb()) {
                 log.info("db has already been imported.");
                 saveOutputPrint();
                 return db;
             }
             else if (!checkImportedKoreaDb()) {
-                fileImport();
+                koreaDbFileImport();
             }
+
         } catch (Exception e) { // db import 도중 문제가 생기면 clear 후 다시 import
             try {
                 db.clear();
-                fileImport();
+                lciaFileImport();
+                koreaDbFileImport();
                 log.info("because {} db is not imported, clear and re-create.", dbName);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
@@ -94,14 +102,23 @@ public class RunDatabase {
      * 국가 DB는 모두 import가 되어야 하므로 하나라도 없으면 false, 모두 있으면 true return
      */
     private boolean checkImportedKoreaDb() {
-        String savePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/koreaLciDbNames.txt";
+//        String savePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/koreaLciDbNames.txt";
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/txt";
+        File file = new File(prePath);
+        if (file.mkdirs())
+            log.info("create /server/txt/ directory.");
+        String savePath = prePath + "/koreaLciDbNames.txt";
+
         if (Files.exists(Paths.get(savePath))) {
             try (BufferedReader br = new BufferedReader(new FileReader(savePath))) {
                 String name;
                 while ((name = br.readLine()) != null) {    // 한 줄씩 읽기
-                    boolean isEmpty = new ProcessDao(db).getForName(name).isEmpty();    // 해당 name의 process가 없으면 true 적재
-                    if (isEmpty)
+                    Process p = new ProcessDao(db).getForName(name).get(0);    // 해당 name의 process가 없으면 true 적재
+                    if (p == null)
                         return false;   // 국가DB는 모두 import가 되어야 하므로 하나라도 없으면 false 리턴
+                    else if (p.quantitativeReference == null)
+                        return false;
                 }
                 return true;
             } catch (IOException e) {
@@ -122,13 +139,12 @@ public class RunDatabase {
         return Database.getConfigurations().nameExists(dbName);
     }
 
-    private void fileImport() {
-//        db.clear();
-
-        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/05-2023/2023-결과물관련";
-        String lciaPath = prePath + "/openlca2_v221_20230426.zip";
+    private void lciaFileImport() {
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/refDb";
+//        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/05-2023/2023-결과물관련";
+        String lciaPath = prePath + "/ref/openlca2_v221_20230426.zip";
 //        String lciaPath = prePath + "/openlca2_v221_20230426_without_flows.zip";
-        String koreaDbPath = prePath + "/exported";
 
         FileImport f = new FileImport();
 
@@ -136,6 +152,22 @@ public class RunDatabase {
         log.info("importing lcia db...");
         f.run(lciaPath);
 
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long diffTime = (afterTime - beforeTime)/1000; // 두 개의 실행 시간
+        log.info("execute time(sec): {}", diffTime);
+    }
+
+    private void koreaDbFileImport() {
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/refDb";
+//        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/05-2023/2023-결과물관련";
+//        String koreaDbPath = prePath + "/exported";
+        String koreaDbPath = prePath + "/koreaDb";
+        String pdTest = prePath + "/pdTest";
+
+        FileImport f = new FileImport();
+
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
         File excelFiles = new File(koreaDbPath);
 
         List<String> syncedNames = new ArrayList<>();
@@ -153,8 +185,32 @@ public class RunDatabase {
         log.info("execute time(sec): {}", diffTime);
     }
 
+    private void pdTestFileImport() {
+//        db.clear();
+
+        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/05-2023/2023-결과물관련";
+        String pdTest = prePath + "/pdTest/processes.zip";
+
+        FileImport f = new FileImport();
+
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전에 시간 받아오기
+        log.info("importing pdTest db...");
+        f.run(pdTest);
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long diffTime = (afterTime - beforeTime)/1000; // 두 개의 실행 시간
+        log.info("execute time(sec): {}", diffTime);
+    }
+
     public void saveSyncedProcessName(List<String> syncedNames) {
-        String savePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/koreaLciDbNames.txt";
+//        String savePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/koreaLciDbNames.txt";
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/txt";
+        File file = new File(prePath);
+        if (file.mkdirs())
+            log.info("create /server/txt/ directory.");
+        String savePath = prePath + "/koreaLciDbNames.txt";
+
         if (!Files.exists(Paths.get(savePath))) {
             try (FileWriter fw = new FileWriter(savePath, true);
                  PrintWriter pw = new PrintWriter(fw)) {
@@ -194,10 +250,15 @@ public class RunDatabase {
     }
 
     private void saveOutputPrint() {
-        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
+//        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/txt";
+        File file = new File(prePath);
+        if (file.mkdirs())
+            log.info("create /server/txt/ directory.");
 
         // PrintWriter(): 파일  쓰기 모드로 open, 파일 존재 시 지우고 새로 write
-        try (PrintWriter writer = new PrintWriter(prePath+"importedDbInfo.txt")) {
+        try (PrintWriter writer = new PrintWriter(prePath+"/importedDbInfo.txt")) {
             var categoryAll = new ImpactCategoryDao(db).getAll();
             var methods = new ImpactMethodDao(db).getAll();
             var flows = new FlowDao(db).getAll();

@@ -16,6 +16,7 @@ import java.util.List;
  * User == Product
  */
 @Entity
+//@Table(name = "`user`") // 백틱으로 감싸서 예약어와의 충돌 방지
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {

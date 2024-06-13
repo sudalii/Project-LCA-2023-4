@@ -3,51 +3,135 @@ package kr.re.ImportTest2.component.result;
 import kr.re.ImportTest2.component.result.resultTable.CategoryResultTable;
 import kr.re.ImportTest2.component.result.resultTable.FlowResultTable;
 import kr.re.ImportTest2.component.result.resultTable.ProcessResultTable;
+import kr.re.ImportTest2.controller.dto.CalcResultDto;
 import kr.re.ImportTest2.service.CalcResultService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.openlca.core.database.*;
 import org.openlca.core.math.SystemCalculator;
+import org.openlca.core.matrix.cache.FlowTable;
 import org.openlca.core.matrix.index.TechFlow;
 import org.openlca.core.model.*;
+import org.openlca.core.model.Process;
 import org.openlca.core.model.descriptors.ImpactDescriptor;
 import org.openlca.core.results.EnviFlowValue;
 import org.openlca.core.results.LcaResult;
 import org.openlca.core.results.TechFlowValue;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class Calculation {
-
 
     private static IDatabase db = null;
 
-    public LcaResult calculate(String methodName, ProductSystem system, boolean removeFlag) {
+    public LcaResult calculate(String methodName, ProductSystem system, Process process, boolean removeFlag) {
         db = SystemBuilder.db;
+        validateSystem(system);
         var method = new ImpactMethodDao(db).getForName(methodName).get(0);
-        CalculationSetup setup = CalculationSetup.of(system).withImpactMethod(method);
-        SystemCalculator calc = new SystemCalculator(db);
-        LcaResult result = calc.calculate(setup);
+        log.info("method find: {}", method);
+//        CalculationSetup setup = CalculationSetup.of(system).withImpactMethod(method);
+        for (Process p : new ProcessDao(db).getForIds(system.processes)) {
+            try {
+                if (p.name.equals(system.name)) {
+                    log.info("P: {} {} {}", p.name, p.id, p.refId);
+//                if (p.name.equals(system.name)) {
+                    CalculationSetup setup = CalculationSetup.of(p).withImpactMethod(method);
+                    SystemCalculator calc = new SystemCalculator(db);
+                    log.info("calc: {}", calc);
+                    LcaResult result = calc.calculate(setup);
+                    log.info("result: {}", result);
+                    if (result != null)
+                        return result;
+                }
+//                }
+            } catch (Exception e) {
+                log.warn("Exception for process {}: {}", p.name, e.getMessage());
+                // Optionally log the stack trace if needed
+                // log.warn("Stack trace: ", e);
+            }
+        }
         if (removeFlag) {
+            List<Process> ps = new ProcessDao(db).getForIds(system.processes);
+            new ProcessDao(db).deleteAll(ps);
             new ProductSystemDao(db).deleteAll();
             closeDb();
         }
-        return result;
+        return null;
+    }
+
+    private void validateSystem(ProductSystem system) {
+        log.info("validateSystem start");
+        log.info("System info: {}", system);
+        List<Process> ps = new ProcessDao(db).getForIds(system.processes);
+        for (Process p : ps) {
+            log.info("{}, {}, {}, {}", p.name, p.id, p.refId, p.exchanges.size());
+            for (Exchange e : p.exchanges) {
+                Process provider = new ProcessDao(db).getForId(e.defaultProviderId);
+//                if (p.name.equals(system.name)) {
+                    log.info("  Exchange: {} ({}), amount: {}{} -> Provider: {}", e.flow.name,
+                            e.flow.flowType, e.amount, e.unit.name, provider != null ? provider.name : "null");
+                    if (e.amount == 0){
+                        log.info("  --> find! amount is 0");
+                    }
+//                }
+            }
+        }
+//        log.info("FlowTable type: {}", FlowTable.getTypes(db));
+//        log.info("FlowTable directionOf: {}", FlowTable.directionsOf(db, ));
     }
 
     /**
      * impact -> impact factor 추출 -> techFlow(provider=공정별) -> enviFlow * factor(flow 별)
      */
-    public CategoryResultTable categoryResult(LcaResult r) {
+    public Pair<CategoryResultTable, List<FlowResultTable>> getResultOne(LcaResult r, String saveCgName) {
+        log.info("");
+        log.info("Category Result Method");
+        CategoryResultTable cgTable = null;
+        List<FlowResultTable> flowTables = null;
+        for (int i = 0; i < r.impactIndex().size(); i++) {
+            ImpactDescriptor impactDesc = r.impactIndex().at(i);
+            String cgName = impactDesc.name;
+            if (cgName.equals(saveCgName)) {
+                log.info("category name = {}", cgName);
+                ImpactDescriptor impact = r.impactIndex().at(i);
+                double totalImpactValue = r.getTotalImpactValueOf(impact); // 총 카테고리 결과값
+
+                log.info("{} -> {} {}", impactDesc.name,
+                        String.format("%.6f", totalImpactValue), impactDesc.referenceUnit);
+
+                // 가장 많은 양의 flow top 3
+                List<EnviFlowValue> flowImpactsOf = r.getFlowImpactsOf(impact);
+                log.info("가장 많은 양의 flow top 3:");
+                flowTables = FlowResultTable.convertToFlowTables(flowImpactsOf, r, impact);
+                log.info("flowTables: {}", flowTables);
+
+                List<TechFlowValue> processResults = r.getTotalImpactValuesOf(impact)
+                        .stream()
+                        .sorted(Comparator.comparingDouble(TechFlowValue::value).reversed())
+                        .toList();
+                List<ProcessResultTable> pTables = processResult(r, impact, processResults);
+                cgTable = new CategoryResultTable(cgName, totalImpactValue, impact.referenceUnit, pTables);
+                break;
+            }
+        }
+        r.dispose();  // clean up
+        return Pair.of(cgTable, flowTables);
+    }
+
+    /**
+     * For API
+     */
+    public CategoryResultTable categoryResultForApi(LcaResult r) {
         log.info("");
         log.info("Category Result Method");
         CategoryResultTable cgTable = null;
@@ -80,7 +164,7 @@ public class Calculation {
         return cgTable;
     }
 
-    public List<CategoryResultTable> categoryAllResult(LcaResult r) {
+    public List<CategoryResultTable> categoryAllResultForApi(LcaResult r) {
         log.info("");
         log.info("Category All Result Method");
         List<CategoryResultTable> cgTables = new ArrayList<>();
@@ -125,7 +209,10 @@ public class Calculation {
                 log.info("{} = {}, {} = {}, value = {}",
                         processResult.provider().type, processResult.provider().name,
                         processResult.flow().flowType, processResult.flow().name, String.format("%.4f", processResult.value()));
-
+                if (processResult.value() == 0) {
+                    log.info("processResult.value is close 0 -> pass");
+                    continue;
+                }
                 List<FlowResultTable> flowResultTables = flowResult(r, impact, processResult);
 
                 pTable = new ProcessResultTable(processResult.provider().name, processResult.value(), flowResultTables);
@@ -202,8 +289,14 @@ public class Calculation {
 
     public void saveResultTables(List<CategoryResultTable> cgResultTables) {
 
-        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
-        try (PrintWriter writer = new PrintWriter(prePath+"resultTables.txt")) {
+//        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/txt";
+        File file = new File(prePath);
+        if (file.mkdirs())
+            log.info("create /server/txt/ directory.");
+
+        try (PrintWriter writer = new PrintWriter(prePath+"/resultTables.txt")) {
             // By Category
             for (CategoryResultTable cgTable : cgResultTables) {
                 writer.println("Category별 결과값 추출 확인, 총 " + cgResultTables.size() + "개");

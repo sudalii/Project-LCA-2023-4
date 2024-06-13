@@ -44,23 +44,6 @@ public class SelectedProcessService {
         log.info("ProcessDto to be saved:");
         log.info("IFlow1: {} {}", processDto.getIFlow1(), processDto.getIFlow1Unit());
 
-/*        UserFlows f = pDto.getFlows();
-        ProcessDto processDto = ProcessDto.builder()
-                // process
-                .userId(userId)
-                .processName(pDto.getProcessName())
-                .mappedProcessId(pDto.getMappedProcessId())
-                .processAmount(pDto.getProcessAmount())
-                .processAmountUnit(pDto.getProcessAmountUnit())
-                .type(pDto.getType())
-                // flows
-                .iFlow1(f.getIFlow1())
-                .iFlow1Unit(f.getIFlow1Unit())
-                .iFlow2(f.getIFlow2())
-                .iFlow2Unit(f.getIFlow2Unit())
-                .oFlow1(f.getOFlow1())
-                .oFlow1Unit(f.getOFlow1Unit())
-                .build();*/
         spRepository.save(processDto.toProcessEntity(user));
     }
 

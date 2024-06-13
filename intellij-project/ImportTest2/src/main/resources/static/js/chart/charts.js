@@ -1,60 +1,126 @@
 // Retrieve and parse the hidden input value to JSON
-let resultsData = document.getElementById('resultsData').value;
-let results = JSON.parse(resultsData);
+const GWPResult = JSON.parse(document.getElementById('GWPResult').value || '{}');
+const GWPFlows = JSON.parse(document.getElementById('GWPFlows').value || '[]');
+const WUResult = JSON.parse(document.getElementById('WUResult').value || '{}');
+const WUFlows = JSON.parse(document.getElementById('WUFlows').value || '[]');
+const ARDResult = JSON.parse(document.getElementById('ARDResult').value || '{}');
+const ARDFlows = JSON.parse(document.getElementById('ARDFlows').value || '[]');
+const HTResult = JSON.parse(document.getElementById('HTResult').value || '{}');
+const HTFlows = JSON.parse(document.getElementById('HTFlows').value || '[]');
+const EPResult = JSON.parse(document.getElementById('EPResult').value || '{}');
+const EPFlows = JSON.parse(document.getElementById('EPFlows').value || '[]');
 
-// 선택된 카테고리에 따라 필터링된 데이터를 사용하여 그래프를 렌더링하는 함수
-function renderGraphs(category) {
-    let filteredResults = results.find(result => result.name === category);
+const categories = [
+    { name: "지구온난화", result: GWPResult, flows: GWPFlows, method: "CML-IA baseline" },
+    { name: "물 사용", result: WUResult, flows: WUFlows, method: "AWARE" },
+    { name: "자원고갈", result: ARDResult, flows: ARDFlows, method: "CML-IA baseline" },
+    { name: "인체독성", result: HTResult, flows: HTFlows, method: "CML-IA baseline" },
+    { name: "부영양화", result: EPResult, flows: EPFlows, method: "CML-IA baseline" }
+];
 
-    if (!filteredResults) return;
 
-    // 데이터 준비 (예시 데이터 구조)
+let pieChart;
+let barChart;
+
+function renderGraphs(categoryName) {
+    const category = categories.find(cat => cat.name === categoryName);
+
+    if (!category) return;
+
+    // Pie Chart 데이터 준비
     let pieData = {
-        labels: filteredResults.processResults.map(p => p.name),
+        labels: category.flows.map(f => f.name),
         datasets: [{
-            data: filteredResults.processResults.map(p => p.value),
+            data: category.flows.map(f => f.impactResult),
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
         }]
     };
 
     let barLabels = [];
-    let barData = [];
+    let barDataSets = [];
 
-    filteredResults.processResults.forEach(p => {
-        p.flowResults.forEach(f => {
-            barLabels.push(f.name);
-            barData.push(f.impactResult);
+    category.flows.forEach((f, index) => {
+        barLabels.push(f.name);
+        barDataSets.push({
+            label: f.name,
+            data: [f.impactResult],
+            backgroundColor: `#${Math.floor(Math.random()*16777215).toString(16)}`, // Random color for each bar
+            stack: `Stack ${index}`  // 각 데이터셋마다 다른 스택 할당
         });
     });
 
     let barChartData = {
         labels: barLabels,
-        datasets: [{
-            label: '영향 평가 결과',
-            data: barData,
-            backgroundColor: '#36A2EB'
-        }]
+        datasets: barDataSets
     };
+
+    // 기존 차트가 있다면 삭제
+    if (pieChart) {
+        pieChart.destroy();
+    }
+
+    if (barChart) {
+        barChart.destroy();
+    }
 
     // Pie Chart
     let pieCtx = document.getElementById('pie').getContext('2d');
-    new Chart(pieCtx, {
-        type: 'doughnut',
+    pieChart = new Chart(pieCtx, {
+        type: 'pie',
         data: pieData,
         options: {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        generateLabels: function(chart) {
+                            return chart.data.datasets[0].data.map((data, index) => ({
+                                text: chart.data.labels[index] + ' (' + data + ' ' + category.result.unit + ')',
+                                fillStyle: chart.data.datasets[0].backgroundColor[index]
+                            }));
+                        }
+                    }
+                },   
+                title: {
+                    display: true,
+                    text: '공정별 환경영향값 비교',
+                    font: {
+                      size: 25
+                    }
+                }
+            }
         }
     });
 
     // Bar Chart
     let barCtx = document.getElementById('stackedBarWithGroup').getContext('2d');
-    new Chart(barCtx, {
+    barChart = new Chart(barCtx, {
         type: 'bar',
         data: barChartData,
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        generateLabels: function(chart) {
+                            return chart.data.datasets.map((dataset, index) => ({
+                                text: dataset.label + ' (' + dataset.data[0] + ' ' + category.result.unit + ')',
+                                fillStyle: dataset.backgroundColor
+                            }));
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: '물질별 환경영향값 비교',
+                    font: {
+                        size: 25
+                    }
+                }
+            },
             scales: {
                 x: {
                     stacked: true
@@ -69,10 +135,11 @@ function renderGraphs(category) {
 
 // 초기 그래프 렌더링 (기본 카테고리 선택)
 document.addEventListener('DOMContentLoaded', function() {
-    renderGraphs('GWP');
+    renderGraphs('지구온난화');
 
     document.getElementById('categorySelect').addEventListener('change', function() {
         let selectedCategory = this.value;
         renderGraphs(selectedCategory);
     });
 });
+

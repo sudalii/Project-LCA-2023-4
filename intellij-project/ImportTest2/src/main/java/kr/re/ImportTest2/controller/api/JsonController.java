@@ -1,18 +1,25 @@
 package kr.re.ImportTest2.controller.api;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpSession;
 import kr.re.ImportTest2.component.result.resultTable.CategoryResultTable;
 import kr.re.ImportTest2.controller.dto.ApiUserDto;
+import kr.re.ImportTest2.domain.enumType.Category;
 import kr.re.ImportTest2.service.CalcResultService;
 import kr.re.ImportTest2.service.ExternalApiService;
 import kr.re.ImportTest2.service.SelectedProcessService;
 import kr.re.ImportTest2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -26,27 +33,14 @@ public class JsonController {
     private final UserService userService;
     private final SelectedProcessService spService;
     private final CalcResultService resultService;
+    private final ObjectMapper objectMapper;
 
 
-    // curl -X POST "http://<your-ip>:8080/receive-json?sendUrl=http://<receiver-ip>:<receiver-port>/endpoint" -H "Content-Type: application/json" -d '{"key1":"value1","key2":"value2"}'
-/*    @PostMapping("/json")
-    public ResponseEntity<String> receiveJson(@RequestBody Map<String, Object> payload,
-                                              @RequestBody List<CategoryResultTable> cgResultTables,
-                                              @RequestParam String sendUrl) {
-        // 1. 받은 JSON 데이터 파싱 및 출력
-        payload.forEach((key, value) -> {
-            System.out.println(key + " : " + value);
-        });
-        // 2. 파싱한 데이터 user/selectedProcess dto로 넣어서 저장하기
-
-        // 3. Prepare data to send
-        externalApiService.sendResultTables(cgResultTables, sendUrl);
-
-        return ResponseEntity.ok("JSON received and processed successfully");
-    }*/
-
-    @PostMapping("/receive-json")
-    public ResponseEntity<String> receiveJson(@RequestBody Map<String, Object> payload) {
+    @PostMapping("")
+    public ResponseEntity<List<Map<String, Object>>> receiveJson(
+//    public ResponseEntity<String> receiveJson(
+            @RequestBody Map<String, Object> payload,
+            HttpSession session) {
 
         if (!userService.isEmpty())
             userService.deleteAll();
@@ -63,45 +57,44 @@ public class JsonController {
         });
         // 계산 및 결과 전송
         resultService.calculate(userId);
-        List<CategoryResultTable> result = resultService.result();
-        externalApiService.sendResultTables(result, "http://10.252.107.96:8080/api/result");
+        List<CategoryResultTable> result = resultService.resultForApi();
+        List<Map<String, Object>> jsonList = externalApiService.convertResultToJsonList(result);
+//        externalApiService.sendResultTables(result, sendUrl);
+        // "http://10.252.107.96:8080/api/result"
 
         // 생성 후 저장했던 엔티티 데이터 삭제
 //        userService.deleteUser(userId);
 
-        return ResponseEntity.ok("JSON received and processed successfully");
+/*        session.setAttribute("jsonList", jsonList);  // 세션에 결과 저장
+        session.setAttribute("userId", userId);      // 사용자 ID 저장
+        log.info("json: {}, userID: {}", jsonList, userId);*/
+
+//        return ResponseEntity.ok("JSON received and data prepared for display.");
+//        return ResponseEntity.ok("JSON received and processed successfully");
+        return ResponseEntity.ok(jsonList);
     }
 
-    @PostMapping("/result")
-    public ResponseEntity<String> receiveJson(@RequestBody List<Map<String, Object>> payload) {
-        payload.forEach(category -> {
-            System.out.println("Category:");
-            category.forEach((key, value) -> {
-                System.out.println("  " + key + ": " + value);
-            });
+/*    @GetMapping("/result")
+    public String jsonResult(HttpSession session, ApiUserDto userDto, Model model) {
+        List<Map<String, Object>> result =
+                (List<Map<String, Object>>) session.getAttribute("jsonList");
+        Long userId = (Long) session.getAttribute("userId");
+        log.info("userId: {}, result: {}", userId, result);
+        if (result == null || userId == null) {
+            log.error("Result or user ID is null.");
+            return "error";  // 오류 페이지를 보여주는 경로를 설정할 수 있습니다.
+        }
+        model.addAttribute("user", userDto);
+        model.addAttribute("userId", userId);
+        model.addAttribute("categories", Category.values());
+        try {   // Result 값을 JS로 넘기려면 JSON으로 변환해야 한다고 함
+            String resultsJson = objectMapper.writeValueAsString(result);
+            model.addAttribute("resultsJson", resultsJson);
+        } catch (JsonProcessingException e) {
+            log.error("Error converting results to JSON", e);
+        }
 
-            List<Map<String, Object>> processResults = (List<Map<String, Object>>) category.get("processResults");
-            processResults.forEach(process -> {
-                System.out.println("  Process:");
-                process.forEach((key, value) -> {
-                    System.out.println("    " + key + ": " + value);
-                });
-
-                List<Map<String, Object>> flowResults = (List<Map<String, Object>>) process.get("flowResults");
-                flowResults.forEach(flow -> {
-                    System.out.println("    Flow:");
-                    flow.forEach((key, value) -> {
-                        System.out.println("      " + key + ": " + value);
-                    });
-                });
-            });
-        });
-        return ResponseEntity.ok("JSON received successfully");
-    }
-/*    @PostMapping("/send-result")
-    public ResponseEntity<String> sendResultTables() {
-        String url = "http://10.252.107.96:8080/api/receive-json";  // 외부 서버의 URL을 여기에 입력
-        externalApiService.sendResultTables(cgResultTables, url);
-        return ResponseEntity.ok("Data sent successfully");
+        return "api/result";
     }*/
+
 }

@@ -2,6 +2,7 @@ package kr.re.ImportTest2.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.re.ImportTest2.controller.api.HttpTimeMeasurement;
 import kr.re.ImportTest2.controller.dto.ProcessDto;
 import kr.re.ImportTest2.domain.enumType.LciDb;
 import kr.re.ImportTest2.domain.enumType.ProcessType;
@@ -38,7 +39,7 @@ public class SelectedProcessController {
                         @PathVariable String typeStr, Model model) {
         model.addAttribute("userId", userId);
 
-        return "/services/" + typeStr + "/index";
+        return "services/" + typeStr + "/index";
     }
 
     @GetMapping("/add")
@@ -50,6 +51,8 @@ public class SelectedProcessController {
         List<LciDb> lciDbs = LciDb.getValuesByType(typeStr);
         model.addAttribute("lciDbs", lciDbs);
         model.addAttribute("sp", processDto);
+        String url = "http://10.252.107.96:8080/";
+//        long time = HttpTimeMeasurement.measureRequestResponseTime(url);
 
         return "services/" + typeStr + "/createForm";
     }
@@ -61,7 +64,6 @@ public class SelectedProcessController {
         log.info("post-saveProcess-dto: {}", processDto);
 
         String pId = spService.saveProcess(processDto, userId, typeStr).toString();
-
         return "redirect:/services/" + userId + "/" +  typeStr + "/" + pId;
     }
 

@@ -3,6 +3,7 @@ package kr.re.ImportTest2.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.re.ImportTest2.controller.api.HttpTimeMeasurement;
 import kr.re.ImportTest2.controller.dto.ProcessDto;
 import kr.re.ImportTest2.controller.dto.UserDto;
 import kr.re.ImportTest2.domain.User;
@@ -38,7 +39,10 @@ public class UserController {
     }
 
     @GetMapping("/services")
-    public String cover() {
+    public String cover(Model model) {
+        String url = "http://10.252.107.96:8080/";
+//        long time = HttpTimeMeasurement.measureRequestResponseTime(url);
+//        model.addAttribute("time", time);
         return "services/services-cover";
     }
 

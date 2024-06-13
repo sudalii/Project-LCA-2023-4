@@ -29,7 +29,10 @@
     <div class="container">
 
         <img class="logo" src="img/keti-logo-266x51.png">
-
+        <div class="manage-btn">
+            <a id="ping-test" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2"
+            onclick="pingURL()">플랫폼 응답시간 Test</a>      
+        </div>
 
         <!-- Sidebar -->
         <ul class="navbar-nav custom-navbar-nav bg-gradient-primary sidebar custom-sidebar sidebar-dark accordion toggled" id="accordionSidebar">
@@ -102,8 +105,11 @@
                                         <div class="form-group">
                                             <p class="mb-2 text-center">환경영향범주 선택</p>
                                             <select class="form-control" data-live-search="true" th:field="*{re.category}"> 
-                                                <option class="text-center" th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}">지구온난화 - Global warming (GWP100a)</option>                                                <option th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}">지구온난화</option>
-                                                <option>인체독성</option>
+                                                <option class="text-center">지구온난화</option>                                                
+                                                <option class="text-center">물 사용</option>
+                                                <option class="text-center">자원고갈</option>
+                                                <option class="text-center">인체독성</option>
+                                                <option class="text-center">부영양화</option>
                                             </select>
                                         </div>    
                                         <!-- 사용된 LCIA method name 출력 -->
@@ -146,20 +152,49 @@
                                                 </thead>
                                                 <!-- 내용 GET -->
                                                 <tbody>
+                                                    <!-- <tr>
+                                                        <td>Water (fresh water)</td>
+                                                        <td>1310.22522 kg</td>
+                                                        <td>1.0 m3/kg</td>
+                                                        <td>1310.22522 m3</td>
+                                                    </tr>
                                                     <tr>
-                                                        <td></td>
+                                                        <td>Water, unspecified natural origin/kg</td>
+                                                        <td>0.496799 kg</td>
+                                                        <td>265.0 m3/kg</td>
+                                                        <td>131.651735 m3</td>
+                                                    </tr> -->
+                                                    <tr>
+                                                        <td>Nitrogen oxides</td>
+                                                        <td>3.2900 kg</td>
+                                                        <td>0.13 kg PO4--- eq/kg</td>
+                                                        <td>0.4277 kg PO4--- eq</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Dinitrogen monoxide</td>
+                                                        <td>0.496799 kg</td>
+                                                        <td>0.27 kg PO4--- eq/kg</td>
+                                                        <td>0.13413 kg PO4--- eq</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>COD, Chemical Oxygen Demand</td>
+                                                        <td>0.1042 kg</td>
+                                                        <td>0.022 kg 1,4-DB eq/kg</td>
+                                                        <td>0.002293 kg PO4--- eq</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <br/>
+                                        <h5 class="h5 text-danger">➜ 총 환경영향값: 0.564514 kg PO4--- eq</h5>
+                                        <!-- <h5 class="h5 text-danger">➜ 총 환경영향값: 1,452.375355 kg CO2 eq</h5> -->
                                         <!-- table end -->
                                         <!-- 4. 정량적목표 - 기존 openLCA와의 성능 비교 -->
                                         <!-- 핵심 flow 조정 필요... -->
                                         <!-- 일단, 표로 제시 -->
-                                        <div class="table-responsive" data-aos="fade-up">
+                                        <!-- <div class="table-responsive" data-aos="fade-up">
                                             <h3>정량적목표 - 기존 openLCA와의 성능 비교</h3>
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <!-- column 제목 이름 -->
                                                 <thead>
                                                     <tr>
                                                         <th>물질명</th>
@@ -168,14 +203,13 @@
                                                         <th>영향 평가 결과 + 단위</th>
                                                     </tr>
                                                 </thead>
-                                                <!-- 내용 GET -->
                                                 <tbody>
                                                     <tr>
                                                         <td></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

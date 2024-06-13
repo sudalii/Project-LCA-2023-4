@@ -13,8 +13,8 @@
   const DATA_COUNT = 7;
   const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
   
-  var userPName = ["PVC 물질제조", "PVC 사출성형", "부산-청주 운송", "매립", "폐플라스틱재활용"];
-  var lciDb = ['폴리비닐클로라이드-PVC', 'PVC사출성형', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'];
+  var userPName = ["HPP 물질제조", "PP 압출", "부산-청주 운송", "매립", "폐플라스틱재활용"];
+  var lciDb = ['호모폴리프로필렌-HPP', '컴파운딩PP압출', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'];
   var labelList = [];
   for (let i=0; i<userPName.length; i++) {
      var temp = userPName[i] + "\n" + "(사용된 DB: " + lciDb[i] + ")";
@@ -45,9 +45,93 @@
     ]
   };
 
+  const waterBar = {
+    labels: userPName,
+    datasets: [
+      {
+        label: 'Water',
+        data: [1053.38148, 0.4334, 0.084689, 0, 0.008246],
+        backgroundColor: '#7A9D54', 
+        stack: 'Stack 0',
+      },
+    ]
+  };
+
+  const resourceBar = {
+    labels: userPName,
+    datasets: [
+      {
+        label: 'Sulfur',
+        data: [4.4627004E-6, 9.476926072012841E-7, 1.5960000529240003E-7, 4.011347681986201E-8, 4.011347681986201E-9],
+        backgroundColor: '#7A9D54', 
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Uranium',
+        data: [4.093278E-6, 3.07919852E-11,  1.5960000000000003E-7,  1.5960000000000003E-7, 5.2924E-15],
+        backgroundColor: '#884ab2',
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Lead',
+        data: [7.4467738E-9, 0, 7.4467738E-15, 0, 0],
+        backgroundColor: '#BC131F',
+        stack: 'Stack 0',
+      },
+    ]
+  };
+  
+  const humanBar = {
+    labels: userPName,
+    datasets: [
+      {
+        label: 'Sulfur',
+        data: [3.9480048, 0.69490, 0.19552, 0.19552, 0.01319],
+        backgroundColor: '#7A9D54', 
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Uranium',
+        data: [ 0.42105006, 0,  0.0919,  0, 0],
+        backgroundColor: '#884ab2',
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Lead',
+        data: [0, 0.00642, 0, 0, 0.12226],
+        backgroundColor: '#BC131F',
+        stack: 'Stack 0',
+      },
+    ]
+  };
+
+  const eutrohBar = {
+    labels: userPName,
+    datasets: [
+      {
+        label: 'Nitrogen oxides',
+        data: [0.4277, 0.07528, 0.02118, 0.19552, 0.00143],
+        backgroundColor: '#7A9D54', 
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Dinitrogen monoxide',
+        data: [ 0.13413, 2.0052279E-4,  0,  0, 3.8070000000000006E-6],
+        backgroundColor: '#884ab2',
+        stack: 'Stack 0',
+      },
+      {
+        label: 'COD, Chemical Oxygen Demand',
+        data: [0.002293, 0, 4.5198285154E-5, 0, 0],
+        backgroundColor: '#BC131F',
+        stack: 'Stack 0',
+      },
+    ]
+
+  };
 const config = {
     type: 'bar',
-    data: GWPBar,
+    data: eutrohBar,
     options: {
       plugins: {
         title: {
@@ -99,20 +183,55 @@ const GWPPie = {
     }
   ]
 };
-const HumanPie = {
-  labels: ['폴리비닐클로라이드-PVC', 'PVC사출성형', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'],
+
+const waterPie = {
+  // labels: ['폴리비닐클로라이드-PVC', 'PVC사출성형', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'],
+  labels: labelList,
   datasets: [
     {
-      label: 'Dataset 1',
-      data: [5275.777118, 211.1551936, 0.0125112, 0.000388513, 0.023754142],
+      label: '물질별 환경영향값 비교',
+      data: [1053.381487, 0.433408, 0.084689, 0.000388513, 0.0082464],
       backgroundColor: ['#164B60', '#1B6B93', '#4FC0D0', '#A1C2F1', '#A2FF86'],
     }
   ]
 };
 
+const HumanPie = {
+  // labels: ['폴리비닐클로라이드-PVC', 'PVC사출성형', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'],
+  labels: labelList,
+  datasets: [
+    {
+      label: '물질별 환경영향값 비교',
+      data: [5.422504, 0.7106, 0.382615, 0.582615, 0.13564],
+      backgroundColor: ['#164B60', '#1B6B93', '#4FC0D0', '#A1C2F1', '#A2FF86'],
+    }
+  ]
+};
+const resourcePie = {
+  // labels: ['폴리비닐클로라이드-PVC', 'PVC사출성형', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'],
+  labels: labelList,
+  datasets: [
+    {
+      label: '물질별 환경영향값 비교',
+      data: [8.56765E-6, 4.01186201E-9, 9.4012841E-7, 9.47692641E-7, 1.59603E-7],
+      backgroundColor: ['#164B60', '#1B6B93', '#4FC0D0', '#A1C2F1', '#A2FF86'],
+    }
+  ]
+};
+const eutrohPie = {
+  // labels: ['폴리비닐클로라이드-PVC', 'PVC사출성형', '공로수송', '혼합플라스틱매립', '펠렛용폐플라스틱재활용'],
+  labels: labelList,
+  datasets: [
+    {
+      label: '물질별 환경영향값 비교',
+      data: [0.5645, 0.0758289622, 0.02128411, 0.001440428, 0.001440428],
+      backgroundColor: ['#164B60', '#1B6B93', '#4FC0D0', '#A1C2F1', '#A2FF86'],
+    }
+  ]
+};
 const config2 = {
   type: 'pie',
-  data: GWPPie,
+  data: eutrohPie,
   options: {
     responsive: true,
     plugins: {

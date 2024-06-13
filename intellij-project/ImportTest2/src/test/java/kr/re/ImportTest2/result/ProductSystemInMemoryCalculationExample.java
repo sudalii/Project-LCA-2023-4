@@ -163,13 +163,11 @@ public class ProductSystemInMemoryCalculationExample {
 
 //        Process processes = new ProcessDao(db).getForName("ProductName01").get(0);
         Process processes = createProcess(createProductBasedFlow());
-//        Process koreaP1 = new ProcessDao(db).getForName("PVC(Poly Vinyl Chloride)").get(0);
-        Process koreaP1 = new ProcessDao(db).getForName("HPP(Homo Poly Propylene) - KR").get(0);
-//        Process koreaP2 = new ProcessDao(db).getForName("plastics injection molding_PVC").get(0);
-        Process koreaP2 = new ProcessDao(db).getForName("Mixed plastics incineration - KR").get(0);
-//        Process koreaP3 = new ProcessDao(db).getForName("Recycling_Pellet_Waste_Plastic").get(0);
-        Process koreaP3 = new ProcessDao(db).getForName("Recycling_Pellet_Waste_Plastic - KR").get(0);
-
+        Process koreaP1 = new ProcessDao(db).getForName("HPP(Homo Poly Propylene)").get(0);
+        Process koreaP2 = new ProcessDao(db).getForName("mixed_plastic_landfill").get(0);
+        Process koreaP3 = new ProcessDao(db).getForName("Recycling_Pellet_Waste_Plastic").get(0);
+        Process incineration = new ProcessDao(db).getForName("Mixed plastics incineration").get(0);
+        log.info("incineration: {}, {}", incineration.id, incineration.refId);
 /*        log.info("before processes: {}", processes);
         for (Exchange e : processes.exchanges) {
             log.info("e = {}", e);
@@ -215,8 +213,80 @@ public class ProductSystemInMemoryCalculationExample {
         var config = new LinkingConfig()
                 .providerLinking(ProviderLinking.PREFER_DEFAULTS)
                 .preferredType(ProcessType.UNIT_PROCESS);
+
         var builder = new ProductSystemBuilder(mcache, config);
         var system = builder.build(processes);
+        log.info("system.processes.size = {}", system.processes.size());
+        List<Process> systemP = new ProcessDao(db).getForIds(system.processes);
+        for (Process p : systemP) {
+            log.info("{}", p);
+        }
+        var method = new ImpactMethodDao(db).getForName("CML-IA baseline").get(0);
+
+        log.info("method = {}", method);
+
+        // create the calculation setup
+        var setup = CalculationSetup.of(system)
+                .withImpactMethod(method);
+
+        // load the native library and calculate the result
+        // TODO: load Julia libraries first here
+        SystemCalculator calc = new SystemCalculator(db);
+        var r = calc.calculate(setup);
+
+        // print the LCIA results
+        for (ImpactDescriptor impact : r.impactIndex()) {
+            System.out.println(impact.name + "\t"
+                    + r.getTotalImpactValueOf(impact) + "\t"
+                    + impact.referenceUnit);
+        }
+
+        // clean up
+        r.dispose();
+        new ProcessDao(db).delete(inserted);
+    }
+
+    @Test
+    void directCalcToProcess() {
+
+        List<Exchange> ps = new ArrayList<>();
+        List<Exchange> koreaPs = new ArrayList<>();
+
+//        Process processes = new ProcessDao(db).getForName("ProductName01").get(0);
+        Process processes = createProcess(createProductBasedFlow());
+        Process koreaP1 = new ProcessDao(db).getForName("HPP(Homo Poly Propylene)").get(0);
+        Process koreaP2 = new ProcessDao(db).getForName("mixed_plastic_landfill").get(0);
+        Process koreaP3 = new ProcessDao(db).getForName("Recycling_Pellet_Waste_Plastic").get(0);
+
+        for (Exchange e : processes.exchanges) {
+            log.info("e name = {}, id = {}, internalId = {}, providerId = {}", e.flow.name, e.id, e.internalId, e.defaultProviderId);
+        }
+        long pId = processes.id;
+        new ProcessDao(db).update(processes);
+//        Process inserted = new ProcessDao(db).insert(processes);
+
+        Process inserted = new ProcessDao(db).getForId(pId);
+        log.info("processes = {}, type = {}", inserted, inserted.processType);
+        for (Exchange e : inserted.exchanges) {
+            log.info("exchange: {}", e);
+        }
+
+        // load the database and matrix cache
+        MatrixCache mcache = MatrixCache.createLazy(db);
+        var config = new LinkingConfig()
+                .providerLinking(ProviderLinking.PREFER_DEFAULTS)
+                .preferredType(ProcessType.UNIT_PROCESS);
+
+        var builder = new ProductSystemBuilder(mcache, config);
+        var system = builder.build(processes);
+        log.info("system.processes.size = {}", system.processes.size());
+        List<Process> systemP = new ProcessDao(db).getForIds(system.processes);
+        for (Process p : systemP) {
+            log.info("{}", p);
+        }
+
+//        system.processes.add()
+
         var method = new ImpactMethodDao(db).getForName("CML-IA baseline").get(0);
 
         log.info("method = {}", method);

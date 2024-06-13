@@ -111,4 +111,36 @@ public class ExternalApiService {
             log.error("Error sending JSON data: ", e);
         }
     }
+
+    public List<Map<String, Object>> convertResultToJsonList(List<CategoryResultTable> cgResultTables) {
+        List<Map<String, Object>> jsonList = new ArrayList<>();
+        for (CategoryResultTable cgTable : cgResultTables) {
+            Map<String, Object> cgMap = new HashMap<>();
+            cgMap.put("name", cgTable.name());
+            cgMap.put("value", cgTable.value());
+            cgMap.put("unit", cgTable.unit());
+
+            List<Map<String, Object>> processJsonList = new ArrayList<>();
+            for (ProcessResultTable pTable : cgTable.processResults()) {
+                Map<String, Object> pMap = new HashMap<>();
+                pMap.put("name", pTable.name());
+                pMap.put("value", pTable.value());
+
+                List<Map<String, Object>> flowJsonList = new ArrayList<>();
+                for (FlowResultTable fTable : pTable.flowResults()) {
+                    Map<String, Object> fMap = new HashMap<>();
+                    fMap.put("name", fTable.name());
+                    fMap.put("lciResult", fTable.lciResult());
+                    fMap.put("cf", fTable.cf());
+                    fMap.put("impactResult", fTable.impactResult());
+                    flowJsonList.add(fMap);
+                }
+                pMap.put("flowResults", flowJsonList);
+                processJsonList.add(pMap);
+            }
+            cgMap.put("processResults", processJsonList);
+            jsonList.add(cgMap);
+        }
+        return jsonList;
+    }
 }

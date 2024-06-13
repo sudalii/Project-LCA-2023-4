@@ -20,6 +20,7 @@ public class SelectedProcess {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+//    @JoinColumn(name = "user_id", referencedColumnName = "`user_id`") // 백틱으로 감싸기
     private User user;
 
     // 없으면 국가 DB name을 default로 사용하기 (할 수 있다면...)

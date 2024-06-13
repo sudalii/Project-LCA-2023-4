@@ -21,26 +21,31 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.lib.path>C:/Project-LCA/Project/2023-4/eclipse-workspace/OpenLCA_2.0.0/olca-modules</project.lib.path>
+		<project.lib.path>${user.home}/server/olca-modules</project.lib.path>
 	</properties>
+	<repositories>
+		<repository>
+			<id>local-repository</id>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
+	</repositories>
 	<dependencies>
+		<!--local jar import-->
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>olca-core</artifactId>
+			<version>2.0.3-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openlca</groupId>
+			<artifactId>olca-io</artifactId>
+			<version>2.0.3-SNAPSHOT</version>
+		</dependency>
 		<!-- jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<!-- QueryDSL APT Config -->
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<version>${querydsl.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- QueryDSL JPA Config -->
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-			<version>${querydsl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -76,26 +81,16 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--javax.persistence-->
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 		<!-- Jackson JSON Parser -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<!--local jar import-->
-		<dependency>
-			<groupId>org.openlca</groupId>
-			<artifactId>olca-core</artifactId>
-			<version>2.0.3-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.lib.path}/olca-core/target/olca-core-2.0.3-SNAPSHOT.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openlca</groupId>
-			<artifactId>olca-io</artifactId>
-			<version>2.0.3-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.lib.path}/olca-io/target/olca-io-2.0.3-SNAPSHOT.jar</systemPath>
 		</dependency>
 
 		<!--JPA-->
@@ -207,16 +202,17 @@
             <version>2.0.0</version>
             <scope>compile</scope>
         </dependency>
-		<dependency>
-			<groupId>org.openlca</groupId>
-			<artifactId>olca-core</artifactId>
-			<version>2.0.3-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>
+<!--		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.html</include>
+				</includes>
+			</resource>
+		</resources>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -230,26 +226,78 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
+<!--			모든 의존성을 포함한 단일 JAR 파일로 패키징하기 위한 -->
+			<!-- Spring Boot Maven Plugin -->
+<!--			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<requiresUnpack>
+						<dependency>
+							<groupId>org.openlca</groupId>
+							<artifactId>olca-core</artifactId>
+							<version>2.0.3-SNAPSHOT</version>
+						</dependency>
+						<dependency>
+							<groupId>org.openlca</groupId>
+							<artifactId>olca-io</artifactId>
+							<version>2.0.3-SNAPSHOT</version>
+						</dependency>
+					</requiresUnpack>
+				</configuration>
+			</plugin>-->
+			<!-- Spring Boot Maven Plugin -->
 			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<version>1.1.3</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
 						<goals>
-							<goal>process</goal>
+							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-							<options>
-								<querydsl.entityAccessors>true</querydsl.entityAccessors>
-							</options>
+							<outputDirectory>${project.build.directory}/libs</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+<!--			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>libs/</classpathPrefix>
+							<mainClass>kr.re.ImportTest2.ImportTest2Application</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>-->
+<!--			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>org.openlca:olca-core</include>
+									<include>org.openlca:olca-io</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
 		</plugins>
 	</build>
 

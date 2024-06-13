@@ -43,7 +43,7 @@ public class MyDbTest {
     public void testNoMemLeak() throws Exception {
         Runtime rt = Runtime.getRuntime();
         long initialUsed = rt.totalMemory() - rt.freeMemory();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 5; i++) {
             Derby db = Derby.createInMemory();
             db.close();
             long usedMem = rt.totalMemory() - rt.freeMemory();

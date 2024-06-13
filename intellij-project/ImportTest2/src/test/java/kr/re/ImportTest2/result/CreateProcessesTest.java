@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -77,7 +78,7 @@ class CreateProcessesTest {
         Process processes = createProcesses();
 
         // 3. 제품 정보를 가지고 만들어진 processes 안에 각 선택된 국가DB와 계산하여 process 추가
-        List<SelectedProcess> allByUserId = spRepository.findAllByUserId(1L);
+        List<SelectedProcess> allByUserId = spRepository.findAllByUserId(40L);
 
         int n = 1;
         for (SelectedProcess userP : allByUserId) {
@@ -88,9 +89,9 @@ class CreateProcessesTest {
         Process updated = new ProcessDao(db).update(processes);
 
         // 4. 만들어진 Processes를 가지고 Product System 생성
-        ProductSystem system = createProductSystem(updated);
-
-        printLinkingStatus(system); // 추가: 링크 상태 출력
+//        ProductSystem system = createProductSystem(updated);
+        ProductSystem system = null;
+        printLinkingStatus(system, updated); // 추가: 링크 상태 출력
 
         LcaResult cml = calculate("CML-IA baseline", system, updated, false);
         LcaResult aware = calculate("AWARE", system, updated, true);
@@ -176,7 +177,9 @@ class CreateProcessesTest {
         ref.amount = userP.getProcessAmount();
         ref.unit = new UnitDao(db).getForName(userP.getProcessAmountUnit()).get(0);
         ref.defaultProviderId = customized.id;
-        processes.exchanges.add(ref);
+        Exchange updatedRef = new ExchangeDao(db).update(ref);
+
+        processes.exchanges.add(updatedRef);
 
         // 검증 코드
         for (Exchange ex: processes.exchanges) {
@@ -345,15 +348,20 @@ class CreateProcessesTest {
 //        return system;
     }
 
-    void printLinkingStatus(ProductSystem system) {
+    void printLinkingStatus(ProductSystem system, Process process) {
         log.info("Linking status of ProductSystem:");
-        log.info("system.processes.size = {}", system.processes.size());
+//        log.info("system.processes.size = {}", system.processes.size());
 /*
         for (Long pId : system.processes) {
             Process process = new ProcessDao(db).getForId(pId);
 */
-        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
-        try (PrintWriter writer = new PrintWriter(prePath+"linkingTest.txt")) {
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/txt";
+        File file = new File(prePath);
+        if (file.mkdirs())
+            log.info("create /server/txt/ directory.");
+//        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
+        try (PrintWriter writer = new PrintWriter(prePath+"/linkingTest.txt")) {
             var processes = new ProcessDao(db).getAll();
             writer.println("\n\nsaved processes imported db: ");
             writer.println("총 개수: " + processes.size());
@@ -364,7 +372,7 @@ class CreateProcessesTest {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        Process process = system.referenceProcess;
+//        Process process = system.referenceProcess;
         if (process != null) {
 
             log.info("Process: {}", process.name);
@@ -373,7 +381,6 @@ class CreateProcessesTest {
                 Process provider = new ProcessDao(db).getForId(exchange.defaultProviderId);
                 log.info("  Exchange: {} ({}) -> Provider: {}", exchange.flow.name,
                         exchange.flow.flowType, provider != null ? provider.name : "null");
-
             }
         } else {
             log.warn("Process is not found in the database.");
@@ -384,23 +391,24 @@ class CreateProcessesTest {
     public LcaResult calculate(String methodName, ProductSystem system, Process processes, boolean removeFlag) {
         ImpactMethod method = new ImpactMethodDao(db).getForName(methodName).get(0);
         log.info("method = {}", method);
-        CalculationSetup setup = CalculationSetup.of(system).withImpactMethod(method);
+//        CalculationSetup setup = CalculationSetup.of(system).withImpactMethod(method);
+        CalculationSetup setup = CalculationSetup.of(processes).withImpactMethod(method);
         SystemCalculator calc = new SystemCalculator(db);
 
-        log.info("processes in calc = {}, {}, {}",
+/*        log.info("processes in calc = {}, {}, {}",
                 processes.quantitativeReference,
                 processes.processType,
-                processes.exchanges.get(2).defaultProviderId);
+                processes.exchanges.get(2).defaultProviderId);*/
         LcaResult result = calc.calculate(setup);
         ImpactDescriptor impact = result.impactIndex().at(8);
         log.info("total impact value: {}", result.getTotalImpactValueOf(impact)); // 총 카테고리 결과값
         log.info("total impact value: {}", result.getTotalImpacts()); // 총 카테고리 결과값
         log.info("total direct impact value: {}", result.getDirectImpactValuesOf(impact)); // 총 카테고리 결과값
 
-
         if (removeFlag) {
             log.info("remove to product system");
             new ProductSystemDao(db).deleteAll();
+            db.delete(processes);
         }
         return result;
     }
@@ -562,9 +570,13 @@ class CreateProcessesTest {
     }
 
     void saveResultTables(List<CategoryResultTable> cgResultTables) {
-
-        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
-        try (PrintWriter writer = new PrintWriter(prePath+"resultTables.txt")) {
+        String home = System.getProperty("user.home");
+        String prePath = home + "/server/txt";
+        File file = new File(prePath);
+        if (file.mkdirs())
+            log.info("create /server/txt/ directory.");
+//        String prePath = "D:/Dropbox/2022-KETI/01-Project/01-EXE/산업부-KEIT-리사이클링/02-수행/06-2024/2024-01-SW개발/save_to_txt/";
+        try (PrintWriter writer = new PrintWriter(prePath+"/resultTables-test.txt")) {
             // By Category
             for (CategoryResultTable cgTable : cgResultTables) {
                 writer.println("Category별 결과값 추출 확인, 총 " + cgResultTables.size() + "개");

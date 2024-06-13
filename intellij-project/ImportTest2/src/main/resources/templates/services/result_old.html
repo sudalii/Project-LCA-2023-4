@@ -5,13 +5,16 @@
 <body class="bg-gradient-primary">
     <div class="container">
 
-        <div class="d-flex justify-content-center mt-4">
-            <img class="logo" src="/img/keti-logo-266x51.png">
-        </div>
+        <img class="logo" src="/img/keti-logo-266x51.png">
         
         <!-- add(=create), delete, save button -->
-        <div class="manage-btn text-center mt-4">
-            <a id="ping-test" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" style="float:right;"
+        <div class="manage-btn">
+
+            <!-- <a class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" th:href="@{/services/p1/new}">
+                <i class="fas fa-solid fa-plus fa-sm text-white-50"></i> 새 제품 추가</a> -->
+            <!-- <a class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm toggle-sidebar">
+                <i class="fas fa-table fa-sm text-white-50"></i><span class="toggle-text"> 목록 보기</span></a>  보류   -->
+            <a id="ping-test" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2" style="float:right;"
                 onclick="pingURL()">플랫폼 응답시간 Test</a>             
         </div>
 
@@ -59,7 +62,7 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-xl-12 col-lg-12 col-md-9">
 
                 <div class="card o-hidden border-0 shadow-lg mt-5 mb-4 vh-80">
                     <!-- Sidebar Toggle (Topbar) -->
@@ -80,7 +83,7 @@
                             <input type="hidden" id="EPFlows" name="EPFlows" th:value="${EPFlows}">
                             <input type="hidden" id="categoriesData" th:value="${categories}">
                             <!-- Nested Row within Card Body -->
-                            <div class="row vh-90 justify-content-center">
+                            <div class="row vh-90">
                                 <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
@@ -94,45 +97,46 @@
                                         <br/>
                                         <br/>
                                         <br/>
-                                        <div class="form-group text-center">
-                                            <p class="mb-2">환경영향범주 선택</p>
-                                            <select class="form-control" data-live-search="true" id="categorySelect">
-                                                <option class="text-center" th:each="cg: ${categories}" th:value="${cg.name}" th:text="${cg.name}"></option>
+                                        <div class="form-group">
+                                            <p class="mb-2 text-center">환경영향범주 선택</p>
+                                            <select class="form-control" data-live-search="true" id="categorySelect"> <!-- 지구온난화 - Global warming (GWP100a) -->
+                                                <option class="text-center" th:each="cg: ${categories}" th:value="${cg.name}" th:text="${cg.name}"></option>                                                
+                                                <!-- <option th:each="cg: ${categories}" th:value="${cg.oriName}" th:text="${cg.name}">지구온난화</option> -->
                                             </select>
                                         </div>    
                                         <!-- 사용된 LCIA method name 출력 -->
-                                        <h6 class="h6 text-gray-800 text-center" id="method"></h6>
+                                        <h6 class="h6 text-gray-800" id="method"></h6>
 
                                         <br/>
 
                                         <!-- 1. 공정별 환경영향값 비교 그래프 (원형 or 도넛 graph) -->
+                                        <!-- ** 가능하면 각 category에 따라 다른 디자인의 그래프 출력 ** 
+                                            ex) GWP: 나무 그래프, 물 사용: 물통 그래프, … -->
                                         <div class="row my-row2 mb-2" data-aos="fade-up">
-                                            <div class="col-12 d-flex justify-content-center">
-                                                <div class="resize" style="width: 400px; height: 400px;">
-                                                    <canvas id="pie" width="400" height="400"></canvas>
-                                                </div>
+                                            <div class="resize">
+                                                <canvas class="" id="pie"></canvas>
                                             </div>
                                         </div>
                                         <br/>
                                         <br/>
 
                                         <!-- 2. 물질별 환경영향값 비교 그래프 (bar graph) -->
+                                        <!-- ** 사용자 설정의 공정명 – 국가LCI DB 공정명 같이 표기 ** -->
                                         <div class="row mb-2" data-aos="fade-up">
-                                            <div class="col-12 d-flex justify-content-center">
-                                                <canvas id="stackedBarWithGroup" width="800" height="400"></canvas>
-                                            </div>
+                                            <canvas id="stackedBarWithGroup"></canvas>
                                         </div>
                                         
                                         <!-- 3. 세부 표 출력 (Impact analysis table) -->
+                                        <!-- ** 기준물질은 표 맨 위 bold체로 고정 ** -->
                                         <br/>
                                         <br/>
                                         <br/>
                                         <h4 class="h5 text-gray-800 text-center"></h4>
-                                        <div id="resultContent" class="text-center"></div>
+                                        <div id="resultContent"></div>
                                         <!-- table end -->
 
                                         <br/>
-                                        <h5 id="impactValue" class="h5 text-danger text-center"></h5>
+                                        <h5 id="impactValue" class="h5 text-danger"></h5>
                                     </div>
                                 </div>
                             </div>
