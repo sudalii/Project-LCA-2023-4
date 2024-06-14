@@ -39,7 +39,6 @@ public class Calculation {
         validateSystem(system);
         var method = new ImpactMethodDao(db).getForName(methodName).get(0);
         log.info("method find: {}", method);
-//        CalculationSetup setup = CalculationSetup.of(system).withImpactMethod(method);
         for (Process p : new ProcessDao(db).getForIds(system.processes)) {
             try {
                 if (p.name.equals(system.name)) {

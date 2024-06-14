@@ -128,6 +128,7 @@
       },
     ]
 
+
   };
 const config = {
     type: 'bar',

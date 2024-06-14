@@ -8,11 +8,10 @@
         <div class="d-flex justify-content-center mt-4">
             <img class="logo" src="/img/keti-logo-266x51.png">
         </div>
-        
         <!-- add(=create), delete, save button -->
-        <div class="manage-btn text-center mt-4">
-            <a id="ping-test" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" style="float:right;"
-                onclick="pingURL()">플랫폼 응답시간 Test</a>             
+        <div class="manage-ping-btn text-center mt-4">
+            <a id="ping-test" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" 
+                onclick="pingURL2()">플랫폼 응답시간 Test</a>             
         </div>
 
         <!-- Sidebar -->
@@ -58,7 +57,6 @@
 
         <!-- Outer Row -->
         <div class="row justify-content-center">
-
             <div class="col-xl-10 col-lg-12 col-md-9">
 
                 <div class="card o-hidden border-0 shadow-lg mt-5 mb-4 vh-80">
@@ -115,9 +113,14 @@
                                         </div>
                                         <br/>
                                         <br/>
-
                                         <!-- 2. 물질별 환경영향값 비교 그래프 (bar graph) -->
+                                        <!-- <div class="form-group text-center">
+                                            <p class="mb-2">공정 선택</p>
+                                            <select class="form-control" id="processSelect">
+                                            </select>
+                                        </div> -->
                                         <div class="row mb-2" data-aos="fade-up">
+ 
                                             <div class="col-12 d-flex justify-content-center">
                                                 <canvas id="stackedBarWithGroup" width="800" height="400"></canvas>
                                             </div>

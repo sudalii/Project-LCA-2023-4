@@ -2,23 +2,19 @@ package kr.re.ImportTest2.controller;
 
 import kr.re.ImportTest2.component.result.resultTable.CategoryResultTable;
 import kr.re.ImportTest2.component.result.resultTable.FlowResultTable;
+import kr.re.ImportTest2.component.result.resultTable.ProcessResultTable;
 import kr.re.ImportTest2.controller.api.HttpTimeMeasurement;
 import kr.re.ImportTest2.controller.dto.CalcResultDto;
-import kr.re.ImportTest2.controller.dto.ProcessDto;
 import kr.re.ImportTest2.controller.dto.UserDto;
-import kr.re.ImportTest2.domain.CalcResult;
 import kr.re.ImportTest2.domain.enumType.Category;
 import kr.re.ImportTest2.service.CalcResultService;
-import kr.re.ImportTest2.service.SelectedProcessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
-import org.openlca.core.database.ResultDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,10 +28,8 @@ import java.util.Map;
 @RequestMapping("/services/{userId}/result")
 public class ResultController {
 
-    private final SelectedProcessService spService;
     private final CalcResultService resultService;
     private final ObjectMapper mapper;
-    List<CategoryResultTable> result = null;
 
     @GetMapping("")
     public String result(@PathVariable("userId") Long userId,
@@ -95,6 +89,12 @@ public class ResultController {
                         model.addAttribute("EPResult", mapper.writeValueAsString(result.getResults()));
                         model.addAttribute("EPFlows", mapper.writeValueAsString(result.getFlowTables()));
                 }
+                List<ProcessResultTable> processResults = result.getResults().processResults();
+                for (ProcessResultTable prt : processResults) {
+                    prt.name();
+                    prt.value();
+                    result.getResults().unit();
+                }
             }
 /*            String resultsJson = mapper.writeValueAsString(result);
             model.addAttribute("resultsJson", resultsJson);*/
@@ -102,19 +102,6 @@ public class ResultController {
             log.error("Error converting results to JSON", e);
         }
 
-//        model.addAttribute("resultsJson", results);
-/*        for (CalcResultDto result : results) {
-            if (result.getCategoryName().equals(Category.GWP.name()))
-                model.addAttribute("gwpResult", result);
-            switch (result.getCategoryName()) {
-                case "지구온난화":
-                    model.addAttribute("gwpResult", result);
-                case "물 사용":
-                    model.addAttribute("gwpResult", result);
-
-            }
-
-        }*/
 /*        try {   // Result 값을 JS로 넘기려면 JSON으로 변환해야 한다고 함
             String resultsJson = objectMapper.writeValueAsString(result);
             model.addAttribute("resultsJson", resultsJson);

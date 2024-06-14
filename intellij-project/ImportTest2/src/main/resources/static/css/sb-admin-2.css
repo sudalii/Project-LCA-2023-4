@@ -11675,6 +11675,14 @@ body.sidebar-toggled footer.sticky-footer {
   z-index: 10000;
 }
 
+.manage-ping-btn {
+  position: absolute;
+  top: 0;
+  right: 27%;
+  padding: 1rem;
+  z-index: 10000;
+}
+
 @media screen and (max-width: 640px) {
   .logo {
     width: 150px;
