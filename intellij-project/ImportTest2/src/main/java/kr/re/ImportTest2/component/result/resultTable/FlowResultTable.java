@@ -55,54 +55,5 @@ public record FlowResultTable(String name, double lciResult, double cf, double i
         }
         return convertedList;
     }
-/*
-    public record flowResultTable(String name, double lciResult, double cf, double impactResult) {
-    }
-
-
-    public record flowResultTableString(String name, String lciResult, double cf, String impactResult) {
-    }
-
-    public static List<FlowResultTable> sort(List<FlowResultTable> tables) {
-        // impactResult 값을 기준으로 내림차순 정렬
-        List<FlowResultTable> sortedList = FlowResultTable.sortByImpactResultDescending(tables);
-
-        // 정렬된 리스트의 impactResult 값을 formatDouble 메서드로 변환
-        return FlowResultTable.formatImpactResults(sortedList);
-    }
-
-    public List<FlowResultTable> sortByImpactResultDescending(List<FlowResultTable> flowResultTables) {
-        List<FlowResultTable> sortedList = new ArrayList<>(flowResultTables);
-        // Sort the list using a comparator that compares the impactResult field in descending order
-        sortedList.sort((flow1, flow2) -> {
-            double impact1 = Double.parseDouble(flow1.impactResult());
-            double impact2 = Double.parseDouble(flow2.impactResult());
-            return Double.compare(impact2, impact1); // 내림차순
-        });
-        return sortedList;
-    }
-
-
-
-    // 소수점 4자리 초과 시 e상수 표기
-    private String formatDouble(double value) {
-        if (value >= 10) {
-            DecimalFormat df = new DecimalFormat("0.####E0");
-            return df.format(value);
-        } else {
-            return String.valueOf(value);
-        }
-    }
-
-    // 정렬된 리스트의 impactResult 값을 formatDouble 메서드로 변환
-    public List<FlowResultTable> formatImpactResults(List<FlowResultTable> sortedList) {
-        List<FlowResultTable> formattedList = new ArrayList<>();
-        for (FlowResultTable table : sortedList) {
-            String formattedImpactResult = formatDouble(Double.parseDouble(table.impactResult()));
-            formattedList.add(new FlowResultTable(table.name(), table.lciResult(), table.cf(), formattedImpactResult));
-        }
-        return formattedList;
-    }
-*/
 
 }

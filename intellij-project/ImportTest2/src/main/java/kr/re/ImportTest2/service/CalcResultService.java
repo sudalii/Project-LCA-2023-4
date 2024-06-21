@@ -127,12 +127,6 @@ public class CalcResultService {
     }
 
     @Transactional
-    public void calcAndResult(Long userId) {
-        calculate(userId);
-
-    }
-
-    @Transactional
     public void saveResults(CategoryResultTable cgTable, List<FlowResultTable> flowTables) {
         CalcResultDto resultDto = CalcResultDto.builder().build();
 
@@ -147,16 +141,5 @@ public class CalcResultService {
     public void deleteResult(Long id) {
         resultRepository.deleteById(id);
     }
-/*    @Transactional
-    public Long saveResults(CalcResultDto resultDto, Long userId) {
-        CalcResultDto.builder().userId(userId).build();
-        User user = userService.findUserById(userId);
-
-        Long id = resultRepository.save(resultDto.toEntity(user)).getId();
-        log.info("save 후 userId 저장(resultDto.getUserId()) 현황={}", resultDto.getUserId());
-        log.info("save 후 user 저장 현황={}", user);
-        return id;
-    }*/
-
 }
 

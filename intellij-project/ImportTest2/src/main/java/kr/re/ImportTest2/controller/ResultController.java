@@ -33,7 +33,7 @@ public class ResultController {
 
     @GetMapping("")
     public String result(@PathVariable("userId") Long userId,
-                         Model model) { // , CalcResultDto resultDto
+                         Model model) {
 
         Pair<CategoryResultTable, List<FlowResultTable>> pair = null;
         UserDto userDto = resultService.findUser(userId);
@@ -89,25 +89,10 @@ public class ResultController {
                         model.addAttribute("EPResult", mapper.writeValueAsString(result.getResults()));
                         model.addAttribute("EPFlows", mapper.writeValueAsString(result.getFlowTables()));
                 }
-                List<ProcessResultTable> processResults = result.getResults().processResults();
-                for (ProcessResultTable prt : processResults) {
-                    prt.name();
-                    prt.value();
-                    result.getResults().unit();
-                }
             }
-/*            String resultsJson = mapper.writeValueAsString(result);
-            model.addAttribute("resultsJson", resultsJson);*/
         } catch (JsonProcessingException e) {
             log.error("Error converting results to JSON", e);
         }
-
-/*        try {   // Result 값을 JS로 넘기려면 JSON으로 변환해야 한다고 함
-            String resultsJson = objectMapper.writeValueAsString(result);
-            model.addAttribute("resultsJson", resultsJson);
-        } catch (JsonProcessingException e) {
-            log.error("Error converting results to JSON", e);
-        }*/
 
         return "services/result";
     }

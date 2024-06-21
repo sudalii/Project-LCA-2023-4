@@ -36,6 +36,7 @@ public class JsonController {
     private final ObjectMapper objectMapper;
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("")
     public ResponseEntity<List<Map<String, Object>>> receiveJson(
 //    public ResponseEntity<String> receiveJson(
